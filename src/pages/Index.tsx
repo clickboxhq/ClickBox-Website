@@ -141,7 +141,8 @@ const Index = () => {
                   />
                 </div>
                 <h3 className="mt-4 font-heading text-base font-semibold text-foreground">{member.name}</h3>
-                {member.role && <p className="mt-1 text-sm text-muted-foreground">{member.role}</p>}
+                {member.role && <p className="mt-1 text-sm text-primary">{member.role}</p>}
+                {member.bio && <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{member.bio}</p>}
               </div>
             ))}
           </div>
