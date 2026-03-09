@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Product from "./pages/Product";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
+import Team from "./pages/Team";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
