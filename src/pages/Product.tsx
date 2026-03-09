@@ -136,7 +136,8 @@ const Product = () => {
               Be among the first to experience this next-generation phishing defense tool. Enter your details below to get early access, updates, and exclusive launch offers.
             </p>
             <p className="mt-2 text-xs text-muted-foreground">
-              For information about our privacy practices, check out our Privacy Policy.
+              For information about our privacy practices, check out our{" "}
+              <Link to="/privacy" className="text-primary hover:underline">Privacy Policy</Link>.
             </p>
           </div>
 
