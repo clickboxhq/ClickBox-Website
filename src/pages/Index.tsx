@@ -127,10 +127,10 @@ const Index = () => {
           </div>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { img: teamPrince, name: "Prince Oruma", role: "Chief Operating Officer" },
-              { img: teamVictor, name: "Victor Steven Igbinedion", role: "Chief Technology Officer" },
-              { img: teamIsaac, name: "Isaac Udumeighe", role: "Chief Technology Officer" },
-              { img: teamKunmi, name: "Kunmi Olugbemi", role: "Chief Information Security Officer" },
+              { img: teamPrince, name: "Prince Oruma", role: "Chief Operating Officer", bio: "A security engineer and tech entrepreneur driving ClickBox's operational strategy. With deep expertise in vulnerability management and risk mitigation, Prince blends cybersecurity with innovation — building scalable solutions that empower organizations to thrive securely in the digital age." },
+              { img: teamVictor, name: "Victor Steven Igbinedion", role: "Chief Technology Officer", bio: "" },
+              { img: teamIsaac, name: "Isaac Udumeighe", role: "Chief Technology Officer", bio: "" },
+              { img: teamKunmi, name: "Kunmi Olugbemi", role: "Chief Information Security Officer", bio: "" },
             ].map((member) => (
               <div key={member.name} className="group">
                 <div className="aspect-square overflow-hidden rounded-lg border border-border">
