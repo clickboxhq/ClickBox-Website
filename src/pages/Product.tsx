@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Shield, FlaskConical, FileBarChart, Brain, CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import productHero from "@/assets/product-hero.jpeg";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const features = [
   { icon: Shield, title: "Smart Detection Engine", desc: "Instantly flags suspicious emails and links using AI-powered analysis." },
