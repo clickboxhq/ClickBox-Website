@@ -2,6 +2,11 @@ import { Link } from "react-router-dom";
 import { Shield, UserCheck, FileCheck, Search, BookOpen, Lock } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import teamPrince from "@/assets/team-prince.jpg";
+import teamVictor from "@/assets/team-victor.jpg";
+import teamIsaac from "@/assets/team-isaac.jpg";
+import teamKunmi from "@/assets/team-kunmi.jpg";
+import Footer from "@/components/Footer";
 
 const services = [
   { icon: BookOpen, title: "Cybersecurity Training", desc: "Equip your team with the knowledge to recognize and respond to threats effectively." },
