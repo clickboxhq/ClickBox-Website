@@ -25,7 +25,7 @@ const Footer = () => (
         </div>
         <div>
           <h4 className="font-heading text-sm font-semibold text-foreground mb-4">Contact</h4>
-          <p className="text-sm text-muted-foreground">info@clickbox.ng</p>
+          <p className="text-sm text-muted-foreground">info@useclickbox.com</p>
         </div>
       </div>
       <div className="mt-10 border-t border-border pt-6 text-center text-xs text-muted-foreground">
