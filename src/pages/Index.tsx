@@ -128,7 +128,7 @@ const Index = () => {
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {[
               { img: teamPrince, name: "Prince Oruma", role: "Chief Operating Officer", bio: "A security engineer and tech entrepreneur driving ClickBox's operational strategy. With deep expertise in vulnerability management and risk mitigation, Prince blends cybersecurity with innovation — building scalable solutions that empower organizations to thrive securely in the digital age." },
-              { img: teamVictor, name: "Victor Steven Igbinedion", role: "Chief Technology Officer", bio: "" },
+              { img: teamVictor, name: "Victor Steven Igbinedion", role: "Chief Technology Officer", bio: "A penetration tester and AI enthusiast focused on advancing defensive security through automation and AI-driven detection. Victor architects scalable security solutions that shift organizations from reactive monitoring to adaptive, intelligence-led cyber defense." },
               { img: teamIsaac, name: "Isaac Udumeighe", role: "Chief Technology Officer", bio: "" },
               { img: teamKunmi, name: "Kunmi Olugbemi", role: "Chief Information Security Officer", bio: "" },
             ].map((member) => (
