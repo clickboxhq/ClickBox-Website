@@ -3,10 +3,6 @@ import { Shield, UserCheck, FileCheck, Search, BookOpen, Lock } from "lucide-rea
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import teamPrince from "@/assets/team-prince.jpg";
-import teamVictor from "@/assets/team-victor.jpg";
-import teamIsaac from "@/assets/team-isaac.jpg";
-import teamKunmi from "@/assets/team-kunmi.jpg";
 
 const services = [
   { icon: BookOpen, title: "Cybersecurity Training", desc: "Equip your team with the knowledge to recognize and respond to threats effectively." },
