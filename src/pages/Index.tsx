@@ -130,7 +130,7 @@ const Index = () => {
               { img: teamPrince, name: "Prince Oruma", role: "Chief Operating Officer" },
               { img: teamVictor, name: "Victor Steven Igbinedion", role: "Chief Technology Officer" },
               { img: teamIsaac, name: "Isaac Udumeighe", role: "Chief Technology Officer" },
-              { img: teamKunmi, name: "Kunmi Olugbemi", role: "" },
+              { img: teamKunmi, name: "Kunmi Olugbemi", role: "Chief Information Security Officer" },
             ].map((member) => (
               <div key={member.name} className="group">
                 <div className="aspect-square overflow-hidden rounded-lg border border-border">
