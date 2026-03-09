@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 const services = [
   { icon: BookOpen, title: "Cybersecurity Training", desc: "Equip your team with the knowledge to recognize and respond to threats effectively." },
   { icon: UserCheck, title: "Social Engineering Awareness", desc: "Train employees to detect manipulation tactics and prevent human-layer breaches." },
-  { icon: FileCheck, title: "Data Protection & NDPR Compliance", desc: "Ensure your organization meets Nigerian Data Protection Regulation requirements." },
+  { icon: FileCheck, title: "Data Protection & Compliance", desc: "Ensure your organization meets data protection regulation requirements." },
   { icon: Shield, title: "ISO 27001 Guidance", desc: "Align your information security management system with international standards." },
   { icon: Search, title: "Penetration Testing", desc: "Identify vulnerabilities in your systems before attackers do with real-world simulation." },
   { icon: Lock, title: "Security Auditing", desc: "Comprehensive assessments of your security infrastructure, policies, and procedures." },
