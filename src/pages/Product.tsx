@@ -41,14 +41,33 @@ const Product = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.country || !form.describes || !form.protection || !form.phishingExp || !form.interest || !form.subscription || !form.features.length || !form.joinWaitlist || !form.consent) {
       toast.error("Please fill in all required fields.");
       return;
     }
-    // In production this would POST to an API
-    console.log("Waitlist submission:", form);
+    setLoading(true);
+    const { error } = await supabase.from("waitlist_submissions").insert({
+      full_name: form.name,
+      email: form.email,
+      country: form.country,
+      describes: form.describes,
+      protection: form.protection,
+      phishing_experience: form.phishingExp,
+      interest: form.interest,
+      subscription: form.subscription,
+      features: form.features,
+      join_waitlist: form.joinWaitlist,
+      consent: form.consent,
+    });
+    setLoading(false);
+    if (error) {
+      toast.error("Something went wrong. Please try again.");
+      return;
+    }
     setSubmitted(true);
     toast.success("You've been added to the waitlist!");
   };
