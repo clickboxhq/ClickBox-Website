@@ -6,50 +6,50 @@
 
 @layer base {
   :root {
-    --background: 220 20% 7%;
-    --foreground: 210 15% 90%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 92%;
 
-    --card: 220 18% 11%;
-    --card-foreground: 210 15% 90%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 92%;
 
-    --popover: 220 18% 11%;
-    --popover-foreground: 210 15% 90%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 92%;
 
-    --primary: 185 65% 42%;
-    --primary-foreground: 220 20% 7%;
+    --primary: 200 18% 46%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 15% 16%;
-    --secondary-foreground: 210 15% 85%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 80%;
 
-    --muted: 220 15% 16%;
-    --muted-foreground: 215 12% 55%;
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 50%;
 
-    --accent: 185 50% 30%;
-    --accent-foreground: 210 15% 90%;
+    --accent: 200 15% 35%;
+    --accent-foreground: 0 0% 92%;
 
     --destructive: 0 72% 51%;
-    --destructive-foreground: 210 15% 90%;
+    --destructive-foreground: 0 0% 92%;
 
-    --border: 220 15% 18%;
-    --input: 220 15% 18%;
-    --ring: 185 65% 42%;
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 200 18% 46%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 220 20% 7%;
-    --sidebar-foreground: 210 15% 90%;
-    --sidebar-primary: 185 65% 42%;
-    --sidebar-primary-foreground: 220 20% 7%;
-    --sidebar-accent: 220 15% 16%;
-    --sidebar-accent-foreground: 210 15% 90%;
-    --sidebar-border: 220 15% 18%;
-    --sidebar-ring: 185 65% 42%;
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 92%;
+    --sidebar-primary: 200 18% 46%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 92%;
+    --sidebar-border: 0 0% 16%;
+    --sidebar-ring: 200 18% 46%;
 
     --font-heading: 'Space Grotesk', sans-serif;
     --font-body: 'DM Sans', sans-serif;
 
-    --glow-primary: 0 0 40px hsl(185 65% 42% / 0.15);
-    --glow-strong: 0 0 60px hsl(185 65% 42% / 0.25);
+    --glow-primary: 0 0 40px hsl(200 18% 46% / 0.15);
+    --glow-strong: 0 0 60px hsl(200 18% 46% / 0.25);
   }
 }
 
@@ -71,7 +71,7 @@
 @layer utilities {
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(185 65% 50%), hsl(185 65% 35%));
+    background-image: linear-gradient(135deg, hsl(200 18% 56%), hsl(200 18% 40%));
   }
 
   .border-glow {
