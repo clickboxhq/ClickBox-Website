@@ -221,9 +221,10 @@ const Product = () => {
 
               <button
                 type="submit"
-                className="w-full rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
+                disabled={loading}
+                className="w-full rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90 disabled:opacity-50"
               >
-                Submit & Join Waitlist
+                {loading ? "Submitting..." : "Submit & Join Waitlist"}
               </button>
             </form>
           )}
