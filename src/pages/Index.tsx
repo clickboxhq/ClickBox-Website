@@ -67,15 +67,19 @@ const Index = () => {
             </p>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((s) => (
-              <div
+            {services.map((s, i) => (
+              <motion.div
                 key={s.title}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
                 className="group rounded-lg border border-border bg-card p-8 transition-all hover:border-primary/30 hover:border-glow"
               >
                 <s.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
                 <h3 className="font-heading text-lg font-semibold text-card-foreground">{s.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
