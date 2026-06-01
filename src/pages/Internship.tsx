@@ -286,7 +286,7 @@ const Internship = () => {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.08, ease: "easeOut" }}
+                transition={{ duration: 0.5, delay: i * 0.08, ease: "easeOut" as const }}
                 className="group flex flex-col rounded-lg border border-border bg-card p-8 transition-all hover:border-primary/30 hover:border-glow"
               >
                 <p.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
