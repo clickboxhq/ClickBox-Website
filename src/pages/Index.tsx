@@ -11,6 +11,7 @@ const services = [
   { icon: Shield, title: "ISO 27001 Guidance", desc: "Align your information security management system with international standards." },
   { icon: Search, title: "Penetration Testing", desc: "Identify vulnerabilities in your systems before attackers do with real-world simulation." },
   { icon: Lock, title: "Security Auditing", desc: "Comprehensive assessments of your security infrastructure, policies, and procedures." },
+  { icon: Activity, title: "SOC as a Service (SOCaaS)", desc: "24/7 security monitoring, threat detection, incident response support, and continuous visibility into your organization's security posture." },
 ];
 
 const Index = () => {
