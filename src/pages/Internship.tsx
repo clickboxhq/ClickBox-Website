@@ -148,7 +148,7 @@ const timeline = [
 const faqs = [
   {
     q: "Is this fellowship paid?",
-    a: "The fellowship is a career development program focused on practical experience, mentorship, and exposure. Compensation details are shared with selected candidates during onboarding.",
+    a: "The fellowship is a career development program focused on practical experience, mentorship, and exposure.",
   },
   {
     q: "Do I need certifications to apply?",
