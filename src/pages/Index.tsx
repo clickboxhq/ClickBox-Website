@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Shield, UserCheck, FileCheck, Search, BookOpen, Lock } from "lucide-react";
+import { Shield, UserCheck, FileCheck, Search, BookOpen, Lock, Activity } from "lucide-react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
