@@ -244,7 +244,7 @@ const Internship = () => {
                 Program Overview
               </p>
               <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-                A selective fellowship, not an internship.
+                Develop Practical Cybersecurity Skills Through Real-World Experience.
               </h2>
             </div>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
