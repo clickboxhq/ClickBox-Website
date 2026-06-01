@@ -8,6 +8,7 @@ import Product from "./pages/Product";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Team from "./pages/Team";
+import Internship from "./pages/Internship";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/product" element={<Product />} />
           <Route path="/team" element={<Team />} />
+          <Route path="/internship" element={<Internship />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="*" element={<NotFound />} />
