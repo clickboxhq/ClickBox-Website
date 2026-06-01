@@ -10,6 +10,7 @@ const navLinks = [
   { label: "Team", path: "/team" },
   { label: "Product", path: "/product" },
   { label: "Contact", path: "/contact" },
+  { label: "Fellowship", path: "/internship" },
 ];
 
 const Navbar = () => {
