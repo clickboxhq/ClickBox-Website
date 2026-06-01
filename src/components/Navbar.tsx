@@ -10,6 +10,7 @@ const navLinks = [
   { label: "Team", path: "/team" },
   { label: "Product", path: "/product" },
   { label: "Contact", path: "/contact" },
+  { label: "Fellowship", path: "/internship" },
 ];
 
 const Navbar = () => {
@@ -49,10 +50,10 @@ const Navbar = () => {
             </Link>
           ))}
           <Link
-            to="/product"
+            to="/internship"
             className="rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
           >
-            Join Waitlist
+            Fellowship
           </Link>
         </div>
 
@@ -79,11 +80,11 @@ const Navbar = () => {
             </Link>
           ))}
           <Link
-            to="/product"
+            to="/internship"
             onClick={() => setMobileOpen(false)}
             className="mt-3 block rounded-md bg-primary px-5 py-2.5 text-center text-sm font-semibold text-primary-foreground"
           >
-            Join Waitlist
+            Fellowship
           </Link>
         </div>
       )}

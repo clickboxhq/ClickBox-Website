@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Shield, UserCheck, FileCheck, Search, BookOpen, Lock } from "lucide-react";
+import { Shield, UserCheck, FileCheck, Search, BookOpen, Lock, Activity } from "lucide-react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -11,6 +11,7 @@ const services = [
   { icon: Shield, title: "ISO 27001 Guidance", desc: "Align your information security management system with international standards." },
   { icon: Search, title: "Penetration Testing", desc: "Identify vulnerabilities in your systems before attackers do with real-world simulation." },
   { icon: Lock, title: "Security Auditing", desc: "Comprehensive assessments of your security infrastructure, policies, and procedures." },
+  { icon: Activity, title: "SOC as a Service (SOCaaS)", desc: "24/7 security monitoring, threat detection, incident response support, and continuous visibility into your organization's security posture." },
 ];
 
 const Index = () => {
@@ -127,7 +128,7 @@ const Index = () => {
             <span className="text-gradient">Real-World Experience.</span>
           </h2>
           <p className="mt-4 text-muted-foreground leading-relaxed">
-            A highly selective fellowship — not an internship. 10 fellows. 5 specialized pathways.
+            A highly selective fellowship — 10 fellows. 5 specialized pathways.
             Applications open in June.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">

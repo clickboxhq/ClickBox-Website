@@ -1,27 +1,10 @@
-import { useState } from "react";
-import { Mail, MapPin, Send } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { toast } from "sonner";
+import TallyEmbed from "@/components/TallyEmbed";
+import { TALLY_FORMS } from "@/config/tally";
 
 const Contact = () => {
-  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
-  const [sending, setSending] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name || !form.email || !form.subject || !form.message) {
-      toast.error("Please fill in all fields.");
-      return;
-    }
-    setSending(true);
-    // mailto fallback
-    const mailto = `mailto:info@useclickbox.com?subject=${encodeURIComponent(form.subject)}&body=${encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`)}`;
-    window.open(mailto, "_blank");
-    setSending(false);
-    toast.success("Opening your email client...");
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -56,58 +39,22 @@ const Contact = () => {
                   </div>
                 </div>
               </div>
+
+              <p className="mt-12 text-xs text-muted-foreground">
+                Need support? Reach us directly at{" "}
+                <a href="mailto:info@useclickbox.com" className="text-primary hover:underline">
+                  info@useclickbox.com
+                </a>
+              </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5 rounded-lg border border-border bg-card p-8">
-              <div>
-                <label className="mb-2 block text-sm font-medium text-foreground">Full Name <span className="text-destructive">*</span></label>
-                <input
-                  type="text"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full rounded-md border border-input bg-secondary px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring"
-                  placeholder="John Doe"
-                />
-              </div>
-              <div>
-                <label className="mb-2 block text-sm font-medium text-foreground">Email <span className="text-destructive">*</span></label>
-                <input
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="w-full rounded-md border border-input bg-secondary px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring"
-                  placeholder="john@company.com"
-                />
-              </div>
-              <div>
-                <label className="mb-2 block text-sm font-medium text-foreground">Subject <span className="text-destructive">*</span></label>
-                <input
-                  type="text"
-                  value={form.subject}
-                  onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                  className="w-full rounded-md border border-input bg-secondary px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring"
-                  placeholder="Security Consultation"
-                />
-              </div>
-              <div>
-                <label className="mb-2 block text-sm font-medium text-foreground">Message <span className="text-destructive">*</span></label>
-                <textarea
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  rows={5}
-                  className="w-full rounded-md border border-input bg-secondary px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring resize-none"
-                  placeholder="Tell us about your security needs..."
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={sending}
-                className="flex w-full items-center justify-center gap-2 rounded-md bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90 disabled:opacity-50"
-              >
-                <Send className="h-4 w-4" />
-                Send Message
-              </button>
-            </form>
+            <TallyEmbed
+              url={TALLY_FORMS.contact ?? undefined}
+              title="ClickBox Contact Form"
+              formName="Contact Form"
+              minHeight={780}
+              placeholderHint="Required fields: Name, Email, Company, Phone Number, Subject, Message."
+            />
           </div>
         </div>
       </section>

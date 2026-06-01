@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import TallyEmbed from "@/components/TallyEmbed";
+import { TALLY_FORMS } from "@/config/tally";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -148,7 +150,7 @@ const timeline = [
 const faqs = [
   {
     q: "Is this fellowship paid?",
-    a: "The fellowship is a career development program focused on practical experience, mentorship, and exposure. Compensation details are shared with selected candidates during onboarding.",
+    a: "The fellowship is a career development program focused on practical experience, mentorship, and exposure.",
   },
   {
     q: "Do I need certifications to apply?",
@@ -244,7 +246,7 @@ const Internship = () => {
                 Program Overview
               </p>
               <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-                A selective fellowship, not an internship.
+                Develop Practical Cybersecurity Skills Through Real-World Experience.
               </h2>
             </div>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
@@ -571,125 +573,18 @@ const Internship = () => {
             </p>
           </motion.div>
 
-          <motion.form
-            {...fadeUp}
-            className="mt-12 grid gap-5 rounded-lg border border-border bg-card p-8 md:grid-cols-2"
-            onSubmit={(e) => {
-              e.preventDefault();
-              window.location.href = "mailto:info@useclickbox.com?subject=ClickBox Cybersecurity Fellowship Application";
-            }}
-          >
-            <div className="md:col-span-2">
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Full Name
-              </label>
-              <input
-                required
-                type="text"
-                className="mt-2 w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
-                placeholder="Your full name"
-              />
-            </div>
-            <div>
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Email Address
-              </label>
-              <input
-                required
-                type="email"
-                className="mt-2 w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
-                placeholder="you@example.com"
-              />
-            </div>
-            <div>
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                LinkedIn Profile
-              </label>
-              <input
-                type="url"
-                className="mt-2 w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
-                placeholder="https://linkedin.com/in/..."
-              />
-            </div>
-            <div>
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Resume (link)
-              </label>
-              <input
-                type="url"
-                className="mt-2 w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
-                placeholder="Link to your resume"
-              />
-            </div>
-            <div>
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Preferred Pathway
-              </label>
-              <select
-                required
-                className="mt-2 w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground focus:border-primary focus:outline-none"
-              >
-                <option value="">Select a pathway</option>
-                {pathways.map((p) => (
-                  <option key={p.title}>{p.title}</option>
-                ))}
-              </select>
-            </div>
-            <div className="md:col-span-2">
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Certifications
-              </label>
-              <input
-                type="text"
-                className="mt-2 w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
-                placeholder="e.g. Security+, Google Cybersecurity Certificate"
-              />
-            </div>
-            <div className="md:col-span-2">
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Why do you want to join?
-              </label>
-              <textarea
-                required
-                rows={4}
-                maxLength={1000}
-                className="mt-2 w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
-                placeholder="Tell us about your goals and why this fellowship is right for you"
-              />
-            </div>
-            <div className="md:col-span-2">
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Relevant Experience
-              </label>
-              <textarea
-                rows={3}
-                maxLength={1000}
-                className="mt-2 w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
-                placeholder="Projects, labs, internships, or self-study"
-              />
-            </div>
-            <div className="md:col-span-2">
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Portfolio / GitHub Link
-              </label>
-              <input
-                type="url"
-                className="mt-2 w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
-                placeholder="https://github.com/..."
-              />
-            </div>
-            <div className="md:col-span-2 flex justify-end">
-              <button
-                type="submit"
-                className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
-              >
-                Submit Application <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-          </motion.form>
+          <motion.div {...fadeUp} className="mt-12">
+            <TallyEmbed
+              url={TALLY_FORMS.fellowship ?? undefined}
+              title="ClickBox Cybersecurity Fellowship Application"
+              formName="Fellowship Application"
+              minHeight={900}
+              placeholderHint="Required fields: Full Name, Email, LinkedIn, Resume (optional), Preferred Pathway, Certifications (Optional Links — Credly, ISC2, CompTIA, Cisco, Google, other verification links), Why you want to join, Relevant Experience, Portfolio / GitHub."
+            />
+          </motion.div>
 
           <p className="mt-6 text-center text-xs text-muted-foreground">
-            Prefer email? Reach us directly at{" "}
+            Need support? Reach us directly at{" "}
             <a href="mailto:info@useclickbox.com" className="text-primary hover:underline">
               info@useclickbox.com
             </a>
