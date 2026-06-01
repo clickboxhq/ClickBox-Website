@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Mail, MapPin, Send } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { toast } from "sonner";
+import TallyEmbed from "@/components/TallyEmbed";
+import { TALLY_FORMS } from "@/config/tally";
 
 const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
