@@ -50,10 +50,10 @@ const Navbar = () => {
             </Link>
           ))}
           <Link
-            to="/product"
+            to="/internship"
             className="rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
           >
-            Join Waitlist
+            Fellowship
           </Link>
         </div>
 
