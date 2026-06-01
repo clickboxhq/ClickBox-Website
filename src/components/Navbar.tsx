@@ -80,11 +80,11 @@ const Navbar = () => {
             </Link>
           ))}
           <Link
-            to="/product"
+            to="/internship"
             onClick={() => setMobileOpen(false)}
             className="mt-3 block rounded-md bg-primary px-5 py-2.5 text-center text-sm font-semibold text-primary-foreground"
           >
-            Join Waitlist
+            Fellowship
           </Link>
         </div>
       )}
