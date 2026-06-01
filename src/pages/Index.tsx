@@ -128,7 +128,7 @@ const Index = () => {
             <span className="text-gradient">Real-World Experience.</span>
           </h2>
           <p className="mt-4 text-muted-foreground leading-relaxed">
-            A highly selective fellowship — not an internship. 10 fellows. 5 specialized pathways.
+            A highly selective fellowship — 10 fellows. 5 specialized pathways.
             Applications open in June.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
