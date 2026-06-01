@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import TallyEmbed from "@/components/TallyEmbed";
+import { TALLY_FORMS } from "@/config/tally";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
