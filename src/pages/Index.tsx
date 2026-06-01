@@ -114,21 +114,34 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="section-padding border-t border-border">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-            Ready to Strengthen Your Security?
+      {/* Fellowship CTA */}
+      <section className="section-padding border-t border-border relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.10),transparent_60%)]" />
+        <div className="mx-auto max-w-4xl text-center relative">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-medium text-primary">
+            <Shield className="h-3.5 w-3.5" />
+            ClickBox Cybersecurity Fellowship · Cohort 2026
+          </div>
+          <h2 className="font-heading text-3xl font-bold text-foreground md:text-5xl">
+            Launch Your Cybersecurity Career With{" "}
+            <span className="text-gradient">Real-World Experience.</span>
           </h2>
           <p className="mt-4 text-muted-foreground leading-relaxed">
-            Whether you need a security audit, compliance guidance, or want early access to our AI-powered phishing detection tool — we're here to help.
+            A highly selective fellowship — not an internship. 10 fellows. 5 specialized pathways.
+            Applications open in June.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
-              to="/product"
+              to="/internship"
               className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
             >
-              Join the Waitlist
+              Apply to the Fellowship
+            </Link>
+            <Link
+              to="/internship"
+              className="rounded-md border border-border bg-secondary px-6 py-3 text-sm font-semibold text-secondary-foreground transition-all hover:bg-muted"
+            >
+              Learn More
             </Link>
           </div>
         </div>
