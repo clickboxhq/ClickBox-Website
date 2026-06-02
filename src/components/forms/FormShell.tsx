@@ -32,13 +32,14 @@ export const FormShell = ({
     const res = await onSubmit(fd);
     setSubmitting(false);
 
-    if (res.ok) {
+    if (res.ok === true) {
       setSubmitted(true);
       toast.success(successTitle, { description: successMessage });
       (e.target as HTMLFormElement).reset();
     } else {
       toast.error("Submission failed", { description: res.message });
     }
+
 
   };
 
