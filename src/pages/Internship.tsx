@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Shield,
   Eye,
@@ -18,11 +19,19 @@ import {
   Calendar,
   Trophy,
   ClipboardList,
+  ChevronDown,
+  Layers,
+  Compass,
+  Rocket,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import TallyEmbed from "@/components/TallyEmbed";
-import { TALLY_FORMS } from "@/config/tally";
+import {
+  FormShell,
+  Label,
+  fieldClass,
+  submitFellowship,
+} from "@/components/forms/FormShell";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -45,7 +54,7 @@ const pathways = [
     title: "Security Engineering",
     overview:
       "Security architecture, cloud security fundamentals, automation, security tooling, and defensive engineering practices.",
-    skills: ["Cloud security", "Security automation", "Infrastructure hardening", "Tooling"],
+    skills: ["Cloud security", "Security automation", "Infrastructure hardening", "Security tooling"],
     outcomes: ["Security Engineer", "Cloud Security Engineer", "DevSecOps Engineer"],
   },
   {
@@ -53,7 +62,7 @@ const pathways = [
     title: "Penetration Testing",
     overview:
       "Reconnaissance, vulnerability discovery, web application testing, reporting, and offensive security methodologies.",
-    skills: ["Recon & enumeration", "Web app testing", "Exploitation basics", "Reporting"],
+    skills: ["Recon & enumeration", "Web app testing", "Exploitation fundamentals", "Security reporting"],
     outcomes: ["Junior Penetration Tester", "Application Security Tester", "Red Team Analyst"],
   },
   {
@@ -69,7 +78,7 @@ const pathways = [
     title: "Governance, Risk & Compliance",
     overview:
       "Risk management, security frameworks, auditing, compliance requirements, security policies, and regulatory obligations.",
-    skills: ["ISO 27001", "Risk assessment", "Policy writing", "Audit support"],
+    skills: ["ISO 27001", "Risk assessment", "Policy development", "Audit support"],
     outcomes: ["GRC Analyst", "Compliance Analyst", "Security Auditor"],
   },
 ];
@@ -84,14 +93,6 @@ const benefits = [
   { icon: Sparkles, label: "Technical workshops" },
   { icon: Award, label: "Completion certificate" },
   { icon: Trophy, label: "Future opportunities with ClickBox" },
-];
-
-const audience = [
-  "Students and recent graduates",
-  "Career switchers transitioning into cybersecurity",
-  "Self-taught cybersecurity enthusiasts",
-  "Early-career IT professionals",
-  "Individuals passionate about information security",
 ];
 
 const requiredEligibility = [
@@ -123,60 +124,133 @@ const selectionStages = [
 ];
 
 const timeline = [
+  { month: "June", items: ["Applications open", "Assessment phase", "Candidate review", "Interviews", "Final selection"] },
+  { month: "July", items: ["Fellowship onboarding", "Program kickoff"] },
+  { month: "July – September", items: ["Hands-on projects", "Mentorship sessions", "Practical security exercises", "Technical workshops", "Career development sessions"] },
+  { month: "September", items: ["Program completion", "Fellowship certification", "Alumni network access"] },
+];
+
+// Learning Journey — Phase 1 weeks
+const phase1Weeks = [
   {
-    month: "June",
-    items: ["Applications open", "Assessment phase", "Candidate review", "Interviews", "Final selection"],
+    n: "Week 1",
+    title: "Fellowship Onboarding & Cybersecurity Foundations",
+    activities: ["Program Orientation", "Meet the ClickBox Team", "Professional Development Session", "Cybersecurity Foundations", "Networking Session"],
+    focus: ["Security Fundamentals", "Cyber Threat Landscape", "Cybersecurity Career Paths", "Professional Communication"],
   },
   {
-    month: "July",
-    items: ["Fellowship onboarding", "Program kickoff"],
+    n: "Week 2",
+    title: "Security Operations & Threat Monitoring",
+    activities: ["Security Monitoring", "Alert Investigation", "Log Analysis", "Incident Escalation"],
+    focus: ["SIEM Fundamentals", "Event Monitoring", "Threat Detection", "SOC Operations"],
   },
   {
-    month: "July – September",
-    items: [
-      "Hands-on projects",
-      "Mentorship sessions",
-      "Practical security exercises",
-      "Technical workshops",
-      "Career development sessions",
-    ],
+    n: "Week 3",
+    title: "Governance, Risk & Compliance",
+    activities: ["Risk Assessments", "Compliance Fundamentals", "Security Auditing", "Security Policies"],
+    focus: ["Governance", "Risk Management", "ISO 27001 Concepts", "Compliance"],
   },
   {
-    month: "September",
-    items: ["Program completion", "Fellowship certification", "Alumni network access"],
+    n: "Week 4",
+    title: "Vulnerability Management & Security Testing",
+    activities: ["Vulnerability Identification", "Risk Prioritization", "Vulnerability Scanning", "Security Reporting"],
+    focus: ["Vulnerability Management", "Risk Analysis", "Security Assessments", "Remediation Planning"],
+  },
+  {
+    n: "Week 5",
+    title: "Penetration Testing Fundamentals",
+    activities: ["Reconnaissance", "Enumeration", "Web Application Testing", "OWASP Top 10"],
+    focus: ["Offensive Security", "Web Security", "Application Security", "Security Reporting"],
+  },
+  {
+    n: "Week 6",
+    title: "Security Engineering & Cloud Security",
+    activities: ["Cloud Security Fundamentals", "Identity & Access Management", "Security Automation", "Infrastructure Security"],
+    focus: ["Security Engineering", "Cloud Security", "IAM", "Security Architecture"],
   },
 ];
 
-const faqs = [
-  {
-    q: "Is this fellowship paid?",
-    a: "The fellowship is a career development program focused on practical experience, mentorship, and exposure.",
-  },
-  {
-    q: "Do I need certifications to apply?",
-    a: "No. Certifications are not required, but credentials such as Security+, ISC2 CC, or the Google Cybersecurity Certificate are considered an advantage.",
-  },
-  {
-    q: "Can students apply?",
-    a: "Yes. Students, recent graduates, career switchers, and self-taught learners are all encouraged to apply.",
-  },
-  {
-    q: "Is prior experience required?",
-    a: "Foundational cybersecurity knowledge is expected, but professional experience is not required. Curiosity and commitment matter most.",
-  },
-  {
-    q: "How many fellows are selected?",
-    a: "Only 10 fellows are selected per cohort through a competitive selection process.",
-  },
-  {
-    q: "How long is the program?",
-    a: "The fellowship runs from July through September, with applications and selection taking place in June.",
-  },
-  {
-    q: "Will I receive a certificate?",
-    a: "Yes. Fellows who successfully complete the program receive an official ClickBox Cybersecurity Fellowship certificate and join the alumni network.",
-  },
+const fellowshipOutcomes = [
+  "Practical cybersecurity project experience",
+  "Exposure to real-world security workflows",
+  "Industry mentorship and coaching",
+  "Portfolio-ready project work",
+  "Technical workshops and learning sessions",
+  "Professional networking opportunities",
+  "Fellowship Completion Certificate",
+  "Access to the ClickBox Fellowship Alumni Network",
+  "Priority consideration for future opportunities within ClickBox",
 ];
+
+const faqs = [
+  { q: "Is this fellowship paid?", a: "The fellowship is a career development program focused on practical experience, mentorship, and exposure." },
+  { q: "Do I need certifications to apply?", a: "No. Certifications are not required, but credentials such as Security+, ISC2 CC, or the Google Cybersecurity Certificate are considered an advantage." },
+  { q: "Can students apply?", a: "Yes. Students, recent graduates, career switchers, and self-taught learners are all encouraged to apply." },
+  { q: "Is prior experience required?", a: "Foundational cybersecurity knowledge is expected, but professional experience is not required. Curiosity and commitment matter most." },
+  { q: "How many fellows are selected?", a: "Only 10 fellows are selected per cohort through a competitive selection process." },
+  { q: "How long is the program?", a: "The fellowship runs from July through September, with applications and selection taking place in June." },
+  { q: "Will I receive a certificate?", a: "Yes. Fellows who successfully complete the program receive an official ClickBox Cybersecurity Fellowship certificate and join the alumni network." },
+];
+
+const WeekCard = ({ w, i }: { w: typeof phase1Weeks[number]; i: number }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.4, delay: i * 0.05 }}
+      className="glass-card overflow-hidden"
+    >
+      <button onClick={() => setOpen(!open)} className="w-full text-left px-6 py-5 flex items-center gap-5">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20 font-heading text-xs font-bold text-primary">
+          {String(i + 1).padStart(2, "0")}
+        </span>
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">{w.n}</p>
+          <h4 className="mt-1 font-heading text-base font-semibold text-foreground">{w.title}</h4>
+        </div>
+        <ChevronDown className={`h-5 w-5 shrink-0 text-primary transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <div className="grid gap-6 border-t border-white/5 px-6 py-5 sm:grid-cols-2">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-primary mb-2">Activities</p>
+                <ul className="space-y-1.5 text-sm text-muted-foreground">
+                  {w.activities.map((a) => (
+                    <li key={a} className="flex items-start gap-2">
+                      <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                      <span>{a}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-primary mb-2">Focus Areas</p>
+                <ul className="space-y-1.5 text-sm text-muted-foreground">
+                  {w.focus.map((f) => (
+                    <li key={f} className="flex items-start gap-2">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
 
 const Internship = () => {
   return (
@@ -188,7 +262,7 @@ const Internship = () => {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.12),transparent_60%)]" />
         <div className="mx-auto max-w-7xl relative">
           <motion.div {...fadeUp} className="max-w-4xl">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-medium text-primary">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-medium text-primary backdrop-blur">
               <Shield className="h-3.5 w-3.5" />
               ClickBox Cybersecurity Fellowship · Cohort 2026
             </div>
@@ -202,16 +276,10 @@ const Internship = () => {
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
-              <a
-                href="#apply"
-                className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
-              >
+              <a href="#apply" className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90">
                 Apply Now <ArrowRight className="h-4 w-4" />
               </a>
-              <a
-                href="#overview"
-                className="rounded-md border border-border bg-secondary px-6 py-3 text-sm font-semibold text-secondary-foreground transition-all hover:bg-muted"
-              >
+              <a href="#overview" className="rounded-md border border-white/10 bg-secondary/80 px-6 py-3 text-sm font-semibold text-secondary-foreground backdrop-blur transition-all hover:bg-muted">
                 Learn More
               </a>
             </div>
@@ -224,10 +292,7 @@ const Internship = () => {
                 { value: "5", label: "Career pathways" },
                 { value: "Competitive", label: "Selection process" },
               ].map((s) => (
-                <div
-                  key={s.label}
-                  className="rounded-lg border border-border bg-card p-5 text-center"
-                >
+                <div key={s.label} className="glass-card p-5 text-center">
                   <p className="font-heading text-lg font-bold text-primary">{s.value}</p>
                   <p className="mt-1 text-xs text-muted-foreground">{s.label}</p>
                 </div>
@@ -238,70 +303,104 @@ const Internship = () => {
       </section>
 
       {/* Overview */}
-      <section id="overview" className="section-padding border-t border-border">
+      <section id="overview" className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
           <motion.div {...fadeUp} className="grid gap-12 lg:grid-cols-2">
             <div>
-              <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-                Program Overview
-              </p>
+              <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Program Overview</p>
               <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
                 Develop Practical Cybersecurity Skills Through Real-World Experience.
               </h2>
             </div>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
-              <p>
-                The ClickBox Cybersecurity Fellowship is a highly selective, hands-on career
-                development program designed for aspiring cybersecurity professionals seeking
-                practical experience, mentorship, and exposure to real-world security operations.
-              </p>
-              <p>
-                Unlike traditional training programs that focus solely on theory, the fellowship
-                provides participants with opportunities to work on practical projects, industry-
-                relevant scenarios, and collaborative security initiatives that reflect modern
-                cybersecurity environments.
-              </p>
-              <p>
-                Our mission is to help bridge the cybersecurity skills gap by developing the next
-                generation of cybersecurity professionals across Africa.
-              </p>
+              <p>The ClickBox Cybersecurity Fellowship is a highly selective, hands-on career development program designed for aspiring cybersecurity professionals seeking practical experience, mentorship, and exposure to real-world security operations.</p>
+              <p>Unlike traditional training programs that focus solely on theory, the fellowship provides participants with opportunities to work on practical projects, industry-relevant scenarios, and collaborative security initiatives that reflect modern cybersecurity environments.</p>
+              <p>Our mission is to help bridge the cybersecurity skills gap by developing the next generation of cybersecurity professionals.</p>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Pathways */}
-      <section id="pathways" className="section-padding border-t border-border">
+      {/* Fellowship Learning Journey */}
+      <section className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-16 max-w-2xl">
+          <motion.div {...fadeUp} className="mb-12 max-w-3xl">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-              Fellowship Tracks
+              Fellowship Learning Journey
             </p>
-            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-              Five specialized cybersecurity pathways.
+            <h2 className="font-heading text-3xl font-bold text-foreground md:text-5xl">
+              12-Week Fellowship Experience
             </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              From foundational cybersecurity concepts to practical project experience, the
+              fellowship is designed to help participants build job-relevant skills while gaining
+              exposure to multiple cybersecurity disciplines and real-world security operations.
+            </p>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              The fellowship combines structured technical learning, mentorship, practical
+              exercises, collaborative projects, and career development activities designed around
+              modern cybersecurity career pathways.
+            </p>
+          </motion.div>
+
+          {/* Phase pills */}
+          <div className="mb-10 grid gap-4 md:grid-cols-3">
+            {[
+              { icon: Layers, label: "Phase 1", title: "Foundation & Technical Development", weeks: "Weeks 1–6" },
+              { icon: Compass, label: "Phase 2", title: "Career Pathway Specialization", weeks: "Weeks 7–10" },
+              { icon: Rocket, label: "Phase 3", title: "Practical Experience & Capstone", weeks: "Weeks 11–12" },
+            ].map((p) => (
+              <div key={p.label} className="glass-card p-6">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20">
+                    <p.icon className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">{p.label}</p>
+                    <p className="text-xs text-muted-foreground">{p.weeks}</p>
+                  </div>
+                </div>
+                <p className="mt-4 font-heading text-sm font-semibold text-foreground">{p.title}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Phase 1 timeline */}
+          <div className="mb-6">
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary">Phase 1 · Weeks 1–6</p>
+            <h3 className="mt-2 font-heading text-2xl font-bold text-foreground">Foundation & Technical Development</h3>
+          </div>
+          <div className="space-y-3">
+            {phase1Weeks.map((w, i) => (
+              <WeekCard key={w.n} w={w} i={i} />
+            ))}
+          </div>
+
+          {/* Phase 2 */}
+          <div className="mt-16 mb-6">
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary">Phase 2 · Weeks 7–10</p>
+            <h3 className="mt-2 font-heading text-2xl font-bold text-foreground">Career Pathway Specialization</h3>
+            <p className="mt-3 max-w-3xl text-muted-foreground leading-relaxed">
+              Participants focus on their selected cybersecurity pathway through practical
+              assignments, mentorship, simulations, and guided learning.
+            </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {pathways.map((p, i) => (
               <motion.div
                 key={p.title}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.08, ease: "easeOut" as const }}
-                className="group flex flex-col rounded-lg border border-border bg-card p-8 transition-all hover:border-primary/30 hover:border-glow"
+                transition={{ duration: 0.5, delay: i * 0.07 }}
+                className="glass-card flex flex-col p-8"
               >
                 <p.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
-                <h3 className="font-heading text-lg font-semibold text-card-foreground">
-                  {p.title}
-                </h3>
+                <h4 className="font-heading text-lg font-semibold text-foreground">{p.title}</h4>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.overview}</p>
-
-                <div className="mt-6 space-y-4 text-sm">
+                <div className="mt-5 space-y-4 text-sm">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-                      Skills Learned
-                    </p>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">Skills Learned</p>
                     <ul className="mt-2 space-y-1 text-muted-foreground">
                       {p.skills.map((s) => (
                         <li key={s} className="flex items-start gap-2">
@@ -312,9 +411,7 @@ const Internship = () => {
                     </ul>
                   </div>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-                      Career Outcomes
-                    </p>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">Career Outcomes</p>
                     <ul className="mt-2 space-y-1 text-muted-foreground">
                       {p.outcomes.map((o) => (
                         <li key={o} className="flex items-start gap-2">
@@ -328,16 +425,88 @@ const Internship = () => {
               </motion.div>
             ))}
           </div>
+
+          {/* Phase 3 */}
+          <div className="mt-16 mb-6">
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary">Phase 3 · Weeks 11–12</p>
+            <h3 className="mt-2 font-heading text-2xl font-bold text-foreground">Practical Experience & Capstone</h3>
+            <p className="mt-3 max-w-3xl text-muted-foreground leading-relaxed">
+              Participants apply their learning through collaborative projects, simulations,
+              practical exercises, and real-world cybersecurity scenarios.
+            </p>
+          </div>
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="glass-card p-8">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">Activities</p>
+              <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                {["Security Projects", "Team Collaboration", "Security Exercises", "Technical Presentations", "Career Development Sessions"].map((a) => (
+                  <li key={a} className="flex items-start gap-2">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    <span>{a}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="glass-card p-8">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">Capstone Project</p>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                Each fellow completes and presents a cybersecurity project aligned with their
+                selected pathway. The capstone demonstrates practical skills, critical thinking,
+                technical communication, and professional development gained throughout the
+                fellowship.
+              </p>
+            </div>
+          </div>
+
+          {/* Fellowship Outcomes */}
+          <div className="mt-16 mb-6">
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary">Fellowship Outcomes</p>
+            <h3 className="mt-2 font-heading text-2xl font-bold text-foreground">What you'll walk away with.</h3>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {fellowshipOutcomes.map((o) => (
+              <div key={o} className="glass-card flex items-start gap-3 p-5 text-sm text-muted-foreground">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                <span>{o}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pathways (overview) */}
+      <section id="pathways" className="section-padding border-t border-white/5">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 max-w-2xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Fellowship Tracks</p>
+            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+              Five specialized cybersecurity pathways.
+            </h2>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {pathways.map((p, i) => (
+              <motion.div
+                key={p.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: i * 0.07 }}
+                className="glass-card p-8"
+              >
+                <p.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
+                <h3 className="font-heading text-lg font-semibold text-foreground">{p.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.overview}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Benefits */}
-      <section className="section-padding border-t border-border">
+      <section className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-16 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-              Program Benefits
-            </p>
+          <div className="mb-12 max-w-2xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Program Benefits</p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
               What you'll get as a ClickBox Fellow.
             </h2>
@@ -350,71 +519,28 @@ const Internship = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="flex items-center gap-4 rounded-lg border border-border bg-card p-5 transition-all hover:border-primary/30"
+                className="glass-card flex items-center gap-4 p-5"
               >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20">
                   <b.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
                 </div>
-                <p className="text-sm font-medium text-card-foreground">{b.label}</p>
+                <p className="text-sm font-medium text-foreground">{b.label}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Who Should Apply */}
-      <section className="section-padding border-t border-border">
-        <div className="mx-auto max-w-7xl grid gap-12 lg:grid-cols-2">
-          <motion.div {...fadeUp}>
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-              Who Should Apply
-            </p>
-            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-              Built for those serious about cybersecurity.
-            </h2>
-            <p className="mt-6 text-muted-foreground leading-relaxed">
-              We welcome applications from:
-            </p>
-            <ul className="mt-4 space-y-2">
-              {audience.map((a) => (
-                <li key={a} className="flex items-start gap-3 text-muted-foreground">
-                  <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-primary" />
-                  <span>{a}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-          <motion.div {...fadeUp} className="space-y-4 rounded-lg border border-border bg-card p-8">
-            <p className="text-muted-foreground leading-relaxed">
-              Applicants should have completed foundational cybersecurity learning such as
-              Introduction to Cybersecurity, Security Fundamentals, or equivalent self-study.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              Candidates should possess a basic understanding of cybersecurity concepts, networking
-              fundamentals, and common cyber threats.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              Above all, we are looking for candidates who demonstrate curiosity, commitment,
-              professionalism, accountability, and a strong willingness to learn.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Eligibility */}
-      <section className="section-padding border-t border-border">
+      <section className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-16 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-              Eligibility Requirements
-            </p>
-            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-              Minimum eligibility.
-            </h2>
+          <div className="mb-12 max-w-2xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Eligibility Requirements</p>
+            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">Minimum eligibility.</h2>
           </div>
           <div className="grid gap-6 lg:grid-cols-2">
-            <motion.div {...fadeUp} className="rounded-lg border border-border bg-card p-8">
-              <h3 className="font-heading text-lg font-semibold text-card-foreground">Required</h3>
+            <motion.div {...fadeUp} className="glass-card p-8">
+              <h3 className="font-heading text-lg font-semibold text-foreground">Required</h3>
               <ul className="mt-4 space-y-2">
                 {requiredEligibility.map((r) => (
                   <li key={r} className="flex items-start gap-3 text-sm text-muted-foreground">
@@ -424,10 +550,8 @@ const Internship = () => {
                 ))}
               </ul>
             </motion.div>
-            <motion.div {...fadeUp} className="rounded-lg border border-border bg-card p-8">
-              <h3 className="font-heading text-lg font-semibold text-card-foreground">
-                Preferred (Not Required)
-              </h3>
+            <motion.div {...fadeUp} className="glass-card p-8">
+              <h3 className="font-heading text-lg font-semibold text-foreground">Preferred (Not Required)</h3>
               <ul className="mt-4 space-y-2">
                 {preferredEligibility.map((r) => (
                   <li key={r} className="flex items-start gap-3 text-sm text-muted-foreground">
@@ -441,59 +565,12 @@ const Internship = () => {
         </div>
       </section>
 
-      {/* Selection Process */}
-      <section className="section-padding border-t border-border">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-16 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-              Selection Process
-            </p>
-            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-              Six competitive stages.
-            </h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
-              Only the top candidates advance through each stage — and only 10 fellows are selected.
-            </p>
-          </div>
-
-          <ol className="relative grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {selectionStages.map((s, i) => (
-              <motion.li
-                key={s.stage}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="rounded-lg border border-border bg-card p-6"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/40 bg-primary/10 font-heading text-sm font-bold text-primary">
-                    {i + 1}
-                  </span>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-                    {s.month}
-                  </p>
-                </div>
-                <h3 className="mt-4 font-heading text-base font-semibold text-card-foreground">
-                  {s.stage}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.detail}</p>
-              </motion.li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
       {/* Timeline */}
-      <section className="section-padding border-t border-border">
+      <section className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-16 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-              Program Timeline
-            </p>
-            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-              From application to alumni.
-            </h2>
+          <div className="mb-12 max-w-2xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Program Timeline</p>
+            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">From application to alumni.</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {timeline.map((t, i) => (
@@ -503,7 +580,7 @@ const Internship = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="rounded-lg border border-border bg-card p-6"
+                className="glass-card p-6"
               >
                 <div className="flex items-center gap-2 text-primary">
                   <Calendar className="h-4 w-4" />
@@ -523,13 +600,130 @@ const Internship = () => {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="section-padding border-t border-border">
-        <div className="mx-auto max-w-4xl">
-          <div className="mb-16">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-              FAQ
+      {/* Selection Process */}
+      <section className="section-padding border-t border-white/5">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 max-w-2xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Selection Process</p>
+            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">Six competitive stages.</h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              Only the top candidates advance through each stage — and only 10 fellows are selected.
             </p>
+          </div>
+          <ol className="relative grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {selectionStages.map((s, i) => (
+              <motion.li
+                key={s.stage}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+                className="glass-card p-6"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/40 bg-primary/10 font-heading text-sm font-bold text-primary">
+                    {i + 1}
+                  </span>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-primary">{s.month}</p>
+                </div>
+                <h3 className="mt-4 font-heading text-base font-semibold text-foreground">{s.stage}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.detail}</p>
+              </motion.li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* Apply — moved ABOVE FAQ */}
+      <section id="apply" className="section-padding border-t border-white/5">
+        <div className="mx-auto max-w-4xl">
+          <motion.div {...fadeUp} className="text-center">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Apply Now</p>
+            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+              Begin your cybersecurity journey with ClickBox.
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              Applications are reviewed competitively and spaces are limited. Only 10 fellows will be
+              selected for each cohort.
+            </p>
+          </motion.div>
+
+          <motion.div {...fadeUp} className="mt-12">
+            <FormShell
+              onSubmit={submitFellowship}
+              successTitle="Application submitted"
+              successMessage="Thanks for applying — we'll review your submission and follow up by email."
+            >
+              {() => (
+                <>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <Label required>Full Name</Label>
+                      <input name="full_name" required maxLength={120} className={fieldClass} />
+                    </div>
+                    <div>
+                      <Label required>Email</Label>
+                      <input type="email" name="email" required maxLength={255} className={fieldClass} />
+                    </div>
+                  </div>
+                  <div>
+                    <Label required>LinkedIn Profile</Label>
+                    <input type="url" name="linkedin" required placeholder="https://linkedin.com/in/..." className={fieldClass} />
+                  </div>
+                  <div>
+                    <Label>Resume URL (optional)</Label>
+                    <input type="url" name="resume_url" placeholder="Drive, Dropbox, or personal site link" className={fieldClass} />
+                  </div>
+                  <div>
+                    <Label required>Preferred Career Pathway</Label>
+                    <select name="preferred_pathway" required className={fieldClass}>
+                      <option value="">Select a pathway…</option>
+                      <option>SOC Analyst</option>
+                      <option>Security Engineering</option>
+                      <option>Penetration Testing</option>
+                      <option>Vulnerability Management</option>
+                      <option>Governance, Risk & Compliance</option>
+                    </select>
+                  </div>
+                  <div>
+                    <Label>Certifications</Label>
+                    <input name="certifications" placeholder="e.g. Security+, ISC2 CC, Google Cybersecurity" className={fieldClass} />
+                  </div>
+                  <div>
+                    <Label>Certification Links</Label>
+                    <textarea name="certification_links" rows={2} placeholder="Credly / verification URLs, one per line" className={fieldClass} />
+                  </div>
+                  <div>
+                    <Label>Relevant Experience</Label>
+                    <textarea name="relevant_experience" rows={3} maxLength={1500} className={fieldClass} />
+                  </div>
+                  <div>
+                    <Label required>Why do you want to join?</Label>
+                    <textarea name="motivation" required rows={4} maxLength={1500} className={fieldClass} />
+                  </div>
+                  <div>
+                    <Label>Portfolio / GitHub Link</Label>
+                    <input type="url" name="portfolio" placeholder="https://github.com/..." className={fieldClass} />
+                  </div>
+                </>
+              )}
+            </FormShell>
+          </motion.div>
+
+          <p className="mt-6 text-center text-xs text-muted-foreground">
+            Need support? Reach us directly at{" "}
+            <a href="mailto:info@useclickbox.com" className="text-primary hover:underline">
+              info@useclickbox.com
+            </a>
+          </p>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="section-padding border-t border-white/5">
+        <div className="mx-auto max-w-4xl">
+          <div className="mb-12">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">FAQ</p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
               Frequently asked questions.
             </h2>
@@ -542,53 +736,16 @@ const Internship = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.3, delay: i * 0.04 }}
-                className="group rounded-lg border border-border bg-card p-6 [&_summary::-webkit-details-marker]:hidden"
+                className="group glass-card p-6 [&_summary::-webkit-details-marker]:hidden"
               >
                 <summary className="flex cursor-pointer items-center justify-between gap-4">
-                  <span className="font-heading text-base font-semibold text-card-foreground">
-                    {f.q}
-                  </span>
+                  <span className="font-heading text-base font-semibold text-foreground">{f.q}</span>
                   <ArrowRight className="h-4 w-4 shrink-0 text-primary transition-transform group-open:rotate-90" />
                 </summary>
                 <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
               </motion.details>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Apply */}
-      <section id="apply" className="section-padding border-t border-border">
-        <div className="mx-auto max-w-4xl">
-          <motion.div {...fadeUp} className="text-center">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-              Apply Now
-            </p>
-            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-              Begin your cybersecurity journey with ClickBox.
-            </h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
-              Applications are reviewed competitively and spaces are limited. Only 10 fellows will be
-              selected for each cohort.
-            </p>
-          </motion.div>
-
-          <motion.div {...fadeUp} className="mt-12">
-            <TallyEmbed
-              url={TALLY_FORMS.fellowship ?? undefined}
-              title="ClickBox Cybersecurity Fellowship Application"
-              formName="Fellowship Application"
-              minHeight={900}
-              placeholderHint="Required fields: Full Name, Email, LinkedIn, Resume (optional), Preferred Pathway, Certifications (Optional Links — Credly, ISC2, CompTIA, Cisco, Google, other verification links), Why you want to join, Relevant Experience, Portfolio / GitHub."
-            />
-          </motion.div>
-
-          <p className="mt-6 text-center text-xs text-muted-foreground">
-            Need support? Reach us directly at{" "}
-            <a href="mailto:info@useclickbox.com" className="text-primary hover:underline">
-              info@useclickbox.com
-            </a>
-          </p>
         </div>
       </section>
 

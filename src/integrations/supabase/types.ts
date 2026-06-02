@@ -14,6 +14,114 @@ export type Database = {
   }
   public: {
     Tables: {
+      contact_submissions: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          subject: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          subject: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          subject?: string
+        }
+        Relationships: []
+      }
+      fellowship_applications: {
+        Row: {
+          certification_links: string | null
+          certifications: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          linkedin: string
+          motivation: string
+          portfolio: string | null
+          preferred_pathway: string
+          relevant_experience: string | null
+          resume_url: string | null
+        }
+        Insert: {
+          certification_links?: string | null
+          certifications?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          linkedin: string
+          motivation: string
+          portfolio?: string | null
+          preferred_pathway: string
+          relevant_experience?: string | null
+          resume_url?: string | null
+        }
+        Update: {
+          certification_links?: string | null
+          certifications?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          linkedin?: string
+          motivation?: string
+          portfolio?: string | null
+          preferred_pathway?: string
+          relevant_experience?: string | null
+          resume_url?: string | null
+        }
+        Relationships: []
+      }
+      product_inquiries: {
+        Row: {
+          company: string
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          product_interest: string
+        }
+        Insert: {
+          company: string
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          product_interest: string
+        }
+        Update: {
+          company?: string
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          product_interest?: string
+        }
+        Relationships: []
+      }
       waitlist_submissions: {
         Row: {
           consent: boolean

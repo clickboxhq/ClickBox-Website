@@ -1,17 +1,118 @@
 import { Link } from "react-router-dom";
-import { Shield, UserCheck, FileCheck, Search, BookOpen, Lock, Activity } from "lucide-react";
 import { motion } from "framer-motion";
+import {
+  Shield,
+  Building2,
+  Rocket,
+  Cloud,
+  Repeat,
+  TrendingUp,
+  Users,
+  Search,
+  Target,
+  Wrench,
+  ArrowRight,
+  Handshake,
+  Clock,
+  DollarSign,
+  Eye,
+  CheckCircle2,
+} from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ServicesAccordion from "@/components/ServicesAccordion";
 
-const services = [
-  { icon: BookOpen, title: "Cybersecurity Training", desc: "Equip your team with the knowledge to recognize and respond to threats effectively." },
-  { icon: UserCheck, title: "Social Engineering Awareness", desc: "Train employees to detect manipulation tactics and prevent human-layer breaches." },
-  { icon: FileCheck, title: "Data Protection & Compliance", desc: "Ensure your organization meets data protection regulation requirements." },
-  { icon: Shield, title: "ISO 27001 Guidance", desc: "Align your information security management system with international standards." },
-  { icon: Search, title: "Penetration Testing", desc: "Identify vulnerabilities in your systems before attackers do with real-world simulation." },
-  { icon: Lock, title: "Security Auditing", desc: "Comprehensive assessments of your security infrastructure, policies, and procedures." },
-  { icon: Activity, title: "SOC as a Service (SOCaaS)", desc: "24/7 security monitoring, threat detection, incident response support, and continuous visibility into your organization's security posture." },
+const audiences = [
+  {
+    icon: Building2,
+    title: "Regulated Industries",
+    desc: "Organizations operating under strict regulatory and compliance requirements.",
+  },
+  {
+    icon: Rocket,
+    title: "Startups & Growth Companies",
+    desc: "Businesses requiring enterprise-grade cybersecurity without enterprise-level costs.",
+  },
+  {
+    icon: Cloud,
+    title: "Cloud-First Businesses",
+    desc: "Organizations running modern infrastructure across cloud environments and distributed teams.",
+  },
+  {
+    icon: Repeat,
+    title: "Organizations in Transition",
+    desc: "Businesses undergoing digital transformation, expansion, mergers, acquisitions, or technology modernization.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Mid-Market Organizations",
+    desc: "Companies looking to scale cybersecurity capabilities as they grow.",
+  },
+  {
+    icon: Users,
+    title: "Resource-Constrained Teams",
+    desc: "Organizations that need additional cybersecurity expertise and support without increasing internal headcount.",
+  },
+];
+
+const approach = [
+  {
+    n: "01",
+    icon: Search,
+    title: "Current State Discovery",
+    desc: "We begin by understanding your business environment, security posture, risk exposure, compliance obligations, and operational challenges to establish a clear baseline.",
+  },
+  {
+    n: "02",
+    icon: Target,
+    title: "Business Alignment",
+    desc: "We align cybersecurity initiatives with your business goals, risk tolerance, and growth objectives to ensure security supports the organization rather than slows it down.",
+  },
+  {
+    n: "03",
+    icon: Wrench,
+    title: "Solution Delivery",
+    desc: "We design and implement targeted cybersecurity solutions that address identified risks while improving resilience, visibility, and operational efficiency.",
+  },
+  {
+    n: "04",
+    icon: Repeat,
+    title: "Continuous Improvement",
+    desc: "We continuously monitor outcomes, refine controls, strengthen processes, and adapt security strategies to evolving threats and business requirements.",
+  },
+];
+
+const whyPartner = [
+  {
+    icon: Target,
+    title: "Business-Aligned Security",
+    desc: "We ensure every security recommendation supports business priorities, risk management objectives, and long-term growth.",
+  },
+  {
+    icon: Users,
+    title: "Experienced Professionals",
+    desc: "Our team combines practical cybersecurity expertise with real-world experience across risk management, compliance, security operations, and testing.",
+  },
+  {
+    icon: Clock,
+    title: "Rapid Deployment",
+    desc: "We help organizations strengthen security quickly through efficient implementation, expert guidance, and proven methodologies.",
+  },
+  {
+    icon: DollarSign,
+    title: "Cost-Effective Security",
+    desc: "Access enterprise-grade cybersecurity services without the complexity and cost of building a large internal security team.",
+  },
+  {
+    icon: Eye,
+    title: "Continuous Monitoring",
+    desc: "Benefit from ongoing visibility, monitoring, and proactive threat management through our security operations capabilities.",
+  },
+  {
+    icon: Handshake,
+    title: "Trusted Partnership",
+    desc: "We focus on long-term relationships built on transparency, reliability, accountability, and measurable outcomes.",
+  },
 ];
 
 const Index = () => {
@@ -19,19 +120,73 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero */}
-      <section className="section-padding flex min-h-screen items-center pt-32">
+      {/* Fellowship Hero — FIRST */}
+      <section className="section-padding relative overflow-hidden pt-32">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.15),transparent_60%)]" />
+        <div className="mx-auto max-w-5xl text-center relative">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-medium text-primary backdrop-blur"
+          >
+            <Shield className="h-3.5 w-3.5" />
+            ClickBox Cybersecurity Fellowship · Cohort 2026
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="font-heading text-4xl font-bold leading-tight text-foreground md:text-6xl lg:text-7xl"
+          >
+            Launch Your Cybersecurity Career With{" "}
+            <span className="text-gradient">Real-World Experience.</span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground"
+          >
+            A highly selective fellowship — 10 fellows. 5 specialized pathways. Applications open
+            in June.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-10 flex flex-wrap justify-center gap-4"
+          >
+            <Link
+              to="/internship#apply"
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
+            >
+              Apply to the Fellowship <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              to="/internship"
+              className="rounded-md border border-white/10 bg-secondary/80 px-6 py-3 text-sm font-semibold text-secondary-foreground backdrop-blur transition-all hover:bg-muted"
+            >
+              Learn More
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Consulting Hero */}
+      <section className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
-            <div className="mb-6 inline-block rounded-full border border-border bg-secondary px-4 py-1.5 text-xs font-medium text-muted-foreground">
+            <div className="mb-6 inline-block rounded-full border border-white/10 bg-secondary/60 px-4 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur">
               Cybersecurity Consulting
             </div>
-            <h1 className="font-heading text-4xl font-bold leading-tight text-foreground md:text-6xl lg:text-7xl">
+            <h2 className="font-heading text-4xl font-bold leading-tight text-foreground md:text-5xl lg:text-6xl">
               We don't just secure systems —{" "}
               <span className="text-gradient">we help organizations build securely.</span>
-            </h1>
+            </h2>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Practical, enterprise-focused cybersecurity services that combine technical expertise with strategic risk management.
+              Practical, enterprise-focused cybersecurity services that combine technical expertise
+              with strategic risk management.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <a
@@ -42,7 +197,7 @@ const Index = () => {
               </a>
               <Link
                 to="/product"
-                className="rounded-md border border-border bg-secondary px-6 py-3 text-sm font-semibold text-secondary-foreground transition-all hover:bg-muted"
+                className="rounded-md border border-white/10 bg-secondary/80 px-6 py-3 text-sm font-semibold text-secondary-foreground backdrop-blur transition-all hover:bg-muted"
               >
                 Explore Our Product
               </Link>
@@ -51,99 +206,121 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Services */}
-      <section id="services" className="section-padding border-t border-border">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-16 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">What We Do</p>
+      {/* Services — accordion */}
+      <section id="services" className="section-padding border-t border-white/5">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-12 max-w-2xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+              What We Do
+            </p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
               Enterprise-Focused Security Services
             </h2>
             <p className="mt-4 text-muted-foreground leading-relaxed">
-              We help businesses identify vulnerabilities, protect sensitive data, and build resilient systems through proven methodologies.
+              Tap any service to explore the practical capabilities we deliver.
             </p>
           </div>
+          <ServicesAccordion />
+        </div>
+      </section>
+
+      {/* Who We Serve */}
+      <section className="section-padding border-t border-white/5">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 max-w-2xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+              Who We Serve
+            </p>
+            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+              Our Services Are Ideal For
+            </h2>
+          </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((s, i) => (
+            {audiences.map((a, i) => (
               <motion.div
-                key={s.title}
-                initial={{ opacity: 0, y: 40 }}
+                key={a.title}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
-                className="group rounded-lg border border-border bg-card p-8 transition-all hover:border-primary/30 hover:border-glow"
+                transition={{ duration: 0.5, delay: i * 0.07 }}
+                className="glass-card p-8"
               >
-                <s.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
-                <h3 className="font-heading text-lg font-semibold text-card-foreground">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
+                <a.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
+                <h3 className="font-heading text-lg font-semibold text-foreground">{a.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{a.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* About */}
-      <section id="about" className="section-padding border-t border-border">
+      {/* Our Approach */}
+      <section className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
-          <div className="grid items-center gap-12 lg:grid-cols-2">
-            <div>
-              <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">About ClickBox</p>
-              <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-                Security Expertise Meets Strategic Thinking
-              </h2>
-              <p className="mt-6 text-muted-foreground leading-relaxed">
-                ClickBox Information Technology Ltd is a cybersecurity company focused on helping organizations strengthen their security posture, protect sensitive data, and stay compliant in an evolving digital landscape.
-              </p>
-              <p className="mt-4 text-muted-foreground leading-relaxed">
-                Our approach combines technical expertise with strategic risk management to help businesses identify vulnerabilities and build resilient systems. Beyond services, we're building an AI-powered cybersecurity platform designed to enhance vulnerability detection, threat intelligence, and risk monitoring for modern enterprises.
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { value: "Enterprise", label: "Grade Security" },
-                { value: "ISO 27001", label: "Aligned" },
-                { value: "NDPR", label: "Compliant" },
-                { value: "AI-Powered", label: "Platform" },
-              ].map((stat) => (
-                <div key={stat.value} className="rounded-lg border border-border bg-card p-6 text-center">
-                  <p className="font-heading text-xl font-bold text-primary">{stat.value}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{stat.label}</p>
-                </div>
-              ))}
-            </div>
+          <div className="mb-12 max-w-2xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+              Our Approach
+            </p>
+            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+              A practical methodology for measurable outcomes.
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              A business-aligned methodology for delivering measurable cybersecurity outcomes.
+            </p>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {approach.map((a, i) => (
+              <motion.div
+                key={a.n}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="glass-card p-8 relative"
+              >
+                <span className="absolute right-6 top-6 font-heading text-3xl font-bold text-primary/20">
+                  {a.n}
+                </span>
+                <a.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
+                <h3 className="font-heading text-lg font-semibold text-foreground">{a.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{a.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Fellowship CTA */}
-      <section className="section-padding border-t border-border relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.10),transparent_60%)]" />
-        <div className="mx-auto max-w-4xl text-center relative">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-medium text-primary">
-            <Shield className="h-3.5 w-3.5" />
-            ClickBox Cybersecurity Fellowship · Cohort 2026
+      {/* Why Partner */}
+      <section className="section-padding border-t border-white/5">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 max-w-2xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+              Why Partner With ClickBox
+            </p>
+            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+              Intelligent cybersecurity that helps you build securely.
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              Delivering intelligent cybersecurity solutions that help organizations build securely.
+            </p>
           </div>
-          <h2 className="font-heading text-3xl font-bold text-foreground md:text-5xl">
-            Launch Your Cybersecurity Career With{" "}
-            <span className="text-gradient">Real-World Experience.</span>
-          </h2>
-          <p className="mt-4 text-muted-foreground leading-relaxed">
-            A highly selective fellowship — 10 fellows. 5 specialized pathways.
-            Applications open in June.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              to="/internship"
-              className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
-            >
-              Apply to the Fellowship
-            </Link>
-            <Link
-              to="/internship"
-              className="rounded-md border border-border bg-secondary px-6 py-3 text-sm font-semibold text-secondary-foreground transition-all hover:bg-muted"
-            >
-              Learn More
-            </Link>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {whyPartner.map((w, i) => (
+              <motion.div
+                key={w.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: i * 0.07 }}
+                className="glass-card p-8"
+              >
+                <div className="flex h-11 w-11 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20 mb-4">
+                  <w.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
+                </div>
+                <h3 className="font-heading text-lg font-semibold text-foreground">{w.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{w.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
