@@ -3,17 +3,15 @@ import { toast } from "sonner";
 import { Loader2, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-type FormKind = "fellowship" | "product" | "contact";
+type SubmitResult = { ok: true } | { ok: false; message: string };
 
 type FormShellProps = {
-  kind: FormKind;
-  children: (
-    state: { submitting: boolean; submitted: boolean }
-  ) => ReactNode;
-  onSubmit: (data: FormData) => Promise<{ ok: true } | { ok: false; message: string }>;
+  children: (state: { submitting: boolean; submitted: boolean }) => ReactNode;
+  onSubmit: (data: FormData) => Promise<SubmitResult>;
   successTitle?: string;
   successMessage?: string;
 };
+
 
 export const FormShell = ({
   children,
@@ -37,10 +35,11 @@ export const FormShell = ({
     if (res.ok) {
       setSubmitted(true);
       toast.success(successTitle, { description: successMessage });
-      e.currentTarget.reset();
+      (e.target as HTMLFormElement).reset();
     } else {
       toast.error("Submission failed", { description: res.message });
     }
+
   };
 
   if (submitted) {
