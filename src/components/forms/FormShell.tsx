@@ -191,7 +191,7 @@ export const submitContact = async (fd: FormData): Promise<SubmitResult> => {
   });
   if (!parsed.success) return { ok: false, message: firstError(parsed.error) };
 
-  const { error } = await supabase.from("contact_submissions").insert(parsed.data);
+  const { error } = await supabase.from("contact_submissions").insert(parsed.data as never);
   if (error) return { ok: false, message: error.message };
   await mirrorToSheets("contact", parsed.data);
   return { ok: true };
@@ -207,7 +207,7 @@ export const submitProduct = async (fd: FormData): Promise<SubmitResult> => {
   });
   if (!parsed.success) return { ok: false, message: firstError(parsed.error) };
 
-  const { error } = await supabase.from("product_inquiries").insert(parsed.data);
+  const { error } = await supabase.from("product_inquiries").insert(parsed.data as never);
   if (error) return { ok: false, message: error.message };
   await mirrorToSheets("product", parsed.data);
   return { ok: true };
@@ -228,7 +228,7 @@ export const submitFellowship = async (fd: FormData): Promise<SubmitResult> => {
   });
   if (!parsed.success) return { ok: false, message: firstError(parsed.error) };
 
-  const { error } = await supabase.from("fellowship_applications").insert(parsed.data);
+  const { error } = await supabase.from("fellowship_applications").insert(parsed.data as never);
   if (error) return { ok: false, message: error.message };
   await mirrorToSheets("fellowship", parsed.data);
   return { ok: true };
