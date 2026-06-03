@@ -170,17 +170,8 @@ const phase1Weeks = [
   },
 ];
 
-const fellowshipOutcomes = [
-  "Practical cybersecurity project experience",
-  "Exposure to real-world security workflows",
-  "Industry mentorship and coaching",
-  "Portfolio-ready project work",
-  "Technical workshops and learning sessions",
-  "Professional networking opportunities",
-  "Fellowship Completion Certificate",
-  "Access to the ClickBox Fellowship Alumni Network",
-  "Priority consideration for future opportunities within ClickBox",
-];
+// Fellowship outcomes removed per latest content update
+
 
 const faqs = [
   { q: "Is this fellowship paid?", a: "The fellowship is a career development program focused on practical experience, mentorship, and exposure." },
@@ -458,19 +449,8 @@ const Internship = () => {
             </div>
           </div>
 
-          {/* Fellowship Outcomes */}
-          <div className="mt-16 mb-6">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary">Fellowship Outcomes</p>
-            <h3 className="mt-2 font-heading text-2xl font-bold text-foreground">What you'll walk away with.</h3>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {fellowshipOutcomes.map((o) => (
-              <div key={o} className="glass-card flex items-start gap-3 p-5 text-sm text-muted-foreground">
-                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <span>{o}</span>
-              </div>
-            ))}
-          </div>
+          {/* Fellowship Outcomes section removed */}
+
         </div>
       </section>
 

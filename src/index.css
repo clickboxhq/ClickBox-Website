@@ -109,5 +109,17 @@
       0 0 0 1px hsl(var(--primary) / 0.12);
     transform: translateY(-2px);
   }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-\[marquee_45s_linear_infinite\] {
+      animation: none !important;
+    }
+  }
 }
+
 

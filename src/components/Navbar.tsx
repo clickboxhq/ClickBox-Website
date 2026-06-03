@@ -7,7 +7,7 @@ const navLinks = [
   { label: "Home", path: "/" },
   { label: "Services", path: "/#services" },
   { label: "About", path: "/about" },
-  { label: "Team", path: "/team" },
+  { label: "Resources", path: "/resources" },
   { label: "Product", path: "/product" },
   { label: "Contact", path: "/contact" },
 ];
@@ -39,6 +39,8 @@ const Navbar = () => {
           <img
             src={logo}
             alt="ClickBox"
+            width={56}
+            height={56}
             className="h-12 w-12 md:h-14 md:w-14 rounded-lg object-cover ring-1 ring-white/10"
           />
           <span className="font-heading text-xl md:text-2xl font-bold tracking-tight text-foreground">
@@ -60,8 +62,9 @@ const Navbar = () => {
           ))}
           <Link
             to="/internship"
-            className="rounded-md border border-white/10 bg-secondary/80 px-5 py-2.5 text-sm font-semibold text-secondary-foreground backdrop-blur transition-all hover:bg-muted hover:border-primary/40"
+            className="group relative inline-flex items-center gap-2 rounded-md border border-primary/30 bg-gradient-to-b from-muted to-secondary px-5 py-2.5 text-sm font-semibold text-foreground shadow-[0_1px_0_0_hsl(0_0%_100%/0.08)_inset,0_8px_24px_-12px_hsl(var(--primary)/0.5)] transition-all hover:border-primary/60 hover:shadow-[0_1px_0_0_hsl(0_0%_100%/0.12)_inset,0_10px_28px_-10px_hsl(var(--primary)/0.7)]"
           >
+            <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_8px_hsl(var(--primary))]" />
             Fellowship
           </Link>
         </div>
@@ -91,8 +94,9 @@ const Navbar = () => {
           <Link
             to="/internship"
             onClick={() => setMobileOpen(false)}
-            className="mt-3 block rounded-md border border-white/10 bg-secondary px-5 py-2.5 text-center text-sm font-semibold text-secondary-foreground"
+            className="mt-3 flex items-center justify-center gap-2 rounded-md border border-primary/30 bg-gradient-to-b from-muted to-secondary px-5 py-2.5 text-sm font-semibold text-foreground"
           >
+            <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_8px_hsl(var(--primary))]" />
             Fellowship
           </Link>
         </div>

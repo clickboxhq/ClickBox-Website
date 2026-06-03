@@ -1,0 +1,181 @@
+import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import { Search, Clock, ArrowRight, BookOpen } from "lucide-react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { blogPosts, categories, type BlogPost } from "@/data/blog";
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+
+const PostCard = ({ post, featured = false }: { post: BlogPost; featured?: boolean }) => (
+  <motion.article
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-50px" }}
+    transition={{ duration: 0.4 }}
+    className={`glass-card group cursor-pointer p-6 md:p-8 ${
+      featured ? "lg:col-span-2" : ""
+    }`}
+  >
+    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+      <span className="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary">
+        {post.category}
+      </span>
+      <span>·</span>
+      <span>{formatDate(post.publishedAt)}</span>
+      <span>·</span>
+      <span className="inline-flex items-center gap-1">
+        <Clock className="h-3 w-3" /> {post.readTime} min
+      </span>
+    </div>
+    <h3
+      className={`mt-4 font-heading font-semibold text-foreground transition-colors group-hover:text-primary ${
+        featured ? "text-2xl md:text-3xl" : "text-lg md:text-xl"
+      }`}
+    >
+      {post.title}
+    </h3>
+    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{post.excerpt}</p>
+    <div className="mt-6 flex items-center justify-between">
+      <div className="text-xs">
+        <p className="font-medium text-foreground">{post.author}</p>
+        <p className="text-muted-foreground">{post.authorRole}</p>
+      </div>
+      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
+        Read article <ArrowRight className="h-4 w-4" />
+      </span>
+    </div>
+  </motion.article>
+);
+
+const Resources = () => {
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<(typeof categories)[number]>("All");
+
+  const featured = useMemo(() => blogPosts.filter((p) => p.featured), []);
+  const filtered = useMemo(() => {
+    return blogPosts.filter((p) => {
+      const matchesCategory = category === "All" || p.category === category;
+      const q = query.trim().toLowerCase();
+      const matchesQuery =
+        !q ||
+        p.title.toLowerCase().includes(q) ||
+        p.excerpt.toLowerCase().includes(q) ||
+        p.author.toLowerCase().includes(q);
+      return matchesCategory && matchesQuery;
+    });
+  }, [query, category]);
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+
+      {/* Hero */}
+      <section className="section-padding relative overflow-hidden pt-32">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.12),transparent_60%)]" />
+        <div className="mx-auto max-w-7xl relative">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="max-w-3xl"
+          >
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-medium text-primary backdrop-blur">
+              <BookOpen className="h-3.5 w-3.5" />
+              ClickBox Resource Center
+            </div>
+            <h1 className="font-heading text-4xl font-bold leading-tight text-foreground md:text-6xl">
+              Cybersecurity insights, threat intelligence, and{" "}
+              <span className="text-gradient">compliance guidance.</span>
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              Practical perspectives from the ClickBox team on building, defending, and operating
+              secure modern organizations.
+            </p>
+          </motion.div>
+
+          {/* Search + Categories */}
+          <div className="mt-12 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value.slice(0, 100))}
+                placeholder="Search articles, topics, authors…"
+                className="w-full rounded-md border border-white/10 bg-background/50 py-3 pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 backdrop-blur"
+              />
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {categories.map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setCategory(c)}
+                  className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition ${
+                    category === c
+                      ? "border-primary/50 bg-primary/15 text-primary"
+                      : "border-white/10 bg-secondary/60 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured */}
+      {featured.length > 0 && category === "All" && !query && (
+        <section className="section-padding border-t border-white/5 pt-12">
+          <div className="mx-auto max-w-7xl">
+            <p className="mb-6 text-sm font-semibold uppercase tracking-widest text-primary">
+              Featured Articles
+            </p>
+            <div className="grid gap-6 lg:grid-cols-2">
+              {featured.map((p) => (
+                <PostCard key={p.slug} post={p} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Recent */}
+      <section className="section-padding border-t border-white/5">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+              {query || category !== "All" ? "Results" : "Recent Posts"}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {filtered.length} {filtered.length === 1 ? "article" : "articles"}
+            </p>
+          </div>
+          {filtered.length === 0 ? (
+            <div className="glass-card p-12 text-center">
+              <p className="text-muted-foreground">
+                No articles match your search. Try a different keyword or category.
+              </p>
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filtered.map((p) => (
+                <PostCard key={p.slug} post={p} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default Resources;
