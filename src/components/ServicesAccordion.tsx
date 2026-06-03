@@ -21,6 +21,16 @@ type Service = {
 
 const services: Service[] = [
   {
+    icon: Activity,
+    title: "SOC as a Service (SOCaaS)",
+    summary: "24/7 monitoring, detection, and incident response.",
+    details: [
+      "Round-the-clock alert triage and threat detection",
+      "Incident response support with documented playbooks",
+      "Continuous visibility into your security posture",
+    ],
+  },
+  {
     icon: BookOpen,
     title: "Cybersecurity Training",
     summary: "Equip your team to recognize and respond to threats effectively.",
@@ -62,12 +72,13 @@ const services: Service[] = [
   },
   {
     icon: Search,
-    title: "Penetration Testing",
-    summary: "Identify vulnerabilities before attackers do.",
+    title: "Vulnerability Management & Penetration Testing (VAPT)",
+    summary:
+      "Identify, assess, prioritize, and remediate vulnerabilities while validating security controls through comprehensive penetration testing and security assessments.",
     details: [
       "Network, web, API, and cloud configuration testing",
       "OWASP-aligned methodology with manual + automated coverage",
-      "Executive-grade reports with prioritized remediation guidance",
+      "Risk-based prioritization with executive-grade remediation roadmaps",
     ],
   },
   {
@@ -80,20 +91,11 @@ const services: Service[] = [
       "Independent findings with practical remediation roadmaps",
     ],
   },
-  {
-    icon: Activity,
-    title: "SOC as a Service (SOCaaS)",
-    summary: "24/7 monitoring, detection, and incident response.",
-    details: [
-      "Round-the-clock alert triage and threat detection",
-      "Incident response support with documented playbooks",
-      "Continuous visibility into your security posture",
-    ],
-  },
 ];
 
 const ServicesAccordion = () => {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
+
 
   return (
     <div className="space-y-3">
