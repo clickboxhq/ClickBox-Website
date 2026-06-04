@@ -293,6 +293,8 @@ const FaqItem = ({
 );
 
 const Internship = () => {
+  const [openWeek, setOpenWeek] = useState<number | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -412,7 +414,13 @@ const Internship = () => {
           </div>
           <div className="space-y-3">
             {phase1Weeks.map((w, i) => (
-              <WeekCard key={w.n} w={w} i={i} />
+              <WeekCard
+                key={w.n}
+                w={w}
+                i={i}
+                open={openWeek === i}
+                onToggle={() => setOpenWeek(openWeek === i ? null : i)}
+              />
             ))}
           </div>
 
