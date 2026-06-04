@@ -93,7 +93,6 @@ export const FormShell = ({
 
   return (
     <form onSubmit={handle} className="glass-card p-6 md:p-8 space-y-5" noValidate>
-      {/* Honeypot */}
       <input
         type="text"
         name="website"
@@ -125,28 +124,14 @@ export const Label = ({ children, required }: { children: ReactNode; required?: 
   </label>
 );
 
-// ---- Sanitization helpers ----
 const clean = (v: FormDataEntryValue | null, max = 2000) =>
   String(v ?? "")
-    .replace(/[\u0000-\u001F\u007F]/g, "") // strip control chars
+    .replace(/[\u0000-\u001F\u007F]/g, "")
     .trim()
     .slice(0, max);
 
 const nullable = (v: string) => (v ? v : null);
 
-// ---- Mirror to Google Sheets (non-blocking) ----
-const mirrorToSheets = async (
-  tab: "fellowship" | "product" | "contact",
-  row: Record<string, unknown>,
-) => {
-  try {
-    await supabase.functions.invoke("mirror-to-sheets", { body: { tab, row } });
-  } catch {
-    // Silent — Sheets mirror is non-critical; primary storage is the database.
-  }
-};
-
-// ---- Schemas ----
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(120),
   email: z.string().trim().email("Invalid email").max(255),
@@ -190,10 +175,8 @@ export const submitContact = async (fd: FormData): Promise<SubmitResult> => {
     message: clean(fd.get("message"), 5000),
   });
   if (!parsed.success) return { ok: false, message: firstError(parsed.error) };
-
   const { error } = await supabase.from("contact_submissions").insert(parsed.data as never);
   if (error) return { ok: false, message: error.message };
-  await mirrorToSheets("contact", parsed.data);
   return { ok: true };
 };
 
@@ -206,10 +189,8 @@ export const submitProduct = async (fd: FormData): Promise<SubmitResult> => {
     message: clean(fd.get("message"), 5000),
   });
   if (!parsed.success) return { ok: false, message: firstError(parsed.error) };
-
   const { error } = await supabase.from("product_inquiries").insert(parsed.data as never);
   if (error) return { ok: false, message: error.message };
-  await mirrorToSheets("product", parsed.data);
   return { ok: true };
 };
 
@@ -227,9 +208,7 @@ export const submitFellowship = async (fd: FormData): Promise<SubmitResult> => {
     portfolio: nullable(clean(fd.get("portfolio"), 500)),
   });
   if (!parsed.success) return { ok: false, message: firstError(parsed.error) };
-
   const { error } = await supabase.from("fellowship_applications").insert(parsed.data as never);
   if (error) return { ok: false, message: error.message };
-  await mirrorToSheets("fellowship", parsed.data);
   return { ok: true };
 };

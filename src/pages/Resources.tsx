@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Search, Clock, ArrowRight, BookOpen } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { blogPosts, categories, type BlogPost } from "@/data/blog";
+import { blogPosts, resourceGroups, groupForCategory, type BlogPost } from "@/data/blog";
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("en-US", {
@@ -18,64 +19,66 @@ const PostCard = ({ post, featured = false }: { post: BlogPost; featured?: boole
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-50px" }}
     transition={{ duration: 0.4 }}
-    className={`glass-card group cursor-pointer p-6 md:p-8 ${
-      featured ? "lg:col-span-2" : ""
-    }`}
+    className={featured ? "lg:col-span-2" : ""}
   >
-    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-      <span className="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary">
-        {post.category}
-      </span>
-      <span>·</span>
-      <span>{formatDate(post.publishedAt)}</span>
-      <span>·</span>
-      <span className="inline-flex items-center gap-1">
-        <Clock className="h-3 w-3" /> {post.readTime} min
-      </span>
-    </div>
-    <h3
-      className={`mt-4 font-heading font-semibold text-foreground transition-colors group-hover:text-primary ${
-        featured ? "text-2xl md:text-3xl" : "text-lg md:text-xl"
-      }`}
+    <Link
+      to={`/resources/${post.slug}`}
+      className="glass-card group block h-full p-6 md:p-8 transition hover:border-primary/40"
     >
-      {post.title}
-    </h3>
-    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{post.excerpt}</p>
-    <div className="mt-6 flex items-center justify-between">
-      <div className="text-xs">
-        <p className="font-medium text-foreground">{post.author}</p>
-        <p className="text-muted-foreground">{post.authorRole}</p>
+      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        <span className="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary">
+          {post.category}
+        </span>
+        <span>·</span>
+        <span>{formatDate(post.publishedAt)}</span>
+        <span>·</span>
+        <span className="inline-flex items-center gap-1">
+          <Clock className="h-3 w-3" /> {post.readTime} min
+        </span>
       </div>
-      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
-        Read article <ArrowRight className="h-4 w-4" />
-      </span>
-    </div>
+      <h3
+        className={`mt-4 font-heading font-semibold text-foreground transition-colors group-hover:text-primary ${
+          featured ? "text-2xl md:text-3xl" : "text-lg md:text-xl"
+        }`}
+      >
+        {post.title}
+      </h3>
+      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{post.excerpt}</p>
+      <div className="mt-6 flex items-center justify-between">
+        <div className="text-xs">
+          <p className="font-medium text-foreground">{post.author}</p>
+          <p className="text-muted-foreground">{post.authorRole}</p>
+        </div>
+        <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary opacity-70 transition-opacity group-hover:opacity-100">
+          Read article <ArrowRight className="h-4 w-4" />
+        </span>
+      </div>
+    </Link>
   </motion.article>
 );
 
 const Resources = () => {
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<(typeof categories)[number]>("All");
+  const [group, setGroup] = useState<(typeof resourceGroups)[number]>("All");
 
   const featured = useMemo(() => blogPosts.filter((p) => p.featured), []);
   const filtered = useMemo(() => {
     return blogPosts.filter((p) => {
-      const matchesCategory = category === "All" || p.category === category;
+      const matchesGroup = group === "All" || groupForCategory(p.category) === group;
       const q = query.trim().toLowerCase();
       const matchesQuery =
         !q ||
         p.title.toLowerCase().includes(q) ||
         p.excerpt.toLowerCase().includes(q) ||
         p.author.toLowerCase().includes(q);
-      return matchesCategory && matchesQuery;
+      return matchesGroup && matchesQuery;
     });
-  }, [query, category]);
+  }, [query, group]);
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero */}
       <section className="section-padding relative overflow-hidden pt-32">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.12),transparent_60%)]" />
         <div className="mx-auto max-w-7xl relative">
@@ -99,7 +102,6 @@ const Resources = () => {
             </p>
           </motion.div>
 
-          {/* Search + Categories */}
           <div className="mt-12 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
             <div className="relative">
               <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -112,12 +114,12 @@ const Resources = () => {
               />
             </div>
             <div className="flex flex-wrap gap-2">
-              {categories.map((c) => (
+              {resourceGroups.map((c) => (
                 <button
                   key={c}
-                  onClick={() => setCategory(c)}
+                  onClick={() => setGroup(c)}
                   className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition ${
-                    category === c
+                    group === c
                       ? "border-primary/50 bg-primary/15 text-primary"
                       : "border-white/10 bg-secondary/60 text-muted-foreground hover:text-foreground"
                   }`}
@@ -130,8 +132,7 @@ const Resources = () => {
         </div>
       </section>
 
-      {/* Featured */}
-      {featured.length > 0 && category === "All" && !query && (
+      {featured.length > 0 && group === "All" && !query && (
         <section className="section-padding border-t border-white/5 pt-12">
           <div className="mx-auto max-w-7xl">
             <p className="mb-6 text-sm font-semibold uppercase tracking-widest text-primary">
@@ -146,12 +147,11 @@ const Resources = () => {
         </section>
       )}
 
-      {/* Recent */}
       <section className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
           <div className="mb-6 flex items-end justify-between gap-4">
             <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-              {query || category !== "All" ? "Results" : "Recent Posts"}
+              {query || group !== "All" ? "Results" : "Recent Posts"}
             </p>
             <p className="text-xs text-muted-foreground">
               {filtered.length} {filtered.length === 1 ? "article" : "articles"}

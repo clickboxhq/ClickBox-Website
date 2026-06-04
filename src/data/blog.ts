@@ -16,7 +16,19 @@ export type BlogPost = {
   publishedAt: string; // ISO
   readTime: number; // minutes
   featured?: boolean;
+  heroImage?: string;
+  tags?: string[];
 };
+
+// Group label shown in the Resources filter UI. Maps multiple categories.
+export const groupForCategory = (c: BlogPost["category"]): "Blog" | "Insights" | "Updates" | "Fellowship News" => {
+  if (c === "Fellowship") return "Fellowship News";
+  if (c === "Company News" || c === "Product Updates") return "Updates";
+  if (c === "Threat Intelligence" || c === "Industry Trends") return "Insights";
+  return "Blog";
+};
+
+export const resourceGroups = ["All", "Blog", "Insights", "Updates", "Fellowship News"] as const;
 
 export const blogPosts: BlogPost[] = [
   {
@@ -28,6 +40,7 @@ export const blogPosts: BlogPost[] = [
       "Modern enterprises operate across distributed cloud workloads, SaaS platforms, and remote endpoints. Traditional Security Operations Centers were never designed for this surface area.",
       "A modern SOCaaS engagement focuses on detection engineering, automation, and continuous tuning — not just alert volume. The result is faster mean-time-to-detect and mean-time-to-respond, with measurable risk reduction.",
       "This article outlines five pillars we apply across every ClickBox SOCaaS deployment: telemetry coverage, detection-as-code, response playbooks, threat intelligence enrichment, and continuous validation.",
+      "Each pillar reinforces the others. Telemetry without detection is noise. Detection without response is theatre. Response without validation is hope. Together they form a measurable security operations capability that scales with the business.",
     ],
     category: "Best Practices",
     author: "Isaac Udumeighe",
@@ -35,6 +48,7 @@ export const blogPosts: BlogPost[] = [
     publishedAt: "2026-05-22T09:00:00.000Z",
     readTime: 6,
     featured: true,
+    tags: ["SOC", "SOCaaS", "Detection Engineering"],
   },
   {
     slug: "iso-27001-readiness-roadmap",
@@ -51,6 +65,7 @@ export const blogPosts: BlogPost[] = [
     authorRole: "Chief Information Security Officer",
     publishedAt: "2026-05-14T09:00:00.000Z",
     readTime: 8,
+    tags: ["ISO 27001", "Compliance", "Audit"],
   },
   {
     slug: "ai-driven-phishing-defense",
@@ -68,6 +83,7 @@ export const blogPosts: BlogPost[] = [
     publishedAt: "2026-05-06T09:00:00.000Z",
     readTime: 7,
     featured: true,
+    tags: ["Phishing", "AI", "Social Engineering"],
   },
   {
     slug: "vapt-vs-pentest-what-changed",
@@ -83,6 +99,7 @@ export const blogPosts: BlogPost[] = [
     authorRole: "Chief Operating Officer",
     publishedAt: "2026-04-28T09:00:00.000Z",
     readTime: 5,
+    tags: ["VAPT", "Penetration Testing"],
   },
   {
     slug: "clickbox-fellowship-cohort-2026",
@@ -98,6 +115,7 @@ export const blogPosts: BlogPost[] = [
     authorRole: "Editorial",
     publishedAt: "2026-04-15T09:00:00.000Z",
     readTime: 4,
+    tags: ["Fellowship", "Careers"],
   },
   {
     slug: "data-protection-essentials",
@@ -113,6 +131,7 @@ export const blogPosts: BlogPost[] = [
     authorRole: "Chief Information Security Officer",
     publishedAt: "2026-04-02T09:00:00.000Z",
     readTime: 6,
+    tags: ["Data Protection", "Privacy"],
   },
 ];
 
