@@ -14,36 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          id: string
+          payload: Json | null
+          target_id: string | null
+          target_table: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          payload?: Json | null
+          target_id?: string | null
+          target_table: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          payload?: Json | null
+          target_id?: string | null
+          target_table?: string
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           company: string | null
+          contacted_at: string | null
           created_at: string
           email: string
           id: string
           message: string
           name: string
+          notes: string | null
           phone: string | null
+          reviewed_at: string | null
+          shortlisted_at: string | null
+          status: string
           subject: string
+          updated_at: string
         }
         Insert: {
           company?: string | null
+          contacted_at?: string | null
           created_at?: string
           email: string
           id?: string
           message: string
           name: string
+          notes?: string | null
           phone?: string | null
+          reviewed_at?: string | null
+          shortlisted_at?: string | null
+          status?: string
           subject: string
+          updated_at?: string
         }
         Update: {
           company?: string | null
+          contacted_at?: string | null
           created_at?: string
           email?: string
           id?: string
           message?: string
           name?: string
+          notes?: string | null
           phone?: string | null
+          reviewed_at?: string | null
+          shortlisted_at?: string | null
+          status?: string
           subject?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -51,74 +99,131 @@ export type Database = {
         Row: {
           certification_links: string | null
           certifications: string | null
+          contacted_at: string | null
           created_at: string
           email: string
           full_name: string
           id: string
           linkedin: string
           motivation: string
+          notes: string | null
           portfolio: string | null
           preferred_pathway: string
           relevant_experience: string | null
           resume_url: string | null
+          reviewed_at: string | null
+          shortlisted_at: string | null
+          status: string
+          updated_at: string
         }
         Insert: {
           certification_links?: string | null
           certifications?: string | null
+          contacted_at?: string | null
           created_at?: string
           email: string
           full_name: string
           id?: string
           linkedin: string
           motivation: string
+          notes?: string | null
           portfolio?: string | null
           preferred_pathway: string
           relevant_experience?: string | null
           resume_url?: string | null
+          reviewed_at?: string | null
+          shortlisted_at?: string | null
+          status?: string
+          updated_at?: string
         }
         Update: {
           certification_links?: string | null
           certifications?: string | null
+          contacted_at?: string | null
           created_at?: string
           email?: string
           full_name?: string
           id?: string
           linkedin?: string
           motivation?: string
+          notes?: string | null
           portfolio?: string | null
           preferred_pathway?: string
           relevant_experience?: string | null
           resume_url?: string | null
+          reviewed_at?: string | null
+          shortlisted_at?: string | null
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
       product_inquiries: {
         Row: {
           company: string
+          contacted_at: string | null
           created_at: string
           email: string
           id: string
           message: string
           name: string
+          notes: string | null
           product_interest: string
+          reviewed_at: string | null
+          shortlisted_at: string | null
+          status: string
+          updated_at: string
         }
         Insert: {
           company: string
+          contacted_at?: string | null
           created_at?: string
           email: string
           id?: string
           message: string
           name: string
+          notes?: string | null
           product_interest: string
+          reviewed_at?: string | null
+          shortlisted_at?: string | null
+          status?: string
+          updated_at?: string
         }
         Update: {
           company?: string
+          contacted_at?: string | null
           created_at?: string
           email?: string
           id?: string
           message?: string
           name?: string
+          notes?: string | null
           product_interest?: string
+          reviewed_at?: string | null
+          shortlisted_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
         }
         Relationships: []
       }
@@ -175,10 +280,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -305,6 +416,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator"],
+    },
   },
 } as const

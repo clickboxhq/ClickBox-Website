@@ -183,8 +183,17 @@ const faqs = [
   { q: "Will I receive a certificate?", a: "Yes. Fellows who successfully complete the program receive an official ClickBox Cybersecurity Fellowship certificate and join the alumni network." },
 ];
 
-const WeekCard = ({ w, i }: { w: typeof phase1Weeks[number]; i: number }) => {
-  const [open, setOpen] = useState(false);
+const WeekCard = ({
+  w,
+  i,
+  open,
+  onToggle,
+}: {
+  w: typeof phase1Weeks[number];
+  i: number;
+  open: boolean;
+  onToggle: () => void;
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -193,7 +202,7 @@ const WeekCard = ({ w, i }: { w: typeof phase1Weeks[number]; i: number }) => {
       transition={{ duration: 0.4, delay: i * 0.05 }}
       className="glass-card overflow-hidden"
     >
-      <button onClick={() => setOpen(!open)} className="w-full text-left px-6 py-5 flex items-center gap-5">
+      <button onClick={onToggle} className="w-full text-left px-6 py-5 flex items-center gap-5" aria-expanded={open}>
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20 font-heading text-xs font-bold text-primary">
           {String(i + 1).padStart(2, "0")}
         </span>
@@ -243,7 +252,49 @@ const WeekCard = ({ w, i }: { w: typeof phase1Weeks[number]; i: number }) => {
   );
 };
 
+const FaqItem = ({
+  q,
+  a,
+  open,
+  onToggle,
+  i,
+}: {
+  q: string;
+  a: string;
+  open: boolean;
+  onToggle: () => void;
+  i: number;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-50px" }}
+    transition={{ duration: 0.3, delay: i * 0.04 }}
+    className="glass-card overflow-hidden"
+  >
+    <button onClick={onToggle} className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left" aria-expanded={open}>
+      <span className="font-heading text-base font-semibold text-foreground">{q}</span>
+      <ChevronDown className={`h-4 w-4 shrink-0 text-primary transition-transform ${open ? "rotate-180" : ""}`} />
+    </button>
+    <AnimatePresence initial={false}>
+      {open && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="overflow-hidden"
+        >
+          <p className="border-t border-white/5 px-6 py-5 text-sm leading-relaxed text-muted-foreground">{a}</p>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </motion.div>
+);
+
 const Internship = () => {
+  const [openWeek, setOpenWeek] = useState<number | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -363,7 +414,13 @@ const Internship = () => {
           </div>
           <div className="space-y-3">
             {phase1Weeks.map((w, i) => (
-              <WeekCard key={w.n} w={w} i={i} />
+              <WeekCard
+                key={w.n}
+                w={w}
+                i={i}
+                open={openWeek === i}
+                onToggle={() => setOpenWeek(openWeek === i ? null : i)}
+              />
             ))}
           </div>
 
@@ -710,20 +767,14 @@ const Internship = () => {
           </div>
           <div className="space-y-4">
             {faqs.map((f, i) => (
-              <motion.details
+              <FaqItem
                 key={f.q}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.3, delay: i * 0.04 }}
-                className="group glass-card p-6 [&_summary::-webkit-details-marker]:hidden"
-              >
-                <summary className="flex cursor-pointer items-center justify-between gap-4">
-                  <span className="font-heading text-base font-semibold text-foreground">{f.q}</span>
-                  <ArrowRight className="h-4 w-4 shrink-0 text-primary transition-transform group-open:rotate-90" />
-                </summary>
-                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
-              </motion.details>
+                q={f.q}
+                a={f.a}
+                i={i}
+                open={openFaq === i}
+                onToggle={() => setOpenFaq(openFaq === i ? null : i)}
+              />
             ))}
           </div>
         </div>

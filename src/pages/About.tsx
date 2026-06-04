@@ -1,28 +1,33 @@
 import { motion } from "framer-motion";
-import { Shield, Target, Compass, Sparkles } from "lucide-react";
+import { ShieldCheck, GraduationCap, Users, Target, Scale } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 const values = [
   {
-    icon: Shield,
-    title: "Security First",
-    desc: "Every decision is grounded in protecting our clients' people, data, and operations.",
+    icon: ShieldCheck,
+    title: "Integrity",
+    desc: "We act with honesty, transparency, and accountability in every engagement.",
+  },
+  {
+    icon: GraduationCap,
+    title: "Competence",
+    desc: "We continuously develop our expertise to deliver high-quality cybersecurity solutions and meaningful outcomes.",
+  },
+  {
+    icon: Users,
+    title: "Teamwork",
+    desc: "We collaborate internally and with our clients to achieve stronger security outcomes together.",
   },
   {
     icon: Target,
-    title: "Business Aligned",
-    desc: "We build security programs that accelerate growth rather than slow it down.",
+    title: "Effectiveness",
+    desc: "We focus on practical actions and measurable results that strengthen security and support business goals.",
   },
   {
-    icon: Compass,
-    title: "Practical Expertise",
-    desc: "Real-world experience over checkbox compliance — outcomes that hold up under pressure.",
-  },
-  {
-    icon: Sparkles,
-    title: "Continuous Innovation",
-    desc: "We invest in AI, automation, and modern tooling so our clients stay ahead of threats.",
+    icon: Scale,
+    title: "Fairness",
+    desc: "We treat people with respect, make objective decisions, and create opportunities based on merit and integrity.",
   },
 ];
 
@@ -103,8 +108,11 @@ const About = () => (
           <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
             Our values.
           </h2>
+          <p className="mt-4 text-muted-foreground leading-relaxed">
+            The principles that shape how we work, who we hire, and how we partner with our clients.
+          </p>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
           {values.map((v, i) => (
             <motion.div
               key={v.title}
@@ -112,9 +120,11 @@ const About = () => (
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="glass-card p-8"
+              className="glass-card group p-6 transition-all hover:border-primary/40 hover:-translate-y-1"
             >
-              <v.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20 transition group-hover:bg-primary/15">
+                <v.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
+              </div>
               <h3 className="font-heading text-base font-semibold text-foreground">{v.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{v.desc}</p>
             </motion.div>
