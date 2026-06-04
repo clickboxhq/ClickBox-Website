@@ -22,6 +22,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ServicesAccordion from "@/components/ServicesAccordion";
 import CertificationsMarquee from "@/components/CertificationsMarquee";
+import PremiumCTA from "@/components/PremiumCTA";
 
 
 const audiences = [
@@ -347,6 +348,8 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      <PremiumCTA />
 
       <Footer />
     </div>
