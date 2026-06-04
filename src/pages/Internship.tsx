@@ -767,20 +767,14 @@ const Internship = () => {
           </div>
           <div className="space-y-4">
             {faqs.map((f, i) => (
-              <motion.details
+              <FaqItem
                 key={f.q}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.3, delay: i * 0.04 }}
-                className="group glass-card p-6 [&_summary::-webkit-details-marker]:hidden"
-              >
-                <summary className="flex cursor-pointer items-center justify-between gap-4">
-                  <span className="font-heading text-base font-semibold text-foreground">{f.q}</span>
-                  <ArrowRight className="h-4 w-4 shrink-0 text-primary transition-transform group-open:rotate-90" />
-                </summary>
-                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
-              </motion.details>
+                q={f.q}
+                a={f.a}
+                i={i}
+                open={openFaq === i}
+                onToggle={() => setOpenFaq(openFaq === i ? null : i)}
+              />
             ))}
           </div>
         </div>
