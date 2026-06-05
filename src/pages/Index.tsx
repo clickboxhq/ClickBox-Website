@@ -297,7 +297,7 @@ const Index = () => {
         </div>
       </section>
 
-      <PremiumCTA />
+      <ServicesFaq />
 
       <Footer />
     </div>
