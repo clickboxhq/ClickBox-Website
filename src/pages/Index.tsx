@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  Shield,
   Building2,
   Rocket,
   Cloud,
@@ -11,18 +10,17 @@ import {
   Search,
   Target,
   Wrench,
-  ArrowRight,
   Handshake,
   Clock,
   DollarSign,
   Eye,
-  CheckCircle2,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ServicesAccordion from "@/components/ServicesAccordion";
 import CertificationsMarquee from "@/components/CertificationsMarquee";
 import PremiumCTA from "@/components/PremiumCTA";
+import ServicesFaq from "@/components/ServicesFaq";
 
 
 const audiences = [
