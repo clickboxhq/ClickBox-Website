@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ShieldCheck, GraduationCap, Users, Target, Scale } from "lucide-react";
+import { ShieldCheck, Lightbulb, Award, HeartHandshake } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -10,24 +10,19 @@ const values = [
     desc: "We act with honesty, transparency, and accountability in every engagement.",
   },
   {
-    icon: GraduationCap,
-    title: "Competence",
-    desc: "We continuously develop our expertise to deliver high-quality cybersecurity solutions and meaningful outcomes.",
+    icon: Lightbulb,
+    title: "Innovation",
+    desc: "We bring forward-thinking approaches and modern tooling to solve evolving security challenges.",
   },
   {
-    icon: Users,
-    title: "Teamwork",
-    desc: "We collaborate internally and with our clients to achieve stronger security outcomes together.",
+    icon: Award,
+    title: "Excellence",
+    desc: "We hold ourselves to the highest standards across delivery, quality, and outcomes.",
   },
   {
-    icon: Target,
-    title: "Effectiveness",
-    desc: "We focus on practical actions and measurable results that strengthen security and support business goals.",
-  },
-  {
-    icon: Scale,
-    title: "Fairness",
-    desc: "We treat people with respect, make objective decisions, and create opportunities based on merit and integrity.",
+    icon: HeartHandshake,
+    title: "Client Focus",
+    desc: "We build long-term partnerships rooted in trust, responsiveness, and measurable value.",
   },
 ];
 
