@@ -23,35 +23,48 @@ const PostCard = ({ post, featured = false }: { post: BlogPost; featured?: boole
   >
     <Link
       to={`/resources/${post.slug}`}
-      className="glass-card group block h-full p-6 md:p-8 transition hover:border-primary/40"
+      className="glass-card group block h-full overflow-hidden transition hover:border-primary/40"
     >
-      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-        <span className="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary">
-          {post.category}
-        </span>
-        <span>·</span>
-        <span>{formatDate(post.publishedAt)}</span>
-        <span>·</span>
-        <span className="inline-flex items-center gap-1">
-          <Clock className="h-3 w-3" /> {post.readTime} min
-        </span>
-      </div>
-      <h3
-        className={`mt-4 font-heading font-semibold text-foreground transition-colors group-hover:text-primary ${
-          featured ? "text-2xl md:text-3xl" : "text-lg md:text-xl"
-        }`}
-      >
-        {post.title}
-      </h3>
-      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{post.excerpt}</p>
-      <div className="mt-6 flex items-center justify-between">
-        <div className="text-xs">
-          <p className="font-medium text-foreground">{post.author}</p>
-          <p className="text-muted-foreground">{post.authorRole}</p>
+      {post.heroImage && (
+        <div className="relative aspect-[16/9] w-full overflow-hidden">
+          <img
+            src={post.heroImage}
+            alt={post.title}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
         </div>
-        <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary opacity-70 transition-opacity group-hover:opacity-100">
-          Read article <ArrowRight className="h-4 w-4" />
-        </span>
+      )}
+      <div className="p-6 md:p-8">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <span className="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary">
+            {post.category}
+          </span>
+          <span>·</span>
+          <span>{formatDate(post.publishedAt)}</span>
+          <span>·</span>
+          <span className="inline-flex items-center gap-1">
+            <Clock className="h-3 w-3" /> {post.readTime} min
+          </span>
+        </div>
+        <h3
+          className={`mt-4 font-heading font-semibold text-foreground transition-colors group-hover:text-primary ${
+            featured ? "text-2xl md:text-3xl" : "text-lg md:text-xl"
+          }`}
+        >
+          {post.title}
+        </h3>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{post.excerpt}</p>
+        <div className="mt-6 flex items-center justify-between">
+          <div className="text-xs">
+            <p className="font-medium text-foreground">{post.author}</p>
+            <p className="text-muted-foreground">{post.authorRole}</p>
+          </div>
+          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary opacity-70 transition-opacity group-hover:opacity-100">
+            Read article <ArrowRight className="h-4 w-4" />
+          </span>
+        </div>
       </div>
     </Link>
   </motion.article>
