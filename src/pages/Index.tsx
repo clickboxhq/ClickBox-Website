@@ -121,58 +121,8 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Fellowship Hero — FIRST */}
-      <section className="section-padding relative overflow-hidden pt-32">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.15),transparent_60%)]" />
-        <div className="mx-auto max-w-5xl text-center relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-medium text-primary backdrop-blur"
-          >
-            <Shield className="h-3.5 w-3.5" />
-            ClickBox Cybersecurity Fellowship · Cohort 2026
-          </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-heading text-4xl font-bold leading-tight text-foreground md:text-6xl lg:text-7xl"
-          >
-            Launch Your Cybersecurity Career With{" "}
-            <span className="text-gradient">Real-World Experience.</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground"
-          >
-            A highly selective fellowship — 10 fellows. 5 specialized pathways. Applications open
-            in June.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="mt-10 flex flex-wrap justify-center gap-4"
-          >
-            <Link
-              to="/internship#apply"
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
-            >
-              Apply to the Fellowship <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              to="/internship"
-              className="rounded-md border border-white/10 bg-secondary/80 px-6 py-3 text-sm font-semibold text-secondary-foreground backdrop-blur transition-all hover:bg-muted"
-            >
-              Learn More
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+      {/* Hero — Premium building CTA */}
+      <PremiumCTA asHero />
 
       {/* Consulting Hero */}
       <section className="section-padding border-t border-white/5">
