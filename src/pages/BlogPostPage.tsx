@@ -95,8 +95,17 @@ const BlogPostPage = () => {
         {/* Hero image */}
         <div className="mx-auto mt-12 max-w-5xl px-6">
           <div className="glass relative overflow-hidden rounded-2xl">
-            <div className="aspect-[16/8] w-full bg-gradient-to-br from-primary/20 via-secondary to-background" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.18),transparent_70%)]" />
+            {post.heroImage ? (
+              <img
+                src={post.heroImage}
+                alt={post.title}
+                loading="eager"
+                className="aspect-[16/8] w-full object-cover"
+              />
+            ) : (
+              <div className="aspect-[16/8] w-full bg-gradient-to-br from-primary/20 via-secondary to-background" />
+            )}
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.18),transparent_70%)]" />
           </div>
         </div>
 
