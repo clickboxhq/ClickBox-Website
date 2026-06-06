@@ -129,6 +129,31 @@ const About = () => (
       </div>
     </section>
 
+    <section className="section-padding border-t border-white/5">
+      <div className="mx-auto max-w-7xl">
+        <motion.div
+          className="mb-12 max-w-2xl"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+            Certifications & Expertise
+          </p>
+          <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+            Industry-recognized credentials backing every engagement.
+          </h2>
+          <p className="mt-4 text-muted-foreground leading-relaxed">
+            Our team combines industry-recognized certifications, practical cybersecurity experience,
+            and business-focused expertise to help organizations strengthen security, manage risk,
+            and operate with confidence.
+          </p>
+        </motion.div>
+        <CertificationsMarquee />
+      </div>
+    </section>
+
     <Footer />
   </div>
 );
