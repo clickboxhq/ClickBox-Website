@@ -1,10 +1,25 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Lock, Loader2, ShieldCheck } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { Lock, Loader2, ShieldCheck, AlertTriangle } from "lucide-react";
+import { useAuth, isSignInRateLimited } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { sanitizeEmail } from "@/lib/inputSanitization";
 import logo from "@/assets/clickbox-logo.jpeg";
+
+const MIN_PASSWORD_LENGTH = 8;
+const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+const validatePassword = (pw: string, mode: "signin" | "signup"): string | null => {
+  if (pw.length < (mode === "signup" ? MIN_PASSWORD_LENGTH : 6)) {
+    return mode === "signup"
+      ? "Password must be at least 8 characters"
+      : "Password must be at least 6 characters";
+  }
+  if (mode === "signup" && !PASSWORD_PATTERN.test(pw)) {
+    return "Password must contain uppercase, lowercase and a number";
+  }
+  return null;
+};
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -15,6 +30,12 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
+  const [rateLimited, setRateLimited] = useState(isSignInRateLimited());
+
+  // Recheck rate limit state every time it might change
+  useEffect(() => {
+    setRateLimited(isSignInRateLimited());
+  }, []);
 
   useEffect(() => {
     if (!loading && user && isAdmin) navigate("/admin", { replace: true });
@@ -23,8 +44,8 @@ const AdminLogin = () => {
   useEffect(() => {
     const reason = (location.state as { reason?: string } | null)?.reason;
     if (reason === "idle_timeout") {
-      toast.info("Your session has expired", {
-        description: "You were signed out due to inactivity. Please sign in again.",
+      toast.info("Session expired", {
+        description: "You were signed out automatically due to inactivity.",
       });
       navigate(location.pathname, { replace: true, state: null });
     }
@@ -34,24 +55,25 @@ const AdminLogin = () => {
     e.preventDefault();
     setFieldErrors({});
 
+    if (isSignInRateLimited()) {
+      setRateLimited(true);
+      toast.error("Too many attempts", {
+        description: "Please wait 15 minutes before trying again.",
+      });
+      return;
+    }
+
     const safeEmail = sanitizeEmail(email);
-    const nextErrors: { email?: string; password?: string } = {};
+    const errors: { email?: string; password?: string } = {};
 
     if (!safeEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(safeEmail)) {
-      nextErrors.email = "Email: Please enter a valid email address";
+      errors.email = "Please enter a valid email address";
     }
-    if (password.length < 6) {
-      nextErrors.password = "Password: Must be at least 6 characters";
-    }
-    if (mode === "signup" && password.length < 8) {
-      nextErrors.password = "Password: Must be at least 8 characters for new accounts";
-    }
+    const pwError = validatePassword(password, mode);
+    if (pwError) errors.password = pwError;
 
-    if (Object.keys(nextErrors).length > 0) {
-      setFieldErrors(nextErrors);
-      toast.error("Please fix the highlighted fields", {
-        description: nextErrors.email ?? nextErrors.password,
-      });
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
       return;
     }
 
@@ -59,132 +81,162 @@ const AdminLogin = () => {
     if (mode === "signup") {
       const { error } = await signUp(safeEmail, password);
       setSubmitting(false);
-      if (error) {
-        toast.error("Sign up failed", { description: error });
-        return;
-      }
-      toast.success("Account created", {
-        description: "Check your email to confirm, then ask an existing admin to grant access.",
-      });
+      if (error) { toast.error("Sign up failed", { description: error }); return; }
+      toast.success("Account created — check your email, then ask an admin to grant access.");
       setMode("signin");
       return;
     }
+
     const { error } = await signIn(safeEmail, password);
     setSubmitting(false);
     if (error) {
+      setRateLimited(isSignInRateLimited());
       toast.error("Sign in failed", { description: error });
       return;
     }
-    toast.success("Signed in");
     navigate("/admin", { replace: true });
   };
 
+  const inputClass = (field: keyof typeof fieldErrors) =>
+    `w-full rounded-lg border bg-background/60 px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 ${
+      fieldErrors[field]
+        ? "border-red-500/50 focus:border-red-500/60 focus:ring-red-500/30"
+        : "border-white/10 focus:border-primary/50 focus:ring-primary/30"
+    }`;
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-6 py-12">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.12),transparent_60%)]" />
+    <div className="flex min-h-screen items-center justify-center bg-[hsl(0_0%_3%)] px-6 py-12">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.10),transparent_60%)]" />
+
       <div className="relative w-full max-w-md">
-        <div className="mb-8 flex items-center justify-center gap-3">
-          <img src={logo} alt="ClickBox" className="h-10 w-10 rounded-lg object-cover ring-1 ring-white/10" />
-          <span className="font-heading text-xl font-bold text-foreground">ClickBox Admin</span>
+        {/* Branding */}
+        <div className="mb-8 flex flex-col items-center gap-3 text-center">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 ring-2 ring-primary/20">
+            <ShieldCheck className="h-7 w-7 text-primary" />
+          </div>
+          <div>
+            <p className="font-heading text-xl font-bold text-foreground">ClickBox Admin</p>
+            <p className="text-xs text-muted-foreground">Restricted access — authorized personnel only</p>
+          </div>
         </div>
 
-        <form onSubmit={onSubmit} className="glass-card space-y-5 p-8">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20">
-              <ShieldCheck className="h-5 w-5 text-primary" />
-            </div>
+        {/* Rate-limit warning */}
+        {rateLimited && (
+          <div className="mb-4 flex items-start gap-3 rounded-xl border border-red-500/20 bg-red-500/8 p-4">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-red-400" />
+            <p className="text-sm text-red-300">
+              Too many failed attempts. Please wait 15 minutes before trying again, or contact{" "}
+              <a href="mailto:info@useclickbox.com" className="underline">
+                info@useclickbox.com
+              </a>
+              .
+            </p>
+          </div>
+        )}
+
+        <form onSubmit={onSubmit} className="glass-card space-y-5 p-8" noValidate autoComplete="on">
+          <div className="flex items-center gap-3 border-b border-white/8 pb-5">
+            <img
+              src={logo}
+              alt="ClickBox"
+              className="h-9 w-9 rounded-lg object-cover ring-1 ring-white/10"
+            />
             <div>
-              <h1 className="font-heading text-lg font-semibold text-foreground">
-                {mode === "signin" ? "Secure access" : "Create admin account"}
+              <h1 className="font-heading text-base font-semibold text-foreground">
+                {mode === "signin" ? "Sign in to your account" : "Create admin account"}
               </h1>
               <p className="text-xs text-muted-foreground">
                 {mode === "signin"
-                  ? "Authorized administrators only."
-                  : "New accounts require admin role approval."}
+                  ? "Enter your credentials to continue"
+                  : "New accounts require admin role approval"}
               </p>
             </div>
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <label htmlFor="admin-email" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Email
             </label>
             <input
+              id="admin-email"
               type="email"
               required
               autoComplete="email"
               maxLength={255}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              aria-invalid={fieldErrors.email ? true : undefined}
+              disabled={rateLimited}
+              aria-invalid={!!fieldErrors.email}
               aria-describedby={fieldErrors.email ? "admin-email-error" : undefined}
-              className={`w-full rounded-md border bg-background/50 px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 ${
-                fieldErrors.email
-                  ? "border-red-500/50 focus:border-red-500/60 focus:ring-red-500/30"
-                  : "border-white/10 focus:border-primary/50 focus:ring-primary/30"
-              }`}
+              className={inputClass("email")}
             />
-            {fieldErrors.email ? (
+            {fieldErrors.email && (
               <p id="admin-email-error" className="mt-1.5 text-xs text-red-400" role="alert">
                 {fieldErrors.email}
               </p>
-            ) : null}
+            )}
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <label htmlFor="admin-password" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Password
             </label>
             <input
+              id="admin-password"
               type="password"
               required
               autoComplete={mode === "signin" ? "current-password" : "new-password"}
-              minLength={6}
+              minLength={mode === "signup" ? MIN_PASSWORD_LENGTH : 6}
               maxLength={128}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              aria-invalid={fieldErrors.password ? true : undefined}
-              aria-describedby={fieldErrors.password ? "admin-password-error" : undefined}
-              className={`w-full rounded-md border bg-background/50 px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 ${
-                fieldErrors.password
-                  ? "border-red-500/50 focus:border-red-500/60 focus:ring-red-500/30"
-                  : "border-white/10 focus:border-primary/50 focus:ring-primary/30"
-              }`}
+              disabled={rateLimited}
+              aria-invalid={!!fieldErrors.password}
+              aria-describedby={fieldErrors.password ? "admin-pw-error" : undefined}
+              className={inputClass("password")}
             />
-            {fieldErrors.password ? (
-              <p id="admin-password-error" className="mt-1.5 text-xs text-red-400" role="alert">
+            {fieldErrors.password && (
+              <p id="admin-pw-error" className="mt-1.5 text-xs text-red-400" role="alert">
                 {fieldErrors.password}
               </p>
-            ) : null}
+            )}
+            {mode === "signup" && (
+              <p className="mt-1.5 text-xs text-muted-foreground">
+                Min 8 characters with uppercase, lowercase and a number.
+              </p>
+            )}
           </div>
 
           <button
             type="submit"
-            disabled={submitting}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
+            disabled={submitting || rateLimited}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-50"
           >
-            {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}
+            {submitting ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Lock className="h-4 w-4" />
+            )}
             {submitting
               ? mode === "signin" ? "Signing in…" : "Creating account…"
               : mode === "signin" ? "Sign in" : "Create account"}
           </button>
 
-          <button
-            type="button"
-            onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-            className="w-full text-center text-xs text-muted-foreground hover:text-foreground"
-          >
-            {mode === "signin"
-              ? "Need an account? Sign up"
-              : "Already have an account? Sign in"}
-          </button>
-
-          <p className="text-center text-xs text-muted-foreground">
-            Trouble accessing the portal? Contact{" "}
-            <a href="mailto:info@useclickbox.com" className="text-primary hover:underline">
-              info@useclickbox.com
+          <div className="flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setFieldErrors({}); }}
+              className="text-xs text-muted-foreground hover:text-foreground transition"
+            >
+              {mode === "signin" ? "Need an account?" : "Have an account? Sign in"}
+            </button>
+            <a
+              href="mailto:info@useclickbox.com"
+              className="text-xs text-muted-foreground hover:text-primary transition"
+            >
+              Need help?
             </a>
-          </p>
+          </div>
         </form>
       </div>
     </div>

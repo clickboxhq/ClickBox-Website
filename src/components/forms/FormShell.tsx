@@ -1,6 +1,8 @@
 import {
   cloneElement,
   isValidElement,
+  useEffect,
+  useRef,
   useState,
   type FormEvent,
   type ReactElement,
@@ -19,6 +21,7 @@ import {
   sanitizeText,
 } from "@/lib/inputSanitization";
 import { isValidUrl, normalizeUrl, validateCertificationLinks } from "@/lib/urlValidation";
+import { uploadResumeFile, validateResumeFile, deleteStoredResume } from "@/lib/resumeUpload";
 
 type SubmitResult = { ok: true } | { ok: false; message: string; fieldErrors?: FieldErrors };
 
@@ -31,6 +34,8 @@ type FormShellProps = {
   onSubmit: (data: FormData) => Promise<SubmitResult>;
   successTitle?: string;
   successMessage?: string;
+  /** Scroll the success message into view after submit (default: true) */
+  scrollOnSuccess?: boolean;
 };
 
 const RATE_KEY = "clickbox:form-submit:last";
@@ -59,6 +64,9 @@ export const fieldClass =
 export const fieldErrorClass =
   "border-red-500/50 focus:border-red-500/60 focus:ring-red-500/30";
 
+export const fileInputClass =
+  "block w-full cursor-pointer text-sm text-muted-foreground file:mr-4 file:cursor-pointer file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-primary-foreground hover:file:opacity-90";
+
 export const Label = ({
   children,
   required,
@@ -86,13 +94,16 @@ type FormFieldProps = {
 };
 
 export const FormField = ({ name, label, required, error, children }: FormFieldProps) => {
+  const isFileInput = isValidElement(children) && children.props.type === "file";
+  const inputClass = isFileInput
+    ? [fileInputClass, error ? "rounded-md ring-1 ring-red-500/50" : ""].filter(Boolean).join(" ")
+    : [fieldClass, error ? fieldErrorClass : "", children.props.className].filter(Boolean).join(" ");
+
   const control = isValidElement(children)
     ? cloneElement(children, {
         id: name,
         name,
-        className: [fieldClass, error ? fieldErrorClass : "", children.props.className]
-          .filter(Boolean)
-          .join(" "),
+        className: inputClass,
         "aria-invalid": error ? true : undefined,
         "aria-describedby": error ? `${name}-error` : undefined,
       })
@@ -118,10 +129,21 @@ export const FormShell = ({
   onSubmit,
   successTitle = "Submission received",
   successMessage = "Thanks — we'll be in touch shortly.",
+  scrollOnSuccess = true,
 }: FormShellProps) => {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const successRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!submitted || !scrollOnSuccess || !successRef.current) return;
+
+    const el = successRef.current;
+    const navbarOffset = 96;
+    const top = el.getBoundingClientRect().top + window.scrollY - navbarOffset;
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+  }, [scrollOnSuccess, submitted]);
 
   const handle = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -162,7 +184,7 @@ export const FormShell = ({
 
   if (submitted) {
     return (
-      <div className="glass-card p-12 text-center">
+      <div ref={successRef} className="glass-card p-12 text-center scroll-mt-24">
         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/30">
           <CheckCircle2 className="h-7 w-7 text-primary" />
         </div>
@@ -180,7 +202,12 @@ export const FormShell = ({
   }
 
   return (
-    <form onSubmit={handle} className="glass-card space-y-5 p-6 md:p-8" noValidate>
+    <form
+      onSubmit={handle}
+      encType="multipart/form-data"
+      className="glass-card space-y-5 p-6 md:p-8"
+      noValidate
+    >
       <input
         type="text"
         name="website"
@@ -296,7 +323,7 @@ const fellowshipSchema = z.object({
     .transform((v) => sanitizeEmail(v))
     .pipe(z.string().email("Email: Please enter a valid email address").max(255)),
   linkedin: requiredUrl("LinkedIn Profile", 300),
-  resume_url: optionalUrl("Resume URL", 500),
+  resume_url: z.string().min(1, "Resume: Please upload your resume"),
   preferred_pathway: z
     .string()
     .transform((v) => sanitizeText(v, 120))
@@ -378,11 +405,38 @@ export const submitProduct = async (fd: FormData): Promise<SubmitResult> => {
 };
 
 export const submitFellowship = async (fd: FormData): Promise<SubmitResult> => {
+  const resumeEntry = fd.get("resume");
+  let resumePath: string | null = null;
+
+  if (!(resumeEntry instanceof File) || resumeEntry.size === 0) {
+    const message = "Resume: Please upload your resume (PDF or Word, max 5MB)";
+    return { ok: false, message, fieldErrors: { resume: message } };
+  }
+
+  const fileValidation = validateResumeFile(resumeEntry);
+  if (!fileValidation.ok) {
+    return {
+      ok: false,
+      message: fileValidation.message,
+      fieldErrors: { resume: fileValidation.message },
+    };
+  }
+
+  const upload = await uploadResumeFile(resumeEntry);
+  if (!upload.ok) {
+    return {
+      ok: false,
+      message: upload.message,
+      fieldErrors: { resume: upload.message },
+    };
+  }
+  resumePath = upload.path;
+
   const parsed = parseForm(fellowshipSchema, {
     full_name: fd.get("full_name"),
     email: fd.get("email"),
     linkedin: fd.get("linkedin"),
-    resume_url: fd.get("resume_url"),
+    resume_url: resumePath,
     preferred_pathway: fd.get("preferred_pathway"),
     certifications: fd.get("certifications"),
     certification_links: fd.get("certification_links"),
@@ -390,9 +444,15 @@ export const submitFellowship = async (fd: FormData): Promise<SubmitResult> => {
     motivation: fd.get("motivation"),
     portfolio: fd.get("portfolio"),
   });
-  if (!parsed.ok) return parsed;
+  if (!parsed.ok) {
+    await deleteStoredResume(resumePath);
+    return parsed;
+  }
 
   const { error } = await supabase.from("fellowship_applications").insert(parsed.data as never);
-  if (error) return { ok: false, message: error.message };
+  if (error) {
+    await deleteStoredResume(resumePath);
+    return { ok: false, message: error.message };
+  }
   return { ok: true };
 };
