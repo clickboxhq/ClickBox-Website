@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import logo from "@/assets/clickbox-logo.jpeg";
@@ -14,7 +14,23 @@ const navLinks = [
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      // Hide when scrolling down past threshold, show when scrolling up
+      if (y > 120 && y > lastY) setHidden(true);
+      else setHidden(false);
+      lastY = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleNavClick = (path: string) => {
     setMobileOpen(false);
@@ -29,11 +45,21 @@ const Navbar = () => {
   };
 
   const fellowshipBtn =
-    "rounded-md border border-white/10 bg-secondary/80 px-5 py-2.5 text-sm font-semibold text-secondary-foreground backdrop-blur transition-all hover:bg-muted";
+    "rounded-md border border-white/10 bg-secondary/80 px-5 py-2 text-sm font-semibold text-secondary-foreground backdrop-blur transition-all hover:bg-muted";
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-background/60 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+    <nav
+      className={`fixed left-0 right-0 top-0 z-50 border-b transition-all duration-500 ease-out ${
+        scrolled
+          ? "border-white/10 bg-background/80 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.3)]"
+          : "border-white/5 bg-background/50 backdrop-blur-xl"
+      } ${hidden ? "-translate-y-full" : "translate-y-0"}`}
+    >
+      <div
+        className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-all duration-500 ease-out ${
+          scrolled ? "py-2" : "py-3"
+        }`}
+      >
         <Link
           to="/"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -44,9 +70,15 @@ const Navbar = () => {
             alt="ClickBox"
             width={56}
             height={56}
-            className="h-12 w-12 md:h-14 md:w-14 rounded-lg object-cover ring-1 ring-white/10"
+            className={`rounded-lg object-cover ring-1 ring-white/10 transition-all duration-500 ease-out ${
+              scrolled ? "h-9 w-9 md:h-10 md:w-10" : "h-12 w-12 md:h-14 md:w-14"
+            }`}
           />
-          <span className="font-heading text-xl md:text-2xl font-bold tracking-tight text-foreground">
+          <span
+            className={`font-heading font-bold tracking-tight text-foreground transition-all duration-500 ease-out ${
+              scrolled ? "text-base md:text-lg" : "text-xl md:text-2xl"
+            }`}
+          >
             ClickBox
           </span>
         </Link>

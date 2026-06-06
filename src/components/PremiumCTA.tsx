@@ -21,11 +21,12 @@ const PremiumCTA = ({ asHero = false }: Props) => {
           alt="ClickBox headquarters building"
           loading={asHero ? "eager" : "lazy"}
           fetchPriority={asHero ? "high" : "auto"}
-          className="h-full w-full object-cover"
+          decoding="async"
+          className="h-full w-full object-cover object-[70%_center] md:object-center"
         />
-        {/* Softer overlays so the building remains the focal point */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/30 to-background/85" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-transparent md:from-background/55" />
+        {/* Softer overlays so the building remains visible on every device */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/15 to-background/70" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/20 to-transparent md:from-background/55" />
       </div>
 
       <div
