@@ -27,8 +27,8 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {
+  FormField,
   FormShell,
-  Label,
   fieldClass,
   submitFellowship,
 } from "@/components/forms/FormShell";
@@ -691,29 +691,43 @@ const Internship = () => {
               successTitle="Application submitted"
               successMessage="Thanks for applying — we'll review your submission and follow up by email."
             >
-              {() => (
+              {({ fieldErrors }) => (
                 <>
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <Label required>Full Name</Label>
-                      <input name="full_name" required maxLength={120} className={fieldClass} />
-                    </div>
-                    <div>
-                      <Label required>Email</Label>
-                      <input type="email" name="email" required maxLength={255} className={fieldClass} />
-                    </div>
+                    <FormField name="full_name" label="Full Name" required error={fieldErrors.full_name}>
+                      <input required maxLength={120} autoComplete="name" />
+                    </FormField>
+                    <FormField name="email" label="Email" required error={fieldErrors.email}>
+                      <input type="email" required maxLength={255} autoComplete="email" />
+                    </FormField>
                   </div>
-                  <div>
-                    <Label required>LinkedIn Profile</Label>
-                    <input type="text" inputMode="url" name="linkedin" required placeholder="linkedin.com/in/your-profile" className={fieldClass} />
-                  </div>
-                  <div>
-                    <Label>Resume URL (optional)</Label>
-                    <input type="text" inputMode="url" name="resume_url" placeholder="drive.google.com/... or personal site" className={fieldClass} />
-                  </div>
-                  <div>
-                    <Label required>Preferred Career Pathway</Label>
-                    <select name="preferred_pathway" required className={fieldClass}>
+                  <FormField
+                    name="linkedin"
+                    label="LinkedIn Profile"
+                    required
+                    error={fieldErrors.linkedin}
+                  >
+                    <input
+                      type="text"
+                      inputMode="url"
+                      required
+                      placeholder="linkedin.com/in/your-profile"
+                    />
+                  </FormField>
+                  <FormField name="resume_url" label="Resume URL (optional)" error={fieldErrors.resume_url}>
+                    <input
+                      type="text"
+                      inputMode="url"
+                      placeholder="drive.google.com/... or personal site"
+                    />
+                  </FormField>
+                  <FormField
+                    name="preferred_pathway"
+                    label="Preferred Career Pathway"
+                    required
+                    error={fieldErrors.preferred_pathway}
+                  >
+                    <select required className={fieldClass}>
                       <option value="">Select a pathway…</option>
                       <option>SOC Analyst</option>
                       <option>Security Engineering</option>
@@ -721,27 +735,46 @@ const Internship = () => {
                       <option>Vulnerability Management</option>
                       <option>Governance, Risk & Compliance</option>
                     </select>
-                  </div>
-                  <div>
-                    <Label>Certifications</Label>
-                    <input name="certifications" placeholder="e.g. Security+, ISC2 CC, Google Cybersecurity" className={fieldClass} />
-                  </div>
-                  <div>
-                    <Label>Certification Links</Label>
-                    <textarea name="certification_links" rows={2} placeholder="Credly / verification URLs, one per line" className={fieldClass} />
-                  </div>
-                  <div>
-                    <Label>Relevant Experience</Label>
-                    <textarea name="relevant_experience" rows={3} maxLength={1500} className={fieldClass} />
-                  </div>
-                  <div>
-                    <Label required>Why do you want to join?</Label>
-                    <textarea name="motivation" required rows={4} maxLength={1500} className={fieldClass} />
-                  </div>
-                  <div>
-                    <Label>Portfolio / GitHub Link</Label>
-                    <input type="text" inputMode="url" name="portfolio" placeholder="github.com/your-username" className={fieldClass} />
-                  </div>
+                  </FormField>
+                  <FormField name="certifications" label="Certifications" error={fieldErrors.certifications}>
+                    <input
+                      placeholder="e.g. Security+, ISC2 CC, Google Cybersecurity"
+                      maxLength={1000}
+                    />
+                  </FormField>
+                  <FormField
+                    name="certification_links"
+                    label="Certification Links"
+                    error={fieldErrors.certification_links}
+                  >
+                    <textarea
+                      rows={3}
+                      maxLength={2000}
+                      placeholder="Credly / verification URLs — one per line"
+                    />
+                  </FormField>
+                  <FormField
+                    name="relevant_experience"
+                    label="Relevant Experience"
+                    error={fieldErrors.relevant_experience}
+                  >
+                    <textarea rows={3} maxLength={2000} />
+                  </FormField>
+                  <FormField
+                    name="motivation"
+                    label="Why do you want to join?"
+                    required
+                    error={fieldErrors.motivation}
+                  >
+                    <textarea required rows={4} maxLength={2000} />
+                  </FormField>
+                  <FormField
+                    name="portfolio"
+                    label="Portfolio / GitHub Link"
+                    error={fieldErrors.portfolio}
+                  >
+                    <input type="text" inputMode="url" placeholder="github.com/your-username" />
+                  </FormField>
                 </>
               )}
             </FormShell>

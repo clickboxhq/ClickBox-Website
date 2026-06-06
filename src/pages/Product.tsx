@@ -3,8 +3,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import productHero from "@/assets/product-hero.jpeg";
 import {
+  FormField,
   FormShell,
-  Label,
   fieldClass,
   submitProduct,
 } from "@/components/forms/FormShell";
@@ -113,49 +113,41 @@ const Product = () => {
             successTitle="Inquiry received"
             successMessage="Thanks — our team will be in touch about next steps."
           >
-            {() => (
+            {({ fieldErrors }) => (
               <>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <Label required>Name</Label>
-                    <input name="name" required maxLength={100} className={fieldClass} />
-                  </div>
-                  <div>
-                    <Label required>Company</Label>
-                    <input name="company" required maxLength={120} className={fieldClass} />
-                  </div>
+                  <FormField name="name" label="Name" required error={fieldErrors.name}>
+                    <input required maxLength={120} autoComplete="name" />
+                  </FormField>
+                  <FormField name="company" label="Company" required error={fieldErrors.company}>
+                    <input required maxLength={150} autoComplete="organization" />
+                  </FormField>
                 </div>
-                <div>
-                  <Label required>Email</Label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    maxLength={255}
-                    className={fieldClass}
-                  />
-                </div>
-                <div>
-                  <Label required>Product Interest</Label>
-                  <select name="product_interest" required className={fieldClass}>
+                <FormField name="email" label="Email" required error={fieldErrors.email}>
+                  <input type="email" required maxLength={255} autoComplete="email" />
+                </FormField>
+                <FormField
+                  name="product_interest"
+                  label="Product Interest"
+                  required
+                  error={fieldErrors.product_interest}
+                >
+                  <select required className={fieldClass}>
                     <option value="">Select an option…</option>
                     <option>Request a demo</option>
                     <option>Beta access</option>
                     <option>Partnership</option>
                     <option>General inquiry</option>
                   </select>
-                </div>
-                <div>
-                  <Label required>Message</Label>
+                </FormField>
+                <FormField name="message" label="Message" required error={fieldErrors.message}>
                   <textarea
-                    name="message"
                     required
                     rows={5}
-                    maxLength={2000}
-                    className={fieldClass}
+                    maxLength={5000}
                     placeholder="Tell us about your use case..."
                   />
-                </div>
+                </FormField>
               </>
             )}
           </FormShell>

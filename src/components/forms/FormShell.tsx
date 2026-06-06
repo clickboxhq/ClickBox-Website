@@ -1,24 +1,38 @@
-import { useState, type ReactNode } from "react";
+import {
+  cloneElement,
+  isValidElement,
+  useState,
+  type FormEvent,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Loader2, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { formatZodError, type FieldErrors, type ValidationFailure } from "@/lib/formErrors";
 import {
-  isValidUrl,
-  normalizeCertificationLinks,
-  normalizeUrl,
-} from "@/lib/urlValidation";
+  sanitizeEmail,
+  sanitizeMultilineText,
+  sanitizeOptionalText,
+  sanitizePhone,
+  sanitizeText,
+} from "@/lib/inputSanitization";
+import { isValidUrl, normalizeUrl, validateCertificationLinks } from "@/lib/urlValidation";
 
-type SubmitResult = { ok: true } | { ok: false; message: string };
+type SubmitResult = { ok: true } | { ok: false; message: string; fieldErrors?: FieldErrors };
 
 type FormShellProps = {
-  children: (state: { submitting: boolean; submitted: boolean }) => ReactNode;
+  children: (state: {
+    submitting: boolean;
+    submitted: boolean;
+    fieldErrors: FieldErrors;
+  }) => ReactNode;
   onSubmit: (data: FormData) => Promise<SubmitResult>;
   successTitle?: string;
   successMessage?: string;
 };
 
-// ---- Client-side rate limiting (per browser, per form-shell instance) ----
 const RATE_KEY = "clickbox:form-submit:last";
 const RATE_MIN_INTERVAL_MS = 5_000;
 
@@ -39,6 +53,66 @@ const markSubmitted = () => {
   }
 };
 
+export const fieldClass =
+  "w-full rounded-md border border-white/10 bg-background/50 backdrop-blur px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 transition";
+
+export const fieldErrorClass =
+  "border-red-500/50 focus:border-red-500/60 focus:ring-red-500/30";
+
+export const Label = ({
+  children,
+  required,
+  htmlFor,
+}: {
+  children: ReactNode;
+  required?: boolean;
+  htmlFor?: string;
+}) => (
+  <label
+    htmlFor={htmlFor}
+    className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-muted-foreground"
+  >
+    {children}
+    {required && <span className="text-primary"> *</span>}
+  </label>
+);
+
+type FormFieldProps = {
+  name: string;
+  label: ReactNode;
+  required?: boolean;
+  error?: string;
+  children: ReactElement<{ id?: string; name?: string; className?: string }>;
+};
+
+export const FormField = ({ name, label, required, error, children }: FormFieldProps) => {
+  const control = isValidElement(children)
+    ? cloneElement(children, {
+        id: name,
+        name,
+        className: [fieldClass, error ? fieldErrorClass : "", children.props.className]
+          .filter(Boolean)
+          .join(" "),
+        "aria-invalid": error ? true : undefined,
+        "aria-describedby": error ? `${name}-error` : undefined,
+      })
+    : children;
+
+  return (
+    <div data-field={name}>
+      <Label htmlFor={name} required={required}>
+        {label}
+      </Label>
+      {control}
+      {error ? (
+        <p id={`${name}-error`} className="mt-1.5 text-xs text-red-400" role="alert">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+};
+
 export const FormShell = ({
   children,
   onSubmit,
@@ -47,13 +121,13 @@ export const FormShell = ({
 }: FormShellProps) => {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
-  const handle = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handle = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const fd = new FormData(form);
 
-    // Honeypot
     if ((fd.get("website") as string)?.length) return;
 
     if (isRateLimited()) {
@@ -64,6 +138,8 @@ export const FormShell = ({
     }
 
     setSubmitting(true);
+    setFieldErrors({});
+
     const res = await onSubmit(fd);
     setSubmitting(false);
 
@@ -72,8 +148,15 @@ export const FormShell = ({
       setSubmitted(true);
       toast.success(successTitle, { description: successMessage });
       form.reset();
-    } else {
-      toast.error("Submission failed", { description: res.message });
+      return;
+    }
+
+    setFieldErrors(res.fieldErrors ?? {});
+    toast.error("Submission failed", { description: res.message });
+
+    const firstField = Object.keys(res.fieldErrors ?? {})[0];
+    if (firstField) {
+      form.querySelector(`[name="${firstField}"]`)?.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   };
 
@@ -97,7 +180,7 @@ export const FormShell = ({
   }
 
   return (
-    <form onSubmit={handle} className="glass-card p-6 md:p-8 space-y-5" noValidate>
+    <form onSubmit={handle} className="glass-card space-y-5 p-6 md:p-8" noValidate>
       <input
         type="text"
         name="website"
@@ -106,7 +189,7 @@ export const FormShell = ({
         className="hidden"
         aria-hidden="true"
       />
-      {children({ submitting, submitted })}
+      {children({ submitting, submitted, fieldErrors })}
       <button
         type="submit"
         disabled={submitting}
@@ -119,128 +202,196 @@ export const FormShell = ({
   );
 };
 
-export const fieldClass =
-  "w-full rounded-md border border-white/10 bg-background/50 backdrop-blur px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 transition";
-
-export const Label = ({ children, required }: { children: ReactNode; required?: boolean }) => (
-  <label className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
-    {children}
-    {required && <span className="text-primary"> *</span>}
-  </label>
-);
-
-const clean = (v: FormDataEntryValue | null, max = 2000) =>
-  String(v ?? "")
-    .replace(/[\u0000-\u001F\u007F]/g, "")
-    .trim()
-    .slice(0, max);
-
-const nullable = (v: string) => (v ? v : null);
-
-const optionalUrl = (max: number) =>
+const optionalUrl = (fieldLabel: string, max: number) =>
   z
     .union([z.string(), z.null(), z.undefined()])
     .transform((v) => {
-      const s = String(v ?? "").trim();
+      const s = sanitizeText(v, max);
       return s ? s : null;
     })
-    .refine((v) => v === null || isValidUrl(v), { message: "Please enter a valid URL" })
+    .superRefine((v, ctx) => {
+      if (v === null) return;
+      if (!isValidUrl(v)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `${fieldLabel}: Please enter a valid URL`,
+        });
+      }
+    })
     .transform((v) => (v === null ? null : normalizeUrl(v).slice(0, max)));
 
-const requiredUrl = (max: number) =>
+const requiredUrl = (fieldLabel: string, max: number) =>
   z
     .string()
-    .trim()
-    .min(1, "Please enter a valid URL")
-    .max(max)
-    .refine(isValidUrl, { message: "Please enter a valid URL" })
+    .transform((v) => sanitizeText(v, max))
+    .superRefine((v, ctx) => {
+      if (!v) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `${fieldLabel}: Please enter a valid URL`,
+        });
+        return;
+      }
+      if (!isValidUrl(v)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `${fieldLabel}: Please enter a valid URL`,
+        });
+      }
+    })
     .transform((v) => normalizeUrl(v));
 
 const contactSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(120),
-  email: z.string().trim().email("Invalid email").max(255),
-  phone: z.string().trim().max(40).optional().nullable(),
-  company: z.string().trim().max(150).optional().nullable(),
-  subject: z.string().trim().min(1, "Subject is required").max(200),
-  message: z.string().trim().min(5, "Message is too short").max(5000),
+  name: z.string().transform((v) => sanitizeText(v, 120)).pipe(z.string().min(1, "Name is required").max(120)),
+  email: z
+    .string()
+    .transform((v) => sanitizeEmail(v))
+    .pipe(z.string().email("Email: Please enter a valid email address").max(255)),
+  phone: z
+    .union([z.string(), z.null(), z.undefined()])
+    .transform((v) => sanitizePhone(v, 40)),
+  company: z
+    .union([z.string(), z.null(), z.undefined()])
+    .transform((v) => sanitizeOptionalText(v, 150)),
+  subject: z
+    .string()
+    .transform((v) => sanitizeText(v, 200))
+    .pipe(z.string().min(1, "Subject is required").max(200)),
+  message: z
+    .string()
+    .transform((v) => sanitizeMultilineText(v, 5000))
+    .pipe(z.string().min(5, "Message: Please enter at least 5 characters").max(5000)),
 });
 
 const productSchema = z.object({
-  name: z.string().trim().min(1).max(120),
-  company: z.string().trim().min(1).max(150),
-  email: z.string().trim().email().max(255),
-  product_interest: z.string().trim().min(1).max(200),
-  message: z.string().trim().min(5).max(5000),
+  name: z
+    .string()
+    .transform((v) => sanitizeText(v, 120))
+    .pipe(z.string().min(1, "Name is required").max(120)),
+  company: z
+    .string()
+    .transform((v) => sanitizeText(v, 150))
+    .pipe(z.string().min(1, "Company is required").max(150)),
+  email: z
+    .string()
+    .transform((v) => sanitizeEmail(v))
+    .pipe(z.string().email("Email: Please enter a valid email address").max(255)),
+  product_interest: z
+    .string()
+    .transform((v) => sanitizeText(v, 200))
+    .pipe(z.string().min(1, "Product Interest: Please select an option").max(200)),
+  message: z
+    .string()
+    .transform((v) => sanitizeMultilineText(v, 5000))
+    .pipe(z.string().min(5, "Message: Please enter at least 5 characters").max(5000)),
 });
 
 const fellowshipSchema = z.object({
-  full_name: z.string().trim().min(1).max(120),
-  email: z.string().trim().email().max(255),
-  linkedin: requiredUrl(300),
-  resume_url: optionalUrl(500),
-  preferred_pathway: z.string().trim().min(1).max(120),
-  certifications: z.string().trim().max(1000).optional().nullable(),
+  full_name: z
+    .string()
+    .transform((v) => sanitizeText(v, 120))
+    .pipe(z.string().min(1, "Full Name is required").max(120)),
+  email: z
+    .string()
+    .transform((v) => sanitizeEmail(v))
+    .pipe(z.string().email("Email: Please enter a valid email address").max(255)),
+  linkedin: requiredUrl("LinkedIn Profile", 300),
+  resume_url: optionalUrl("Resume URL", 500),
+  preferred_pathway: z
+    .string()
+    .transform((v) => sanitizeText(v, 120))
+    .pipe(z.string().min(1, "Preferred Career Pathway: Please select a pathway").max(120)),
+  certifications: z
+    .union([z.string(), z.null(), z.undefined()])
+    .transform((v) => sanitizeOptionalText(v, 1000)),
   certification_links: z
     .union([z.string(), z.null(), z.undefined()])
+    .transform((v) => sanitizeOptionalText(v, 2000))
+    .superRefine((v, ctx) => {
+      if (v === null) return;
+      const result = validateCertificationLinks(v);
+      if (result.ok) return;
+      const preview =
+        result.invalidValue.length > 60
+          ? `${result.invalidValue.slice(0, 60)}…`
+          : result.invalidValue;
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Certification Links (line ${result.line}): Please enter a valid URL — "${preview}"`,
+      });
+    })
     .transform((v) => {
-      const s = String(v ?? "").trim();
-      return s ? s : null;
-    })
-    .refine((v) => v === null || normalizeCertificationLinks(v) !== null, {
-      message: "Please enter valid URLs (one per line)",
-    })
-    .transform((v) => (v === null ? null : normalizeCertificationLinks(v))),
-  relevant_experience: z.string().trim().max(2000).optional().nullable(),
-  motivation: z.string().trim().min(10, "Tell us a bit more").max(2000),
-  portfolio: optionalUrl(500),
+      if (v === null) return null;
+      const result = validateCertificationLinks(v);
+      return result.ok ? result.value : null;
+    }),
+  relevant_experience: z
+    .union([z.string(), z.null(), z.undefined()])
+    .transform((v) => sanitizeOptionalText(v, 2000)),
+  motivation: z
+    .string()
+    .transform((v) => sanitizeMultilineText(v, 2000))
+    .pipe(
+      z
+        .string()
+        .min(10, "Why do you want to join?: Please tell us a bit more (at least 10 characters)")
+        .max(2000),
+    ),
+  portfolio: optionalUrl("Portfolio / GitHub Link", 500),
 });
 
-const firstError = (e: z.ZodError) =>
-  e.issues[0]?.message ?? "Please review the highlighted fields.";
+const parseForm = <T,>(schema: z.ZodType<T>, data: unknown): { ok: true; data: T } | ValidationFailure => {
+  const parsed = schema.safeParse(data);
+  if (parsed.success) return { ok: true, data: parsed.data };
+  return formatZodError(parsed.error);
+};
 
 export const submitContact = async (fd: FormData): Promise<SubmitResult> => {
-  const parsed = contactSchema.safeParse({
-    name: clean(fd.get("name"), 120),
-    email: clean(fd.get("email"), 255),
-    phone: nullable(clean(fd.get("phone"), 40)),
-    company: nullable(clean(fd.get("company"), 150)),
-    subject: clean(fd.get("subject"), 200),
-    message: clean(fd.get("message"), 5000),
+  const parsed = parseForm(contactSchema, {
+    name: fd.get("name"),
+    email: fd.get("email"),
+    phone: fd.get("phone"),
+    company: fd.get("company"),
+    subject: fd.get("subject"),
+    message: fd.get("message"),
   });
-  if (!parsed.success) return { ok: false, message: firstError(parsed.error) };
+  if (!parsed.ok) return parsed;
+
   const { error } = await supabase.from("contact_submissions").insert(parsed.data as never);
   if (error) return { ok: false, message: error.message };
   return { ok: true };
 };
 
 export const submitProduct = async (fd: FormData): Promise<SubmitResult> => {
-  const parsed = productSchema.safeParse({
-    name: clean(fd.get("name"), 120),
-    company: clean(fd.get("company"), 150),
-    email: clean(fd.get("email"), 255),
-    product_interest: clean(fd.get("product_interest"), 200),
-    message: clean(fd.get("message"), 5000),
+  const parsed = parseForm(productSchema, {
+    name: fd.get("name"),
+    company: fd.get("company"),
+    email: fd.get("email"),
+    product_interest: fd.get("product_interest"),
+    message: fd.get("message"),
   });
-  if (!parsed.success) return { ok: false, message: firstError(parsed.error) };
+  if (!parsed.ok) return parsed;
+
   const { error } = await supabase.from("product_inquiries").insert(parsed.data as never);
   if (error) return { ok: false, message: error.message };
   return { ok: true };
 };
 
 export const submitFellowship = async (fd: FormData): Promise<SubmitResult> => {
-  const parsed = fellowshipSchema.safeParse({
-    full_name: clean(fd.get("full_name"), 120),
-    email: clean(fd.get("email"), 255),
-    linkedin: clean(fd.get("linkedin"), 300),
-    resume_url: nullable(clean(fd.get("resume_url"), 500)),
-    preferred_pathway: clean(fd.get("preferred_pathway"), 120),
-    certifications: nullable(clean(fd.get("certifications"), 1000)),
-    certification_links: nullable(clean(fd.get("certification_links"), 2000)),
-    relevant_experience: nullable(clean(fd.get("relevant_experience"), 2000)),
-    motivation: clean(fd.get("motivation"), 2000),
-    portfolio: nullable(clean(fd.get("portfolio"), 500)),
+  const parsed = parseForm(fellowshipSchema, {
+    full_name: fd.get("full_name"),
+    email: fd.get("email"),
+    linkedin: fd.get("linkedin"),
+    resume_url: fd.get("resume_url"),
+    preferred_pathway: fd.get("preferred_pathway"),
+    certifications: fd.get("certifications"),
+    certification_links: fd.get("certification_links"),
+    relevant_experience: fd.get("relevant_experience"),
+    motivation: fd.get("motivation"),
+    portfolio: fd.get("portfolio"),
   });
-  if (!parsed.success) return { ok: false, message: firstError(parsed.error) };
+  if (!parsed.ok) return parsed;
+
   const { error } = await supabase.from("fellowship_applications").insert(parsed.data as never);
   if (error) return { ok: false, message: error.message };
   return { ok: true };

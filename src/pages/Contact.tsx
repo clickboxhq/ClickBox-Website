@@ -2,8 +2,8 @@ import { Mail, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {
+  FormField,
   FormShell,
-  Label,
   fieldClass,
   submitContact,
 } from "@/components/forms/FormShell";
@@ -66,46 +66,28 @@ const Contact = () => {
               successTitle="Message sent"
               successMessage="Thanks — our team will respond shortly."
             >
-              {() => (
+              {({ fieldErrors }) => (
                 <>
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <Label required>Name</Label>
-                      <input name="name" required maxLength={100} className={fieldClass} />
-                    </div>
-                    <div>
-                      <Label required>Email</Label>
-                      <input
-                        type="email"
-                        name="email"
-                        required
-                        maxLength={255}
-                        className={fieldClass}
-                      />
-                    </div>
-                    <div>
-                      <Label>Phone</Label>
-                      <input name="phone" maxLength={30} className={fieldClass} />
-                    </div>
-                    <div>
-                      <Label>Company</Label>
-                      <input name="company" maxLength={120} className={fieldClass} />
-                    </div>
+                    <FormField name="name" label="Name" required error={fieldErrors.name}>
+                      <input required maxLength={120} autoComplete="name" />
+                    </FormField>
+                    <FormField name="email" label="Email" required error={fieldErrors.email}>
+                      <input type="email" required maxLength={255} autoComplete="email" />
+                    </FormField>
+                    <FormField name="phone" label="Phone" error={fieldErrors.phone}>
+                      <input maxLength={40} autoComplete="tel" inputMode="tel" />
+                    </FormField>
+                    <FormField name="company" label="Company" error={fieldErrors.company}>
+                      <input maxLength={150} autoComplete="organization" />
+                    </FormField>
                   </div>
-                  <div>
-                    <Label required>Subject</Label>
-                    <input name="subject" required maxLength={150} className={fieldClass} />
-                  </div>
-                  <div>
-                    <Label required>Message</Label>
-                    <textarea
-                      name="message"
-                      required
-                      rows={5}
-                      maxLength={2000}
-                      className={fieldClass}
-                    />
-                  </div>
+                  <FormField name="subject" label="Subject" required error={fieldErrors.subject}>
+                    <input required maxLength={200} />
+                  </FormField>
+                  <FormField name="message" label="Message" required error={fieldErrors.message}>
+                    <textarea required rows={5} maxLength={5000} />
+                  </FormField>
                 </>
               )}
             </FormShell>

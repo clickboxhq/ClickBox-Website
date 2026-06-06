@@ -4,25 +4,70 @@
  */
 
 const PROTOCOL_PATTERN = /^https?:\/\//i;
+const DANGEROUS_SCHEME = /^(javascript|data|vbscript|file):/i;
+const TRAILING_PUNCTUATION = /[.,;)\]}>"']+$/;
+
+export const sanitizeUrlInput = (value: string): string =>
+  value.trim().replace(TRAILING_PUNCTUATION, "").trim();
 
 export const normalizeUrl = (value: string): string => {
-  const trimmed = value.trim();
+  const trimmed = sanitizeUrlInput(value);
   if (!trimmed) return trimmed;
   return PROTOCOL_PATTERN.test(trimmed) ? trimmed : `https://${trimmed}`;
 };
 
 export const isValidUrl = (value: string): boolean => {
-  const trimmed = value.trim();
+  const trimmed = sanitizeUrlInput(value);
   if (!trimmed) return false;
+  if (DANGEROUS_SCHEME.test(trimmed)) return false;
 
   try {
     const parsed = new URL(normalizeUrl(trimmed));
-    if (!parsed.hostname || !parsed.hostname.includes(".")) return false;
+    if (!["http:", "https:"].includes(parsed.protocol)) return false;
+    if (!parsed.hostname || parsed.hostname.length === 0) return false;
     if (parsed.hostname === "localhost") return true;
-    return parsed.hostname.length > 0;
+    if (parsed.hostname.includes(".")) return true;
+    // Allow bare domains like https://intranet (unlikely but valid URL shape).
+    return parsed.hostname.length >= 2;
   } catch {
     return false;
   }
+};
+
+export type CertificationLinksResult =
+  | { ok: true; value: string }
+  | { ok: false; line: number; invalidValue: string };
+
+export const validateCertificationLinks = (
+  value: string | null | undefined,
+): CertificationLinksResult | { ok: true; value: null } => {
+  if (value == null || value.trim() === "") return { ok: true, value: null };
+
+  const lines = value
+    .split(/\r?\n/)
+    .flatMap((line) => line.split(/[,;]+/))
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (lines.length === 0) return { ok: true, value: null };
+
+  const normalized: string[] = [];
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+    if (!isValidUrl(line)) {
+      return { ok: false, line: index + 1, invalidValue: line };
+    }
+    normalized.push(normalizeUrl(line));
+  }
+
+  return { ok: true, value: normalized.join("\n") };
+};
+
+/** @deprecated Use validateCertificationLinks */
+export const normalizeCertificationLinks = (value: string | null | undefined): string | null => {
+  const result = validateCertificationLinks(value);
+  if (!result.ok) return null;
+  return result.value;
 };
 
 export const validateOptionalUrl = (value: string | null | undefined): string | null => {
@@ -36,26 +81,6 @@ export const validateRequiredUrl = (value: string): { ok: true; value: string } 
   return { ok: true, value: normalizeUrl(value) };
 };
 
-/** Split multiline certification link fields and normalize each valid URL. */
-export const normalizeCertificationLinks = (value: string | null | undefined): string | null => {
-  if (value == null || value.trim() === "") return null;
-
-  const lines = value
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  if (lines.length === 0) return null;
-
-  const normalized: string[] = [];
-  for (const line of lines) {
-    if (!isValidUrl(line)) return null;
-    normalized.push(normalizeUrl(line));
-  }
-
-  return normalized.join("\n");
-};
-
 /** Detect URL-like values for admin link rendering (including normalized storage). */
 export const isUrlLike = (value: unknown): boolean => {
   if (typeof value !== "string") return false;
@@ -66,4 +91,6 @@ export const isUrlLike = (value: unknown): boolean => {
 };
 
 export const toClickableHref = (value: string): string =>
-  PROTOCOL_PATTERN.test(value.trim()) ? value.trim() : normalizeUrl(value);
+  PROTOCOL_PATTERN.test(sanitizeUrlInput(value))
+    ? sanitizeUrlInput(value)
+    : normalizeUrl(value);

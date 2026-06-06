@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Lock, Loader2, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { sanitizeEmail } from "@/lib/inputSanitization";
 import logo from "@/assets/clickbox-logo.jpeg";
 
 const AdminLogin = () => {
@@ -13,6 +14,7 @@ const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
 
   useEffect(() => {
     if (!loading && user && isAdmin) navigate("/admin", { replace: true });
@@ -30,9 +32,32 @@ const AdminLogin = () => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFieldErrors({});
+
+    const safeEmail = sanitizeEmail(email);
+    const nextErrors: { email?: string; password?: string } = {};
+
+    if (!safeEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(safeEmail)) {
+      nextErrors.email = "Email: Please enter a valid email address";
+    }
+    if (password.length < 6) {
+      nextErrors.password = "Password: Must be at least 6 characters";
+    }
+    if (mode === "signup" && password.length < 8) {
+      nextErrors.password = "Password: Must be at least 8 characters for new accounts";
+    }
+
+    if (Object.keys(nextErrors).length > 0) {
+      setFieldErrors(nextErrors);
+      toast.error("Please fix the highlighted fields", {
+        description: nextErrors.email ?? nextErrors.password,
+      });
+      return;
+    }
+
     setSubmitting(true);
     if (mode === "signup") {
-      const { error } = await signUp(email.trim(), password);
+      const { error } = await signUp(safeEmail, password);
       setSubmitting(false);
       if (error) {
         toast.error("Sign up failed", { description: error });
@@ -44,7 +69,7 @@ const AdminLogin = () => {
       setMode("signin");
       return;
     }
-    const { error } = await signIn(email.trim(), password);
+    const { error } = await signIn(safeEmail, password);
     setSubmitting(false);
     if (error) {
       toast.error("Sign in failed", { description: error });
@@ -88,10 +113,22 @@ const AdminLogin = () => {
               type="email"
               required
               autoComplete="email"
+              maxLength={255}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-md border border-white/10 bg-background/50 px-4 py-2.5 text-sm text-foreground focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30"
+              aria-invalid={fieldErrors.email ? true : undefined}
+              aria-describedby={fieldErrors.email ? "admin-email-error" : undefined}
+              className={`w-full rounded-md border bg-background/50 px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 ${
+                fieldErrors.email
+                  ? "border-red-500/50 focus:border-red-500/60 focus:ring-red-500/30"
+                  : "border-white/10 focus:border-primary/50 focus:ring-primary/30"
+              }`}
             />
+            {fieldErrors.email ? (
+              <p id="admin-email-error" className="mt-1.5 text-xs text-red-400" role="alert">
+                {fieldErrors.email}
+              </p>
+            ) : null}
           </div>
 
           <div>
@@ -103,10 +140,22 @@ const AdminLogin = () => {
               required
               autoComplete={mode === "signin" ? "current-password" : "new-password"}
               minLength={6}
+              maxLength={128}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-md border border-white/10 bg-background/50 px-4 py-2.5 text-sm text-foreground focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30"
+              aria-invalid={fieldErrors.password ? true : undefined}
+              aria-describedby={fieldErrors.password ? "admin-password-error" : undefined}
+              className={`w-full rounded-md border bg-background/50 px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 ${
+                fieldErrors.password
+                  ? "border-red-500/50 focus:border-red-500/60 focus:ring-red-500/30"
+                  : "border-white/10 focus:border-primary/50 focus:ring-primary/30"
+              }`}
             />
+            {fieldErrors.password ? (
+              <p id="admin-password-error" className="mt-1.5 text-xs text-red-400" role="alert">
+                {fieldErrors.password}
+              </p>
+            ) : null}
           </div>
 
           <button
