@@ -90,7 +90,8 @@ const AdminLogin = () => {
             <input
               type="password"
               required
-              autoComplete="current-password"
+              autoComplete={mode === "signin" ? "current-password" : "new-password"}
+              minLength={6}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-md border border-white/10 bg-background/50 px-4 py-2.5 text-sm text-foreground focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30"
@@ -103,7 +104,19 @@ const AdminLogin = () => {
             className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
           >
             {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}
-            {submitting ? "Signing in…" : "Sign in"}
+            {submitting
+              ? mode === "signin" ? "Signing in…" : "Creating account…"
+              : mode === "signin" ? "Sign in" : "Create account"}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+            className="w-full text-center text-xs text-muted-foreground hover:text-foreground"
+          >
+            {mode === "signin"
+              ? "Need an account? Sign up"
+              : "Already have an account? Sign in"}
           </button>
 
           <p className="text-center text-xs text-muted-foreground">
