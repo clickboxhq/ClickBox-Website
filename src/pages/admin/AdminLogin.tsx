@@ -7,7 +7,8 @@ import logo from "@/assets/clickbox-logo.jpeg";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const { signIn, user, isAdmin, loading } = useAuth();
+  const { signIn, signUp, user, isAdmin, loading } = useAuth();
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -19,6 +20,19 @@ const AdminLogin = () => {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    if (mode === "signup") {
+      const { error } = await signUp(email.trim(), password);
+      setSubmitting(false);
+      if (error) {
+        toast.error("Sign up failed", { description: error });
+        return;
+      }
+      toast.success("Account created", {
+        description: "Check your email to confirm, then ask an existing admin to grant access.",
+      });
+      setMode("signin");
+      return;
+    }
     const { error } = await signIn(email.trim(), password);
     setSubmitting(false);
     if (error) {
