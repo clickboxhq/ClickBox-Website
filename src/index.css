@@ -120,6 +120,37 @@
       animation: none !important;
     }
   }
+
+  /* Page-load shimmer used in Suspense fallback */
+  @keyframes navLoader {
+    0%   { transform: translateX(-100%); }
+    50%  { transform: translateX(100%); }
+    100% { transform: translateX(300%); }
+  }
+
+  /* Smooth focus ring — accessible but on-brand */
+  :focus-visible {
+    outline: 2px solid hsl(var(--primary) / 0.7);
+    outline-offset: 3px;
+    border-radius: var(--radius);
+  }
+
+  /* Scrollbar styling — dark minimal */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(0 0% 22%);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(0 0% 30%);
+  }
+
+  /* Selection colour */
+  ::selection {
+    background: hsl(var(--primary) / 0.25);
+    color: hsl(var(--foreground));
+  }
 }
 
 

@@ -21,10 +21,26 @@ const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60_000,
+      gcTime: 5 * 60_000,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const PageFallback = () => (
-  <div className="min-h-screen bg-background" aria-hidden="true" />
+  <div className="flex min-h-screen items-center justify-center bg-background" aria-hidden="true">
+    <div className="h-1 w-24 overflow-hidden rounded-full bg-white/8">
+      <div
+        className="h-full w-1/2 rounded-full bg-primary/60 animate-[slide_1.2s_ease-in-out_infinite]"
+        style={{ animation: "navLoader 1.2s ease-in-out infinite" }}
+      />
+    </div>
+  </div>
 );
 
 const App = () => (
