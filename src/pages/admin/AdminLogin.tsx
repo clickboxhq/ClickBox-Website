@@ -7,7 +7,8 @@ import logo from "@/assets/clickbox-logo.jpeg";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const { signIn, user, isAdmin, loading } = useAuth();
+  const { signIn, signUp, user, isAdmin, loading } = useAuth();
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -19,6 +20,19 @@ const AdminLogin = () => {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    if (mode === "signup") {
+      const { error } = await signUp(email.trim(), password);
+      setSubmitting(false);
+      if (error) {
+        toast.error("Sign up failed", { description: error });
+        return;
+      }
+      toast.success("Account created", {
+        description: "Check your email to confirm, then ask an existing admin to grant access.",
+      });
+      setMode("signin");
+      return;
+    }
     const { error } = await signIn(email.trim(), password);
     setSubmitting(false);
     if (error) {
@@ -44,8 +58,14 @@ const AdminLogin = () => {
               <ShieldCheck className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <h1 className="font-heading text-lg font-semibold text-foreground">Secure access</h1>
-              <p className="text-xs text-muted-foreground">Authorized administrators only.</p>
+              <h1 className="font-heading text-lg font-semibold text-foreground">
+                {mode === "signin" ? "Secure access" : "Create admin account"}
+              </h1>
+              <p className="text-xs text-muted-foreground">
+                {mode === "signin"
+                  ? "Authorized administrators only."
+                  : "New accounts require admin role approval."}
+              </p>
             </div>
           </div>
 
@@ -70,7 +90,8 @@ const AdminLogin = () => {
             <input
               type="password"
               required
-              autoComplete="current-password"
+              autoComplete={mode === "signin" ? "current-password" : "new-password"}
+              minLength={6}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-md border border-white/10 bg-background/50 px-4 py-2.5 text-sm text-foreground focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30"
@@ -83,7 +104,19 @@ const AdminLogin = () => {
             className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
           >
             {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}
-            {submitting ? "Signing in…" : "Sign in"}
+            {submitting
+              ? mode === "signin" ? "Signing in…" : "Creating account…"
+              : mode === "signin" ? "Sign in" : "Create account"}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+            className="w-full text-center text-xs text-muted-foreground hover:text-foreground"
+          >
+            {mode === "signin"
+              ? "Need an account? Sign up"
+              : "Already have an account? Sign in"}
           </button>
 
           <p className="text-center text-xs text-muted-foreground">
