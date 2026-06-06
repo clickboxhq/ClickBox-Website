@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ShieldCheck, Lightbulb, Award, HeartHandshake } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CertificationsMarquee from "@/components/CertificationsMarquee";
 
 const values = [
   {
