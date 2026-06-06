@@ -58,8 +58,14 @@ const AdminLogin = () => {
               <ShieldCheck className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <h1 className="font-heading text-lg font-semibold text-foreground">Secure access</h1>
-              <p className="text-xs text-muted-foreground">Authorized administrators only.</p>
+              <h1 className="font-heading text-lg font-semibold text-foreground">
+                {mode === "signin" ? "Secure access" : "Create admin account"}
+              </h1>
+              <p className="text-xs text-muted-foreground">
+                {mode === "signin"
+                  ? "Authorized administrators only."
+                  : "New accounts require admin role approval."}
+              </p>
             </div>
           </div>
 
