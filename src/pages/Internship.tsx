@@ -705,11 +705,11 @@ const Internship = () => {
                   </div>
                   <div>
                     <Label required>LinkedIn Profile</Label>
-                    <input type="url" name="linkedin" required placeholder="https://linkedin.com/in/..." className={fieldClass} />
+                    <input type="text" inputMode="url" name="linkedin" required placeholder="linkedin.com/in/your-profile" className={fieldClass} />
                   </div>
                   <div>
                     <Label>Resume URL (optional)</Label>
-                    <input type="url" name="resume_url" placeholder="Drive, Dropbox, or personal site link" className={fieldClass} />
+                    <input type="text" inputMode="url" name="resume_url" placeholder="drive.google.com/... or personal site" className={fieldClass} />
                   </div>
                   <div>
                     <Label required>Preferred Career Pathway</Label>
@@ -740,7 +740,7 @@ const Internship = () => {
                   </div>
                   <div>
                     <Label>Portfolio / GitHub Link</Label>
-                    <input type="url" name="portfolio" placeholder="https://github.com/..." className={fieldClass} />
+                    <input type="text" inputMode="url" name="portfolio" placeholder="github.com/your-username" className={fieldClass} />
                   </div>
                 </>
               )}

@@ -1,10 +1,15 @@
 import { Navigate } from "react-router-dom";
 import type { ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { useIdleSessionTimeout } from "@/hooks/useIdleSessionTimeout";
+import SessionTimeoutModal from "@/components/admin/SessionTimeoutModal";
 import { Loader2 } from "lucide-react";
 
 const ProtectedAdminRoute = ({ children }: { children: ReactNode }) => {
   const { user, isAdmin, loading } = useAuth();
+  const { showWarning, stayLoggedIn, logoutNow } = useIdleSessionTimeout({
+    enabled: !!user && isAdmin,
+  });
 
   if (loading) {
     return (
@@ -27,7 +32,16 @@ const ProtectedAdminRoute = ({ children }: { children: ReactNode }) => {
     );
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <SessionTimeoutModal
+        open={showWarning}
+        onStayLoggedIn={stayLoggedIn}
+        onLogout={logoutNow}
+      />
+    </>
+  );
 };
 
 export default ProtectedAdminRoute;

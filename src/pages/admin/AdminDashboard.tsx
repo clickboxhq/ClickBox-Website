@@ -18,6 +18,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { isUrlLike, toClickableHref } from "@/lib/urlValidation";
 import logo from "@/assets/clickbox-logo.jpeg";
 
 type TabKey = "fellowship" | "product" | "contact";
@@ -40,6 +41,52 @@ type Row = Record<string, unknown> & {
 
 const fmtDate = (iso?: string | null) =>
   iso ? new Date(iso).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" }) : "—";
+
+const renderFieldValue = (key: string, value: unknown) => {
+  if (value === null || value === undefined || value === "") return "—";
+  if (key.endsWith("_at") || key === "created_at") return fmtDate(String(value));
+
+  const text = String(value);
+
+  if (key === "certification_links") {
+    const lines = text.split(/\r?\n/).filter(Boolean);
+    return (
+      <span className="space-y-1">
+        {lines.map((line, index) => (
+          <span key={`${line}-${index}`} className="block">
+            {isUrlLike(line) ? (
+              <a
+                href={toClickableHref(line)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline break-all"
+              >
+                {line}
+              </a>
+            ) : (
+              line
+            )}
+          </span>
+        ))}
+      </span>
+    );
+  }
+
+  if (isUrlLike(text)) {
+    return (
+      <a
+        href={toClickableHref(text)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-primary hover:underline break-all"
+      >
+        {text}
+      </a>
+    );
+  }
+
+  return text;
+};
 
 const statusBadge = (s?: string | null) => {
   const base = "rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider";
@@ -410,24 +457,7 @@ const AdminDashboard = () => {
                         <dt className="text-xs uppercase tracking-wider text-muted-foreground">
                           {k.replace(/_/g, " ")}
                         </dt>
-                        <dd className="break-words text-foreground">
-                          {v === null || v === undefined || v === ""
-                            ? "—"
-                            : k.endsWith("_at") || k === "created_at"
-                              ? fmtDate(String(v))
-                              : String(v).startsWith("http")
-                                ? (
-                                  <a
-                                    href={String(v)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-primary hover:underline"
-                                  >
-                                    {String(v)}
-                                  </a>
-                                )
-                                : String(v)}
-                        </dd>
+                        <dd className="break-words text-foreground">{renderFieldValue(k, v)}</dd>
                       </div>
                     ))}
                 </dl>

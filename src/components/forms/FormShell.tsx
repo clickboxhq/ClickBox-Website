@@ -3,6 +3,11 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { Loader2, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  isValidUrl,
+  normalizeCertificationLinks,
+  normalizeUrl,
+} from "@/lib/urlValidation";
 
 type SubmitResult = { ok: true } | { ok: false; message: string };
 
@@ -132,6 +137,25 @@ const clean = (v: FormDataEntryValue | null, max = 2000) =>
 
 const nullable = (v: string) => (v ? v : null);
 
+const optionalUrl = (max: number) =>
+  z
+    .union([z.string(), z.null(), z.undefined()])
+    .transform((v) => {
+      const s = String(v ?? "").trim();
+      return s ? s : null;
+    })
+    .refine((v) => v === null || isValidUrl(v), { message: "Please enter a valid URL" })
+    .transform((v) => (v === null ? null : normalizeUrl(v).slice(0, max)));
+
+const requiredUrl = (max: number) =>
+  z
+    .string()
+    .trim()
+    .min(1, "Please enter a valid URL")
+    .max(max)
+    .refine(isValidUrl, { message: "Please enter a valid URL" })
+    .transform((v) => normalizeUrl(v));
+
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(120),
   email: z.string().trim().email("Invalid email").max(255),
@@ -152,14 +176,23 @@ const productSchema = z.object({
 const fellowshipSchema = z.object({
   full_name: z.string().trim().min(1).max(120),
   email: z.string().trim().email().max(255),
-  linkedin: z.string().trim().url("Enter a valid LinkedIn URL").max(300),
-  resume_url: z.string().trim().url().max(500).optional().nullable(),
+  linkedin: requiredUrl(300),
+  resume_url: optionalUrl(500),
   preferred_pathway: z.string().trim().min(1).max(120),
   certifications: z.string().trim().max(1000).optional().nullable(),
-  certification_links: z.string().trim().max(2000).optional().nullable(),
+  certification_links: z
+    .union([z.string(), z.null(), z.undefined()])
+    .transform((v) => {
+      const s = String(v ?? "").trim();
+      return s ? s : null;
+    })
+    .refine((v) => v === null || normalizeCertificationLinks(v) !== null, {
+      message: "Please enter valid URLs (one per line)",
+    })
+    .transform((v) => (v === null ? null : normalizeCertificationLinks(v))),
   relevant_experience: z.string().trim().max(2000).optional().nullable(),
   motivation: z.string().trim().min(10, "Tell us a bit more").max(2000),
-  portfolio: z.string().trim().url().max(500).optional().nullable(),
+  portfolio: optionalUrl(500),
 });
 
 const firstError = (e: z.ZodError) =>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Lock, Loader2, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -7,6 +7,7 @@ import logo from "@/assets/clickbox-logo.jpeg";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { signIn, signUp, user, isAdmin, loading } = useAuth();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
@@ -16,6 +17,16 @@ const AdminLogin = () => {
   useEffect(() => {
     if (!loading && user && isAdmin) navigate("/admin", { replace: true });
   }, [loading, user, isAdmin, navigate]);
+
+  useEffect(() => {
+    const reason = (location.state as { reason?: string } | null)?.reason;
+    if (reason === "idle_timeout") {
+      toast.info("Your session has expired", {
+        description: "You were signed out due to inactivity. Please sign in again.",
+      });
+      navigate(location.pathname, { replace: true, state: null });
+    }
+  }, [location.pathname, location.state, navigate]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
