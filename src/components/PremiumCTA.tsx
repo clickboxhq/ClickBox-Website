@@ -9,11 +9,12 @@ type Props = {
 const PremiumCTA = ({ asHero = false }: Props) => {
   return (
     <section
-      className={`relative overflow-hidden ${
+      className={`relative overflow-hidden bg-background ${
         asHero ? "min-h-[88vh] pt-28 md:pt-32" : "border-t border-white/5"
       }`}
     >
-      <div className="absolute inset-0 z-0" aria-hidden="true">
+      {/* Building image — full showcase, no aggressive crop */}
+      <div className="absolute inset-0 z-0 bg-background" aria-hidden="true">
         <img
           src={hqImage}
           alt=""
@@ -22,10 +23,11 @@ const PremiumCTA = ({ asHero = false }: Props) => {
           fetchPriority={asHero ? "high" : "auto"}
           decoding="async"
           sizes="100vw"
-          className="h-full w-full object-cover object-[82%_28%] sm:object-[78%_26%] md:object-[72%_24%] lg:object-[68%_22%]"
+          className="h-full w-full object-contain object-center md:object-[72%_50%]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/5 to-background/55" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/55 via-background/10 to-transparent md:from-background/40 md:via-transparent" />
+        {/* Light overlays — preserve architecture visibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/35 via-transparent to-background/50" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/20 to-transparent md:from-background/55 md:via-background/10 md:to-transparent" />
       </div>
 
       <div
