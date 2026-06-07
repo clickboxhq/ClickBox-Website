@@ -71,6 +71,10 @@ const AdminLogin = () => {
     navigate("/admin", { replace: true });
   };
 
+  const blockClipboard = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+  };
+
   const inputClass = (field: keyof typeof fieldErrors) =>
     `w-full rounded-lg border bg-background/60 px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 ${
       fieldErrors[field]
@@ -144,6 +148,9 @@ const AdminLogin = () => {
               maxLength={255}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onCopy={blockClipboard}
+              onCut={blockClipboard}
+              onPaste={blockClipboard}
               disabled={rateLimited}
               aria-invalid={!!fieldErrors.email}
               aria-describedby={fieldErrors.email ? "admin-email-error" : undefined}
@@ -172,6 +179,9 @@ const AdminLogin = () => {
               maxLength={128}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onCopy={blockClipboard}
+              onCut={blockClipboard}
+              onPaste={blockClipboard}
               disabled={rateLimited}
               aria-invalid={!!fieldErrors.password}
               aria-describedby={fieldErrors.password ? "admin-pw-error" : undefined}

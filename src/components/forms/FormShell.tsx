@@ -65,6 +65,9 @@ const markSubmitted = () => {
 export const fieldClass =
   "w-full rounded-md border border-white/10 bg-background/50 backdrop-blur px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 transition";
 
+export const selectFieldClass =
+  "w-full appearance-none rounded-md border border-white/10 bg-background/50 backdrop-blur px-4 py-2.5 pr-10 text-sm text-foreground focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 transition cursor-pointer bg-[length:1rem] bg-[right_0.75rem_center] bg-no-repeat [background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")]";
+
 export const fieldErrorClass =
   "border-red-500/50 focus:border-red-500/60 focus:ring-red-500/30";
 

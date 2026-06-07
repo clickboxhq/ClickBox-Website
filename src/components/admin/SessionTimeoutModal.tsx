@@ -36,7 +36,8 @@ const SessionTimeoutModal = ({ open, onStayLoggedIn, onLogout }: Props) => {
         <AlertDialogHeader>
           <AlertDialogTitle className="font-heading">Session expiring soon</AlertDialogTitle>
           <AlertDialogDescription>
-            Your session will expire soon due to inactivity.
+            Your session will lock in 2 minutes due to inactivity. Choose to stay logged in or
+            sign out now.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="gap-2 sm:gap-0">

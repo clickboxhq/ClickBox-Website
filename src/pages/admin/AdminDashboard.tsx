@@ -39,6 +39,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { isUrlLike, toClickableHref } from "@/lib/urlValidation";
+import {
+  ADMIN_IDLE_TIMEOUT_MS,
+  ADMIN_IDLE_WARNING_MS,
+  ADMIN_SESSION_RESET_EVENT,
+} from "@/lib/adminSession";
 import logo from "@/assets/clickbox-logo.jpeg";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -1102,30 +1107,30 @@ const AuditLogSection = () => {
 
 // ─── Session Timer ───────────────────────────────────────────────────────────
 
-const IDLE_MS = 30 * 60 * 1000;
-
 const SessionTimer = () => {
-  const [remaining, setRemaining] = useState(IDLE_MS);
+  const [remaining, setRemaining] = useState(ADMIN_IDLE_TIMEOUT_MS);
   const resetAt = useRef(Date.now());
 
   useEffect(() => {
     const bump = () => { resetAt.current = Date.now(); };
     const events = ["mousedown", "keydown", "touchstart", "scroll"] as const;
     events.forEach((e) => window.addEventListener(e, bump, { passive: true }));
+    window.addEventListener(ADMIN_SESSION_RESET_EVENT, bump);
 
     const tick = setInterval(() => {
-      setRemaining(Math.max(0, IDLE_MS - (Date.now() - resetAt.current)));
+      setRemaining(Math.max(0, ADMIN_IDLE_TIMEOUT_MS - (Date.now() - resetAt.current)));
     }, 1_000);
 
     return () => {
       events.forEach((e) => window.removeEventListener(e, bump));
+      window.removeEventListener(ADMIN_SESSION_RESET_EVENT, bump);
       clearInterval(tick);
     };
   }, []);
 
   const mins = Math.floor(remaining / 60_000);
   const secs = Math.floor((remaining % 60_000) / 1_000);
-  const warning = remaining < 5 * 60_000;
+  const warning = remaining <= ADMIN_IDLE_WARNING_MS;
 
   return (
     <span

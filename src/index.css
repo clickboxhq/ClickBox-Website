@@ -121,31 +121,6 @@
     }
   }
 
-  /* ── CTA cinematic animations ──────────────────────────────────────── */
-
-  /* Ken Burns: slow zoom + horizontal drift, seamless loop */
-  @keyframes kenBurns {
-    0%   { transform: scale(1.0)  translate(0%,      0%);      }
-    25%  { transform: scale(1.04) translate(-0.8%,  -0.4%);    }
-    50%  { transform: scale(1.08) translate(-1.6%,  -0.7%);    }
-    75%  { transform: scale(1.04) translate(-0.8%,  -0.4%);    }
-    100% { transform: scale(1.0)  translate(0%,      0%);      }
-  }
-
-  /* Glass shimmer: light sweep across glass facade — very subtle */
-  @keyframes glassShimmer {
-    0%   { transform: translateX(-130%) skewX(-18deg); opacity: 0;    }
-    15%  { opacity: 1;                                                 }
-    85%  { opacity: 1;                                                 }
-    100% { transform: translateX(230%)  skewX(-18deg); opacity: 0;    }
-  }
-
-  /* Atmospheric vignette breathing */
-  @keyframes atmosphericPulse {
-    0%, 100% { opacity: 0.38; }
-    50%      { opacity: 0.62; }
-  }
-
   /* Page-load shimmer used in Suspense fallback */
   @keyframes navLoader {
     0%   { transform: translateX(-100%); }

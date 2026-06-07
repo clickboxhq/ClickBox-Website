@@ -2,9 +2,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import {
+  ADMIN_IDLE_TIMEOUT_MS,
+  ADMIN_IDLE_WARNING_MS,
+  dispatchAdminSessionReset,
+} from "@/lib/adminSession";
 
-const IDLE_TIMEOUT_MS = 30 * 60 * 1000;
-const WARNING_BEFORE_MS = 5 * 60 * 1000;
 const ACTIVITY_EVENTS = ["mousedown", "keydown", "touchstart", "scroll"] as const;
 
 type Options = {
@@ -41,14 +44,15 @@ export const useIdleSessionTimeout = ({ enabled }: Options) => {
   const scheduleTimers = useCallback(() => {
     clearTimers();
     setShowWarning(false);
+    dispatchAdminSessionReset();
 
     warningTimerRef.current = setTimeout(() => {
       setShowWarning(true);
-    }, IDLE_TIMEOUT_MS - WARNING_BEFORE_MS);
+    }, ADMIN_IDLE_TIMEOUT_MS - ADMIN_IDLE_WARNING_MS);
 
     logoutTimerRef.current = setTimeout(() => {
       void forceLogout();
-    }, IDLE_TIMEOUT_MS);
+    }, ADMIN_IDLE_TIMEOUT_MS);
   }, [clearTimers, forceLogout]);
 
   const stayLoggedIn = useCallback(async () => {

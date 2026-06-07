@@ -29,9 +29,24 @@ import Footer from "@/components/Footer";
 import {
   FormField,
   FormShell,
-  fieldClass,
+  Label,
   submitFellowship,
 } from "@/components/forms/FormShell";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const PATHWAY_OPTIONS = [
+  "SOC Analyst",
+  "Security Engineering",
+  "Penetration Testing",
+  "Vulnerability Management",
+  "Governance, Risk & Compliance",
+] as const;
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -295,6 +310,7 @@ const FaqItem = ({
 const Internship = () => {
   const [openWeek, setOpenWeek] = useState<number | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [pathway, setPathway] = useState("");
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -718,28 +734,51 @@ const Internship = () => {
                     <input
                       type="url"
                       required
-                      placeholder="https://linkedin.com/in/yourprofile"
+                      placeholder="Paste your resume link here"
                       maxLength={500}
                     />
                   </FormField>
                   <p className="-mt-2 text-xs text-muted-foreground">
                     Share a link to your resume or profile. Accepted platforms: LinkedIn, Google Drive, Dropbox, Notion, GitHub, or Read.cv.
                   </p>
-                  <FormField
-                    name="preferred_pathway"
-                    label="Preferred Career Pathway"
-                    required
-                    error={fieldErrors.preferred_pathway}
-                  >
-                    <select required className={fieldClass}>
-                      <option value="">Select a pathway…</option>
-                      <option>SOC Analyst</option>
-                      <option>Security Engineering</option>
-                      <option>Penetration Testing</option>
-                      <option>Vulnerability Management</option>
-                      <option>Governance, Risk & Compliance</option>
-                    </select>
-                  </FormField>
+                  <div data-field="preferred_pathway">
+                    <Label htmlFor="preferred_pathway" required>
+                      Preferred Career Pathway
+                    </Label>
+                    <input type="hidden" name="preferred_pathway" value={pathway} />
+                    <Select value={pathway} onValueChange={setPathway}>
+                      <SelectTrigger
+                        id="preferred_pathway"
+                        aria-invalid={fieldErrors.preferred_pathway ? true : undefined}
+                        aria-describedby={
+                          fieldErrors.preferred_pathway ? "preferred_pathway-error" : undefined
+                        }
+                        className="h-auto w-full rounded-md border-white/10 bg-background/50 px-4 py-2.5 text-sm text-foreground backdrop-blur focus:border-primary/50 focus:ring-1 focus:ring-primary/30"
+                      >
+                        <SelectValue placeholder="Select a pathway…" />
+                      </SelectTrigger>
+                      <SelectContent className="border-white/10 bg-background text-foreground">
+                        {PATHWAY_OPTIONS.map((option) => (
+                          <SelectItem
+                            key={option}
+                            value={option}
+                            className="cursor-pointer focus:bg-primary/10 focus:text-foreground"
+                          >
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {fieldErrors.preferred_pathway ? (
+                      <p
+                        id="preferred_pathway-error"
+                        className="mt-1.5 text-xs text-red-400"
+                        role="alert"
+                      >
+                        {fieldErrors.preferred_pathway}
+                      </p>
+                    ) : null}
+                  </div>
                   <FormField name="certifications" label="Certifications" error={fieldErrors.certifications}>
                     <input
                       placeholder="e.g. Security+, ISC2 CC, Google Cybersecurity"
