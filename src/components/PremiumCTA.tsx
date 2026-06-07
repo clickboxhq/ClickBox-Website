@@ -36,14 +36,16 @@ const PremiumCTA = ({ asHero = false }: Props) => {
         }`}
       >
         <div className="max-w-sm sm:max-w-md md:max-w-lg">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary md:text-[11px]">
-            <ShieldCheck className="h-3.5 w-3.5" />
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-black/20 bg-white/75 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-black backdrop-blur-sm md:text-[11px]">
+            <ShieldCheck className="h-3.5 w-3.5 text-black" />
             Enterprise Cybersecurity
           </div>
 
           <h1 className="font-heading text-3xl font-bold leading-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl">
             Build Securely With{" "}
-            <span className="text-primary">ClickBox.</span>
+            <span className="hero-brand-outline" data-text="ClickBox.">
+              ClickBox.
+            </span>
           </h1>
 
           <div className="mt-6 flex flex-wrap gap-3 md:mt-8 md:gap-4">

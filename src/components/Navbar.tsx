@@ -4,19 +4,14 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import logo from "@/assets/clickbox-logo.jpeg";
 
-const primaryLinks = [
+const centerNavLinks = [
   { label: "Home", path: "/" },
   { label: "Services", path: "/#services" },
   { label: "About", path: "/about" },
-];
-
-const secondaryLinks = [
   { label: "Resources", path: "/resources" },
   { label: "Product", path: "/product" },
   { label: "Contact", path: "/contact" },
 ];
-
-const allNavLinks = [...primaryLinks, ...secondaryLinks];
 
 const isActivePath = (linkPath: string, pathname: string): boolean => {
   if (linkPath === "/") return pathname === "/";
@@ -66,7 +61,6 @@ const Navbar = () => {
 
   const effectiveCompact = isDesktop && compact;
 
-  // Spring-animated inner max-width: 1280px expanded → 720px compact (desktop only)
   const maxWidthMV = useMotionValue(1280);
   const springMaxWidth = useSpring(maxWidthMV, {
     stiffness: 260,
@@ -74,17 +68,25 @@ const Navbar = () => {
     mass: 0.9,
   });
 
-  // Spring gap for action links + Fellowship button (right group)
-  const gapMV = useMotionValue(28);
-  const springGap = useSpring(gapMV, { stiffness: 260, damping: 26, mass: 0.9 });
+  // Subtle inward motion for logo (right) and Fellowship (left) when compact
+  const logoInsetMV = useMotionValue(0);
+  const fellowshipInsetMV = useMotionValue(0);
+  const springLogoInset = useSpring(logoInsetMV, {
+    stiffness: 260,
+    damping: 26,
+    mass: 0.9,
+  });
+  const springFellowshipInset = useSpring(fellowshipInsetMV, {
+    stiffness: 260,
+    damping: 26,
+    mass: 0.9,
+  });
 
   useEffect(() => {
     maxWidthMV.set(effectiveCompact ? 720 : 1280);
-  }, [effectiveCompact, maxWidthMV]);
-
-  useEffect(() => {
-    gapMV.set(effectiveCompact ? 14 : 28);
-  }, [effectiveCompact, gapMV]);
+    logoInsetMV.set(effectiveCompact ? 12 : 0);
+    fellowshipInsetMV.set(effectiveCompact ? -12 : 0);
+  }, [effectiveCompact, maxWidthMV, logoInsetMV, fellowshipInsetMV]);
 
   useEffect(() => {
     const mql = window.matchMedia("(min-width: 768px)");
@@ -164,21 +166,21 @@ const Navbar = () => {
     <nav
       role="navigation"
       aria-label="Main navigation"
-      className={`fixed left-0 right-0 top-0 z-50 border-b transition-colors duration-500 ease-out ${navShadow}`}
+      className={`fixed left-0 right-0 top-0 z-50 border-b transition-colors duration-500 ease-out ${navShadow} relative`}
     >
-      {/* Desktop: spring max-width inner strip. Mobile: always full width. */}
+      {/* Inner strip — width springs on desktop; logo + Fellowship on edges only */}
       <motion.div
         style={isDesktop ? { maxWidth: springMaxWidth } : undefined}
-        className={`mx-auto flex w-full items-center justify-between px-6 transition-[padding] duration-500 ease-out ${
+        className={`relative mx-auto flex w-full items-center justify-between px-6 ${
           isDesktop ? "" : "max-w-7xl"
         } ${scrolled ? "py-2" : "py-3"}`}
       >
-        {/* Left — logo + primary links keep fixed internal spacing */}
-        <div className="flex shrink-0 items-center gap-8 md:gap-10">
+        {/* Logo — only left element that animates inward when compact */}
+        <motion.div style={isDesktop ? { x: springLogoInset } : undefined} className="relative z-20 shrink-0">
           <Link
             to="/"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="group flex shrink-0 items-center gap-3"
+            className="group flex items-center gap-3"
             aria-label="ClickBox — go to home page"
           >
             <img
@@ -198,35 +200,17 @@ const Navbar = () => {
               ClickBox
             </span>
           </Link>
+        </motion.div>
 
-          <div className="hidden items-center gap-7 md:flex" role="list">
-            {primaryLinks.map((link) => (
-              <NavLink
-                key={link.label}
-                link={link}
-                pathname={location.pathname}
-                onClick={handleNavClick}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Right — action links + Fellowship; gap springs tighter when compact */}
-        <div className="hidden items-center md:flex">
-          <motion.div style={{ gap: springGap }} className="flex items-center" role="list">
-            {secondaryLinks.map((link) => (
-              <NavLink
-                key={link.label}
-                link={link}
-                pathname={location.pathname}
-                onClick={handleNavClick}
-              />
-            ))}
-            <Link to="/internship" className={fellowshipBtn}>
-              Fellowship
-            </Link>
-          </motion.div>
-        </div>
+        {/* Fellowship — only right element that animates inward when compact */}
+        <motion.div
+          style={isDesktop ? { x: springFellowshipInset } : undefined}
+          className="relative z-20 hidden shrink-0 md:block"
+        >
+          <Link to="/internship" className={fellowshipBtn}>
+            Fellowship
+          </Link>
+        </motion.div>
 
         {/* Mobile toggle */}
         <button
@@ -262,6 +246,22 @@ const Navbar = () => {
         </button>
       </motion.div>
 
+      {/* Center nav — viewport-locked, never moves with compact/expand */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-full items-center justify-center md:flex"
+      >
+        <div className="pointer-events-auto flex items-center gap-7" role="list">
+          {centerNavLinks.map((link) => (
+            <NavLink
+              key={link.label}
+              link={link}
+              pathname={location.pathname}
+              onClick={handleNavClick}
+            />
+          ))}
+        </div>
+      </div>
+
       {/* Mobile menu — full width, no compact behaviour */}
       <AnimatePresence>
         {mobileOpen && (
@@ -276,7 +276,7 @@ const Navbar = () => {
             aria-label="Mobile navigation"
           >
             <div className="space-y-0.5 px-6 pb-6 pt-3">
-              {allNavLinks.map((link, i) => {
+              {centerNavLinks.map((link, i) => {
                 const active = isActivePath(link.path, location.pathname);
                 return (
                   <motion.div
@@ -307,7 +307,7 @@ const Navbar = () => {
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{
-                  delay: allNavLinks.length * 0.04,
+                  delay: centerNavLinks.length * 0.04,
                   duration: 0.2,
                   ease: "easeOut",
                 }}
