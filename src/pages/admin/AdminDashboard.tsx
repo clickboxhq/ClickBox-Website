@@ -39,8 +39,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { isUrlLike, toClickableHref } from "@/lib/urlValidation";
-import { deleteStoredResume, isStoredResumePath } from "@/lib/resumeUpload";
-import ResumeDownloadButton from "@/components/admin/ResumeDownloadButton";
 import logo from "@/assets/clickbox-logo.jpeg";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -266,17 +264,16 @@ const FieldValue = ({ field, value }: { field: string; value: unknown }) => {
   const text = String(value);
 
   if (field === "resume_url") {
-    if (isStoredResumePath(text)) return <ResumeDownloadButton path={text} />;
     if (isUrlLike(text))
       return (
         <a
           href={toClickableHref(text)}
           target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-primary hover:underline"
+          rel="noopener noreferrer nofollow"
+          className="inline-flex items-center gap-1 break-all text-primary hover:underline"
         >
-          {text}
-          <ExternalLink className="h-3 w-3" />
+          View Resume
+          <ExternalLink className="h-3 w-3 shrink-0" />
         </a>
       );
     return <>{text}</>;
@@ -611,13 +608,6 @@ const SubmissionsView = ({
 
   const handleDelete = async (row: Row) => {
     if (!confirm("Permanently delete this submission? This cannot be undone.")) return;
-    if (
-      tableKey === "fellowship" &&
-      typeof row.resume_url === "string" &&
-      isStoredResumePath(row.resume_url)
-    ) {
-      await deleteStoredResume(row.resume_url);
-    }
     const { error } = await supabase.from(tableName as never).delete().eq("id", row.id);
     if (error) return toast.error("Delete failed", { description: error.message });
     await writeAudit("delete", row.id, { snapshot: row });
@@ -1110,6 +1100,46 @@ const AuditLogSection = () => {
   );
 };
 
+// ─── Session Timer ───────────────────────────────────────────────────────────
+
+const IDLE_MS = 30 * 60 * 1000;
+
+const SessionTimer = () => {
+  const [remaining, setRemaining] = useState(IDLE_MS);
+  const resetAt = useRef(Date.now());
+
+  useEffect(() => {
+    const bump = () => { resetAt.current = Date.now(); };
+    const events = ["mousedown", "keydown", "touchstart", "scroll"] as const;
+    events.forEach((e) => window.addEventListener(e, bump, { passive: true }));
+
+    const tick = setInterval(() => {
+      setRemaining(Math.max(0, IDLE_MS - (Date.now() - resetAt.current)));
+    }, 1_000);
+
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, bump));
+      clearInterval(tick);
+    };
+  }, []);
+
+  const mins = Math.floor(remaining / 60_000);
+  const secs = Math.floor((remaining % 60_000) / 1_000);
+  const warning = remaining < 5 * 60_000;
+
+  return (
+    <span
+      title="Session time remaining"
+      className={`hidden items-center gap-1.5 text-xs tabular-nums sm:flex ${
+        warning ? "animate-pulse text-orange-400" : "text-muted-foreground/55"
+      }`}
+    >
+      <Clock className="h-3 w-3 shrink-0" />
+      {mins}:{secs.toString().padStart(2, "0")}
+    </span>
+  );
+};
+
 // ─── Main Dashboard ──────────────────────────────────────────────────────────
 
 const NAV_ITEMS: {
@@ -1156,9 +1186,11 @@ const AdminDashboard = () => {
         >
           {/* Logo */}
           <div className="flex items-center gap-3 border-b border-white/6 px-5 py-5">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15 ring-1 ring-primary/20">
-              <ShieldCheck className="h-5 w-5 text-primary" />
-            </div>
+            <img
+              src={logo}
+              alt="ClickBox"
+              className="h-9 w-9 shrink-0 rounded-lg object-cover ring-1 ring-primary/25 shadow-sm shadow-primary/10"
+            />
             <div className="min-w-0">
               <p className="font-heading text-sm font-bold text-foreground leading-none">
                 ClickBox
@@ -1250,11 +1282,12 @@ const AdminDashboard = () => {
           </div>
 
           <div className="flex items-center gap-3">
+            <SessionTimer />
             <div className="hidden items-center gap-2 rounded-full border border-white/8 bg-white/[0.03] px-3 py-1.5 md:flex">
               <img
                 src={logo}
                 alt="ClickBox"
-                className="h-5 w-5 rounded object-cover ring-1 ring-white/10"
+                className="h-5 w-5 rounded-md object-cover ring-1 ring-primary/20"
               />
               <span className="text-xs font-medium text-muted-foreground">
                 {user?.email}

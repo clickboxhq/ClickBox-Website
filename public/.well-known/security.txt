@@ -1,0 +1,6 @@
+Contact: mailto:security@useclickbox.com
+Expires: 2027-06-30T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://useclickbox.com/.well-known/security.txt
+Policy: https://useclickbox.com/security-policy
+Hiring: https://useclickbox.com/internship

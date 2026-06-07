@@ -714,15 +714,16 @@ const Internship = () => {
                       placeholder="linkedin.com/in/your-profile"
                     />
                   </FormField>
-                  <FormField name="resume" label="Resume" required error={fieldErrors.resume}>
+                  <FormField name="resume_url" label="Resume Link" required error={fieldErrors.resume_url}>
                     <input
-                      type="file"
+                      type="url"
                       required
-                      accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                      placeholder="https://linkedin.com/in/yourprofile"
+                      maxLength={500}
                     />
                   </FormField>
                   <p className="-mt-2 text-xs text-muted-foreground">
-                    Upload PDF or Word (.doc, .docx). Maximum file size: 5MB.
+                    Share a link to your resume or profile. Accepted platforms: LinkedIn, Google Drive, Dropbox, Notion, GitHub, or Read.cv.
                   </p>
                   <FormField
                     name="preferred_pathway"

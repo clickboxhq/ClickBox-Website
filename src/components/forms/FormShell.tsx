@@ -20,8 +20,12 @@ import {
   sanitizePhone,
   sanitizeText,
 } from "@/lib/inputSanitization";
-import { isValidUrl, normalizeUrl, validateCertificationLinks } from "@/lib/urlValidation";
-import { uploadResumeFile, validateResumeFile, deleteStoredResume } from "@/lib/resumeUpload";
+import {
+  isValidUrl,
+  normalizeUrl,
+  validateCertificationLinks,
+  validateResumeUrl,
+} from "@/lib/urlValidation";
 
 type SubmitResult = { ok: true } | { ok: false; message: string; fieldErrors?: FieldErrors };
 
@@ -204,7 +208,6 @@ export const FormShell = ({
   return (
     <form
       onSubmit={handle}
-      encType="multipart/form-data"
       className="glass-card space-y-5 p-6 md:p-8"
       noValidate
     >
@@ -323,7 +326,19 @@ const fellowshipSchema = z.object({
     .transform((v) => sanitizeEmail(v))
     .pipe(z.string().email("Email: Please enter a valid email address").max(255)),
   linkedin: requiredUrl("LinkedIn Profile", 300),
-  resume_url: z.string().min(1, "Resume: Please upload your resume"),
+  resume_url: z
+    .string()
+    .transform((v) => v.trim())
+    .superRefine((v, ctx) => {
+      const result = validateResumeUrl(v);
+      if (!result.valid) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Resume Link: ${result.error}` });
+      }
+    })
+    .transform((v) => {
+      const r = validateResumeUrl(v);
+      return r.valid ? r.sanitized : v;
+    }),
   preferred_pathway: z
     .string()
     .transform((v) => sanitizeText(v, 120))
@@ -405,38 +420,11 @@ export const submitProduct = async (fd: FormData): Promise<SubmitResult> => {
 };
 
 export const submitFellowship = async (fd: FormData): Promise<SubmitResult> => {
-  const resumeEntry = fd.get("resume");
-  let resumePath: string | null = null;
-
-  if (!(resumeEntry instanceof File) || resumeEntry.size === 0) {
-    const message = "Resume: Please upload your resume (PDF or Word, max 5MB)";
-    return { ok: false, message, fieldErrors: { resume: message } };
-  }
-
-  const fileValidation = validateResumeFile(resumeEntry);
-  if (!fileValidation.ok) {
-    return {
-      ok: false,
-      message: fileValidation.message,
-      fieldErrors: { resume: fileValidation.message },
-    };
-  }
-
-  const upload = await uploadResumeFile(resumeEntry);
-  if (!upload.ok) {
-    return {
-      ok: false,
-      message: upload.message,
-      fieldErrors: { resume: upload.message },
-    };
-  }
-  resumePath = upload.path;
-
   const parsed = parseForm(fellowshipSchema, {
     full_name: fd.get("full_name"),
     email: fd.get("email"),
     linkedin: fd.get("linkedin"),
-    resume_url: resumePath,
+    resume_url: fd.get("resume_url"),
     preferred_pathway: fd.get("preferred_pathway"),
     certifications: fd.get("certifications"),
     certification_links: fd.get("certification_links"),
@@ -444,15 +432,9 @@ export const submitFellowship = async (fd: FormData): Promise<SubmitResult> => {
     motivation: fd.get("motivation"),
     portfolio: fd.get("portfolio"),
   });
-  if (!parsed.ok) {
-    await deleteStoredResume(resumePath);
-    return parsed;
-  }
+  if (!parsed.ok) return parsed;
 
   const { error } = await supabase.from("fellowship_applications").insert(parsed.data as never);
-  if (error) {
-    await deleteStoredResume(resumePath);
-    return { ok: false, message: error.message };
-  }
+  if (error) return { ok: false, message: error.message };
   return { ok: true };
 };
