@@ -1,4 +1,12 @@
-import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -8,15 +16,14 @@ type AuthState = {
   isAdmin: boolean;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
-  signUp: (email: string, password: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
 
-// Track sign-in attempts client-side (belt-and-suspenders, server enforces real limits)
+// Client-side rate limiting (belt-and-suspenders; server enforces real limits)
 const RATE_KEY = "clickbox:admin:signin:attempts";
-const RATE_WINDOW_MS = 15 * 60 * 1000; // 15 min
+const RATE_WINDOW_MS = 15 * 60 * 1000;
 const MAX_ATTEMPTS = 5;
 
 type AttemptRecord = { count: number; windowStart: number };
@@ -26,7 +33,8 @@ const getAttempts = (): AttemptRecord => {
     const raw = sessionStorage.getItem(RATE_KEY);
     if (!raw) return { count: 0, windowStart: Date.now() };
     const rec = JSON.parse(raw) as AttemptRecord;
-    if (Date.now() - rec.windowStart > RATE_WINDOW_MS) return { count: 0, windowStart: Date.now() };
+    if (Date.now() - rec.windowStart > RATE_WINDOW_MS)
+      return { count: 0, windowStart: Date.now() };
     return rec;
   } catch {
     return { count: 0, windowStart: Date.now() };
@@ -41,15 +49,39 @@ const recordAttempt = () => {
       JSON.stringify({ count: rec.count + 1, windowStart: rec.windowStart }),
     );
   } catch {
-    // ignore storage errors
+    /* ignore */
   }
 };
 
 const resetAttempts = () => {
-  try { sessionStorage.removeItem(RATE_KEY); } catch { /* ignore */ }
+  try {
+    sessionStorage.removeItem(RATE_KEY);
+  } catch {
+    /* ignore */
+  }
 };
 
-export const isSignInRateLimited = (): boolean => getAttempts().count >= MAX_ATTEMPTS;
+export const isSignInRateLimited = (): boolean =>
+  getAttempts().count >= MAX_ATTEMPTS;
+
+// Non-blocking auth event logger — calls the log-auth-event Edge Function
+async function logAuthEvent(
+  event: string,
+  email?: string,
+  userId?: string,
+): Promise<void> {
+  try {
+    const url = import.meta.env.VITE_SUPABASE_URL;
+    if (!url) return;
+    await fetch(`${url}/functions/v1/log-auth-event`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ event, email, user_id: userId }),
+    });
+  } catch {
+    /* non-blocking — never throw */
+  }
+}
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
@@ -59,7 +91,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const checkingRef = useRef(false);
 
   const checkAdmin = useCallback(async (uid: string | undefined) => {
-    if (!uid) { setIsAdmin(false); return; }
+    if (!uid) {
+      setIsAdmin(false);
+      return;
+    }
     if (checkingRef.current) return;
     checkingRef.current = true;
     try {
@@ -93,34 +128,40 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signIn = useCallback(async (email: string, password: string) => {
     if (isSignInRateLimited()) {
-      return { error: "Too many sign-in attempts. Please wait 15 minutes before trying again." };
+      return {
+        error:
+          "Too many sign-in attempts. Please wait 15 minutes before trying again.",
+      };
     }
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
     if (error) {
       recordAttempt();
+      void logAuthEvent("AUTH_FAILED", email);
       return { error: error.message };
     }
+
     resetAttempts();
+    void logAuthEvent("AUTH_LOGIN", email, data.user?.id);
     return { error: null };
   }, []);
 
-  const signUp = useCallback(async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { emailRedirectTo: `${window.location.origin}/admin/login` },
-    });
-    return { error: error?.message ?? null };
-  }, []);
-
   const signOut = useCallback(async () => {
+    const uid = user?.id;
     await supabase.auth.signOut();
     setIsAdmin(false);
     resetAttempts();
-  }, []);
+    void logAuthEvent("AUTH_LOGOUT", user?.email, uid);
+  }, [user]);
 
   return (
-    <AuthContext.Provider value={{ session, user, isAdmin, loading, signIn, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{ session, user, isAdmin, loading, signIn, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -92,6 +92,17 @@
     user-select: none;
   }
 
+  /* CTA building image — mobile anchors to top-right to keep logo in frame */
+  .building-img {
+    object-position: top center;
+  }
+
+  @media (max-width: 640px) {
+    .building-img {
+      object-position: top right;
+    }
+  }
+
   .border-glow {
     box-shadow: var(--glow-primary);
   }

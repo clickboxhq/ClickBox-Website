@@ -19,6 +19,8 @@ const Internship = lazy(() => import("./pages/Internship"));
 const About = lazy(() => import("./pages/About"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const SetupMFA = lazy(() => import("./pages/admin/SetupMFA"));
+const VerifyMFA = lazy(() => import("./pages/admin/VerifyMFA"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -62,6 +64,8 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/setup-mfa" element={<SetupMFA />} />
+              <Route path="/admin/verify-mfa" element={<VerifyMFA />} />
               <Route
                 path="/admin"
                 element={

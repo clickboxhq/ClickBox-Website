@@ -11,20 +11,25 @@ import {
 import { toast } from "sonner";
 import { z } from "zod";
 import { Loader2, CheckCircle2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { formatZodError, type FieldErrors, type ValidationFailure } from "@/lib/formErrors";
+import { TurnstileWidget } from "./TurnstileWidget";
 import {
   sanitizeEmail,
   sanitizeMultilineText,
   sanitizeOptionalText,
   sanitizePhone,
   sanitizeText,
+  detectInjectionAttempt,
+  isSpam,
+  normalizeUnicode,
 } from "@/lib/inputSanitization";
 import {
   isValidUrl,
   normalizeUrl,
   validateCertificationLinks,
   validateResumeUrl,
+  hasEmbeddedCredentials,
+  isOpenRedirect,
 } from "@/lib/urlValidation";
 
 type SubmitResult = { ok: true } | { ok: false; message: string; fieldErrors?: FieldErrors };
@@ -141,7 +146,13 @@ export const FormShell = ({
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const successRef = useRef<HTMLDivElement>(null);
+  const formStartTime = useRef<number>(Date.now());
+
+  useEffect(() => {
+    formStartTime.current = Date.now();
+  }, []);
 
   useEffect(() => {
     if (!submitted || !scrollOnSuccess || !successRef.current) return;
@@ -159,12 +170,23 @@ export const FormShell = ({
 
     if ((fd.get("website") as string)?.length) return;
 
+    // Bot timing check: < 3s = likely bot (silent fake success)
+    if (Date.now() - formStartTime.current < 3000) {
+      setSubmitted(true);
+      form.reset();
+      return;
+    }
+
     if (isRateLimited()) {
       toast.error("Please wait a moment", {
         description: "You're submitting too quickly. Try again in a few seconds.",
       });
       return;
     }
+
+    // Append Turnstile token and timing to FormData
+    fd.set("turnstile_token", turnstileToken ?? "");
+    fd.set("submitted_at", String(formStartTime.current));
 
     setSubmitting(true);
     setFieldErrors({});
@@ -175,6 +197,8 @@ export const FormShell = ({
     if (res.ok === true) {
       markSubmitted();
       setSubmitted(true);
+      setTurnstileToken(null);
+      formStartTime.current = Date.now();
       toast.success(successTitle, { description: successMessage });
       form.reset();
       return;
@@ -223,9 +247,14 @@ export const FormShell = ({
         aria-hidden="true"
       />
       {children({ submitting, submitted, fieldErrors })}
+      <TurnstileWidget
+        onSuccess={setTurnstileToken}
+        onExpire={() => setTurnstileToken(null)}
+        onError={() => setTurnstileToken(null)}
+      />
       <button
         type="submit"
-        disabled={submitting}
+        disabled={submitting || turnstileToken === null}
         className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90 disabled:opacity-60"
       >
         {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
@@ -391,6 +420,32 @@ const parseForm = <T,>(schema: z.ZodType<T>, data: unknown): { ok: true; data: T
   return formatZodError(parsed.error);
 };
 
+// ─── Edge Function helpers ─────────────────────────────────────────────────────
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
+
+async function callEdgeFunction(
+  path: string,
+  payload: Record<string, unknown>,
+): Promise<SubmitResult> {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return { ok: false, message: (json as { error?: string }).error ?? "Submission failed. Please try again." };
+    }
+    return { ok: true };
+  } catch {
+    return { ok: false, message: "Network error — please check your connection and try again." };
+  }
+}
+
+// ─── Contact ───────────────────────────────────────────────────────────────────
+
 export const submitContact = async (fd: FormData): Promise<SubmitResult> => {
   const parsed = parseForm(contactSchema, {
     name: fd.get("name"),
@@ -402,10 +457,22 @@ export const submitContact = async (fd: FormData): Promise<SubmitResult> => {
   });
   if (!parsed.ok) return parsed;
 
-  const { error } = await supabase.from("contact_submissions").insert(parsed.data as never);
-  if (error) return { ok: false, message: error.message };
-  return { ok: true };
+  const { name, email, message } = parsed.data;
+  const normalizedMessage = normalizeUnicode(message);
+  if (detectInjectionAttempt(name) || detectInjectionAttempt(normalizedMessage) || isSpam(normalizedMessage)) {
+    return { ok: false, message: "Your message contains invalid content." };
+  }
+
+  return callEdgeFunction("submit-contact", {
+    ...parsed.data,
+    message: normalizedMessage,
+    honeypot: "",
+    turnstile_token: fd.get("turnstile_token") ?? "",
+    submitted_at: Number(fd.get("submitted_at") ?? Date.now()),
+  });
 };
+
+// ─── Product ───────────────────────────────────────────────────────────────────
 
 export const submitProduct = async (fd: FormData): Promise<SubmitResult> => {
   const parsed = parseForm(productSchema, {
@@ -417,12 +484,35 @@ export const submitProduct = async (fd: FormData): Promise<SubmitResult> => {
   });
   if (!parsed.ok) return parsed;
 
-  const { error } = await supabase.from("product_inquiries").insert(parsed.data as never);
-  if (error) return { ok: false, message: error.message };
-  return { ok: true };
+  const { name, message } = parsed.data;
+  const normalizedMessage = normalizeUnicode(message);
+  if (detectInjectionAttempt(name) || detectInjectionAttempt(normalizedMessage) || isSpam(normalizedMessage)) {
+    return { ok: false, message: "Your message contains invalid content." };
+  }
+
+  return callEdgeFunction("submit-product", {
+    ...parsed.data,
+    message: normalizedMessage,
+    honeypot: "",
+    turnstile_token: fd.get("turnstile_token") ?? "",
+    submitted_at: Number(fd.get("submitted_at") ?? Date.now()),
+  });
 };
 
+// ─── Fellowship ────────────────────────────────────────────────────────────────
+
 export const submitFellowship = async (fd: FormData): Promise<SubmitResult> => {
+  // Resume URL extra client-side checks before sending
+  const resumeUrlRaw = (fd.get("resume_url") as string) ?? "";
+  if (resumeUrlRaw) {
+    if (hasEmbeddedCredentials(resumeUrlRaw)) {
+      return { ok: false, message: "Resume URL contains embedded credentials. Please use a clean link.", fieldErrors: { resume_url: "URL contains embedded credentials." } };
+    }
+    if (isOpenRedirect(resumeUrlRaw)) {
+      return { ok: false, message: "Resume URL appears to contain a redirect. Please use a direct link.", fieldErrors: { resume_url: "URL appears to contain a redirect." } };
+    }
+  }
+
   const parsed = parseForm(fellowshipSchema, {
     full_name: fd.get("full_name"),
     email: fd.get("email"),
@@ -437,7 +527,17 @@ export const submitFellowship = async (fd: FormData): Promise<SubmitResult> => {
   });
   if (!parsed.ok) return parsed;
 
-  const { error } = await supabase.from("fellowship_applications").insert(parsed.data as never);
-  if (error) return { ok: false, message: error.message };
-  return { ok: true };
+  const { full_name, motivation } = parsed.data;
+  const normalizedMotivation = normalizeUnicode(motivation);
+  if (detectInjectionAttempt(full_name) || detectInjectionAttempt(normalizedMotivation) || isSpam(normalizedMotivation)) {
+    return { ok: false, message: "Your submission contains invalid content." };
+  }
+
+  return callEdgeFunction("submit-fellowship", {
+    ...parsed.data,
+    motivation: normalizedMotivation,
+    honeypot: "",
+    turnstile_token: fd.get("turnstile_token") ?? "",
+    submitted_at: Number(fd.get("submitted_at") ?? Date.now()),
+  });
 };

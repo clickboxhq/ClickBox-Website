@@ -9,12 +9,16 @@ type Props = {
 const PremiumCTA = ({ asHero = false }: Props) => {
   return (
     <section
-      className={`relative overflow-hidden bg-background ${
-        asHero ? "min-h-[88vh] pt-28 md:pt-32" : "border-t border-white/5"
+      className={`relative w-full bg-background ${
+        asHero ? "" : "border-t border-white/5"
       }`}
     >
-      {/* Building image — full showcase, no aggressive crop */}
-      <div className="absolute inset-0 z-0 bg-background" aria-hidden="true">
+      {/* Building image wrapper — intrinsic aspect ratio, no crop */}
+      <div
+        className="relative w-full overflow-hidden"
+        style={{ paddingBottom: "clamp(280px, 62vw, 580px)" }}
+        aria-hidden="true"
+      >
         <img
           src={hqImage}
           alt=""
@@ -23,22 +27,46 @@ const PremiumCTA = ({ asHero = false }: Props) => {
           fetchPriority={asHero ? "high" : "auto"}
           decoding="async"
           sizes="100vw"
-          className="h-full w-full object-contain object-center md:object-[72%_50%]"
+          className="building-img absolute inset-0 h-full w-full"
+          style={{
+            objectFit: "contain",
+            background: "hsl(0 0% 4%)",
+          }}
         />
-        {/* Light overlays — preserve architecture visibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/35 via-transparent to-background/50" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/20 to-transparent md:from-background/55 md:via-background/10 md:to-transparent" />
+        {/* Gradient fade: bottom into page background */}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-10"
+          style={{
+            height: "50%",
+            background: "linear-gradient(to bottom, transparent, hsl(0 0% 4%))",
+          }}
+        />
+        {/* Gradient fade: top from navbar */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 z-10"
+          style={{
+            height: "22%",
+            background: "linear-gradient(to bottom, hsl(0 0% 4%), transparent)",
+          }}
+        />
+        {/* Gradient fade: left for text readability */}
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 z-10"
+          style={{
+            width: "55%",
+            background:
+              "linear-gradient(to right, hsl(0 0% 4% / 0.72), hsl(0 0% 4% / 0.28) 60%, transparent)",
+          }}
+        />
       </div>
 
+      {/* Content — overlaps bottom of image with negative margin */}
       <div
-        className={`relative z-10 mx-auto flex max-w-7xl px-6 ${
-          asHero
-            ? "min-h-[80vh] items-center py-16 md:py-24"
-            : "items-center py-24 md:py-32"
-        }`}
+        className="relative z-20 mx-auto max-w-7xl px-6 pb-16 md:pb-24"
+        style={{ marginTop: "clamp(-180px, -20vw, -240px)" }}
       >
-        <div className="max-w-sm sm:max-w-md md:max-w-lg">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-black/20 bg-white/75 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-black backdrop-blur-sm md:text-[11px]">
+        <div className={`max-w-sm sm:max-w-md md:max-w-xl ${asHero ? "pt-0" : "pt-4"}`}>
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-black/25 bg-white/80 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-black backdrop-blur-sm md:text-[11px]">
             <ShieldCheck className="h-3.5 w-3.5 text-black" />
             Enterprise Cybersecurity
           </div>

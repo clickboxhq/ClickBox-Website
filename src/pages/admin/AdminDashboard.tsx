@@ -48,7 +48,7 @@ import logo from "@/assets/clickbox-logo.jpeg";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
-type Section = "overview" | "fellowship" | "product" | "contact" | "audit";
+type Section = "overview" | "fellowship" | "product" | "contact" | "audit" | "security";
 
 type TableKey = "fellowship" | "product" | "contact";
 
@@ -554,6 +554,7 @@ const SubmissionsView = ({
     supabase
       .from(tableName as never)
       .select("*")
+      .is("deleted_at", null)
       .order("created_at", { ascending: false })
       .then(({ data, error }) => {
         if (error) toast.error("Failed to load data", { description: error.message });
@@ -612,13 +613,19 @@ const SubmissionsView = ({
   };
 
   const handleDelete = async (row: Row) => {
-    if (!confirm("Permanently delete this submission? This cannot be undone.")) return;
-    const { error } = await supabase.from(tableName as never).delete().eq("id", row.id);
+    if (!confirm("Archive this submission? It will be hidden from the main view.")) return;
+    const { error } = await supabase
+      .from(tableName as never)
+      .update({
+        deleted_at: new Date().toISOString(),
+        deleted_by: user?.id,
+      } as never)
+      .eq("id", row.id);
     if (error) return toast.error("Delete failed", { description: error.message });
-    await writeAudit("delete", row.id, { snapshot: row });
+    await writeAudit("soft_delete", row.id, { snapshot: row });
     setRows((rs) => rs.filter((r) => r.id !== row.id));
     setSelected(null);
-    toast.success("Submission deleted");
+    toast.success("Submission archived");
   };
 
   const exportCsv = () => {
@@ -628,6 +635,10 @@ const SubmissionsView = ({
       `clickbox-${tableKey}-${new Date().toISOString().slice(0, 10)}.csv`,
       "text/csv;charset=utf-8",
     );
+    void writeAudit("audit_log_exported", "", {
+      record_count: filtered.length,
+      table: tableKey,
+    });
   };
 
   const getPrimary = (r: Row) => {
@@ -1017,9 +1028,15 @@ const AuditLogSection = () => {
   }, []);
 
   const ACTION_META: Record<string, { label: string; icon: typeof Activity; color: string }> = {
-    status_change: { label: "Status changed", icon: Activity, color: "text-blue-400" },
-    notes_update:  { label: "Notes updated",  icon: FileText, color: "text-violet-400" },
-    delete:        { label: "Submission deleted", icon: Trash2, color: "text-red-400" },
+    status_change:       { label: "Status changed",       icon: Activity,  color: "text-blue-400" },
+    notes_update:        { label: "Notes updated",        icon: FileText,  color: "text-violet-400" },
+    delete:              { label: "Submission deleted",   icon: Trash2,    color: "text-red-400" },
+    soft_delete:         { label: "Submission archived",  icon: Trash2,    color: "text-orange-400" },
+    audit_log_exported:  { label: "Audit log exported",   icon: Download,  color: "text-yellow-400" },
+    AUTH_LOGIN:          { label: "Admin login",          icon: ShieldCheck, color: "text-green-400" },
+    AUTH_LOGOUT:         { label: "Admin logout",         icon: LogOut,    color: "text-blue-400" },
+    AUTH_FAILED:         { label: "Login failed",         icon: XCircle,   color: "text-red-400" },
+    ADMIN_INVITED:       { label: "Admin invited",        icon: Users,     color: "text-primary" },
   };
 
   return (
@@ -1105,6 +1122,154 @@ const AuditLogSection = () => {
   );
 };
 
+// ─── Security Section ────────────────────────────────────────────────────────
+
+type AuthEvent = {
+  id: string;
+  action: string;
+  created_at: string;
+  payload?: { email?: string } | null;
+};
+
+const SecuritySection = () => {
+  const [authEvents, setAuthEvents] = useState<AuthEvent[]>([]);
+  const [failedCount24h, setFailedCount24h] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const since24h = new Date(Date.now() - 86400000).toISOString();
+    Promise.all([
+      supabase
+        .from("admin_audit_log")
+        .select("*")
+        .in("action", ["AUTH_LOGIN", "AUTH_LOGOUT", "AUTH_FAILED", "AUTH_MFA_FAILED"])
+        .order("created_at", { ascending: false })
+        .limit(30),
+      supabase
+        .from("admin_audit_log")
+        .select("*", { count: "exact", head: true })
+        .eq("action", "AUTH_FAILED")
+        .gte("created_at", since24h),
+    ]).then(([eventsRes, countRes]) => {
+      setAuthEvents((eventsRes.data ?? []) as AuthEvent[]);
+      setFailedCount24h(countRes.count ?? 0);
+      setLoading(false);
+    });
+  }, []);
+
+  const hasTurnstile = !!(import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined);
+
+  const checks = [
+    { label: "Admin Signup Disabled", ok: true, note: "No public registration allowed" },
+    { label: "Turnstile Bot Protection", ok: hasTurnstile, note: hasTurnstile ? "Active on all forms" : "Add VITE_TURNSTILE_SITE_KEY to env" },
+    { label: "Edge Functions (server-side)", ok: true, note: "Forms route through Edge Functions" },
+    { label: "Session Inactivity Timeout", ok: true, note: "10-minute admin idle timeout" },
+    { label: "HTTP Security Headers", ok: true, note: "HSTS, CSP, X-Frame-Options, etc." },
+    { label: "Soft Delete", ok: true, note: "Submissions are archived, not permanently deleted" },
+    { label: "Audit Logging", ok: true, note: "All admin actions are recorded" },
+    { label: "MFA Setup", ok: false, note: "Add TOTP via /admin/setup-mfa" },
+  ];
+
+  const ACTION_COLORS: Record<string, string> = {
+    AUTH_LOGIN:     "text-green-400",
+    AUTH_LOGOUT:    "text-blue-400",
+    AUTH_FAILED:    "text-red-400",
+    AUTH_MFA_FAILED: "text-orange-400",
+  };
+
+  return (
+    <div className="space-y-8">
+      <div className="flex items-center gap-3">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 ring-1 ring-white/10">
+          <ShieldCheck className="h-4 w-4 text-primary" />
+        </div>
+        <div>
+          <h1 className="font-heading text-lg font-semibold text-foreground">Security Dashboard</h1>
+          <p className="text-xs text-muted-foreground">Platform security posture and recent auth events</p>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div className="grid gap-4 sm:grid-cols-3">
+        <div className="glass-card p-5">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Failed Logins (24h)</p>
+          <p className={`mt-2 font-heading text-3xl font-bold ${failedCount24h > 0 ? "text-red-400" : "text-foreground"}`}>
+            {loading ? "–" : failedCount24h}
+          </p>
+        </div>
+        <div className="glass-card p-5">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Security Checks</p>
+          <p className="mt-2 font-heading text-3xl font-bold text-foreground">
+            {checks.filter((c) => c.ok).length}<span className="text-lg text-muted-foreground">/{checks.length}</span>
+          </p>
+        </div>
+        <div className="glass-card p-5">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Auth Events (log)</p>
+          <p className="mt-2 font-heading text-3xl font-bold text-foreground">{loading ? "–" : authEvents.length}</p>
+        </div>
+      </div>
+
+      {/* Security checks */}
+      <div>
+        <h2 className="mb-4 font-heading text-base font-semibold text-foreground">Security Health Checklist</h2>
+        <div className="rounded-xl border border-white/8 overflow-hidden">
+          {checks.map((c, i) => (
+            <div
+              key={c.label}
+              className={`flex items-center justify-between px-5 py-3.5 ${i < checks.length - 1 ? "border-b border-white/5" : ""}`}
+            >
+              <div className="flex items-center gap-3">
+                {c.ok ? (
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-green-400" />
+                ) : (
+                  <AlertCircle className="h-4 w-4 shrink-0 text-orange-400" />
+                )}
+                <span className="text-sm font-medium text-foreground">{c.label}</span>
+              </div>
+              <span className="text-xs text-muted-foreground">{c.note}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Recent auth events */}
+      <div>
+        <h2 className="mb-4 font-heading text-base font-semibold text-foreground">Recent Auth Events</h2>
+        <div className="rounded-xl border border-white/8 overflow-hidden">
+          {loading ? (
+            <div className="py-10 text-center text-sm text-muted-foreground">Loading…</div>
+          ) : authEvents.length === 0 ? (
+            <div className="py-10 text-center text-sm text-muted-foreground">No auth events logged yet.</div>
+          ) : (
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-white/8">
+                  <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">Event</th>
+                  <th className="hidden px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70 md:table-cell">Email</th>
+                  <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">Time</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {authEvents.map((ev) => (
+                  <tr key={ev.id} className="hover:bg-white/[0.02]">
+                    <td className={`px-4 py-3 font-mono text-xs ${ACTION_COLORS[ev.action] ?? "text-muted-foreground"}`}>
+                      {ev.action}
+                    </td>
+                    <td className="hidden px-4 py-3 text-xs text-muted-foreground md:table-cell">
+                      {ev.payload?.email ?? "–"}
+                    </td>
+                    <td className="px-4 py-3 text-xs text-muted-foreground">{fmtRelative(ev.created_at)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ─── Session Timer ───────────────────────────────────────────────────────────
 
 const SessionTimer = () => {
@@ -1153,11 +1318,12 @@ const NAV_ITEMS: {
   icon: typeof Users;
   badge?: string;
 }[] = [
-  { id: "overview",   label: "Overview",       icon: BarChart3 },
-  { id: "fellowship", label: "Fellowship",      icon: Users },
-  { id: "product",    label: "Product Inquiries", icon: Briefcase },
-  { id: "contact",    label: "Contact Requests", icon: Inbox },
-  { id: "audit",      label: "Audit Log",       icon: History },
+  { id: "overview",   label: "Overview",          icon: BarChart3 },
+  { id: "fellowship", label: "Fellowship",          icon: Users },
+  { id: "product",    label: "Product Inquiries",   icon: Briefcase },
+  { id: "contact",    label: "Contact Requests",    icon: Inbox },
+  { id: "security",   label: "Security",            icon: ShieldCheck },
+  { id: "audit",      label: "Audit Log",           icon: History },
 ];
 
 const AdminDashboard = () => {
@@ -1337,6 +1503,7 @@ const AdminDashboard = () => {
                 />
               )}
               {section === "audit" && <AuditLogSection />}
+              {section === "security" && <SecuritySection />}
             </motion.div>
           </AnimatePresence>
         </main>

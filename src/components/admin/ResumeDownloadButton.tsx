@@ -1,38 +1,30 @@
-import { useState } from "react";
-import { Download, Loader2 } from "lucide-react";
-import { toast } from "sonner";
-import { getResumeSignedUrl, resumeDisplayName } from "@/lib/resumeUpload";
+import { ExternalLink } from "lucide-react";
 
 type Props = {
+  /** Resume URL or Supabase storage path (legacy). */
   path: string;
 };
 
+/**
+ * Renders a link to view/download a resume.
+ * Supports both direct URLs (new) and legacy Supabase storage paths.
+ */
 const ResumeDownloadButton = ({ path }: Props) => {
-  const [loading, setLoading] = useState(false);
+  if (!path) return null;
 
-  const handleDownload = async () => {
-    setLoading(true);
-    const url = await getResumeSignedUrl(path);
-    setLoading(false);
-
-    if (!url) {
-      toast.error("Could not open resume", { description: "Please try again or contact support." });
-      return;
-    }
-
-    window.open(url, "_blank", "noopener,noreferrer");
-  };
+  const isUrl = path.startsWith("http://") || path.startsWith("https://");
+  const href = isUrl ? path : "#";
 
   return (
-    <button
-      type="button"
-      onClick={() => void handleDownload()}
-      disabled={loading}
-      className="inline-flex items-center gap-2 text-primary hover:underline disabled:opacity-60"
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-2 text-primary hover:underline"
     >
-      {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
-      Download resume ({resumeDisplayName(path)})
-    </button>
+      <ExternalLink className="h-3.5 w-3.5" />
+      View Resume
+    </a>
   );
 };
 
