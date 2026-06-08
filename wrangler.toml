@@ -1,0 +1,20 @@
+# Cloudflare Pages build configuration
+# This file tells Cloudflare Pages exactly how to build and deploy the project.
+# Ensure your Cloudflare Pages project is connected to:
+#   Repository : https://github.com/iamprinceefe/clickbox-shield-guard
+#   Branch     : main
+#   Build cmd  : npm run build
+#   Output dir : dist
+
+name = "clickbox-shield-guard"
+compatibility_date = "2024-01-01"
+
+[site]
+bucket = "./dist"
+
+[build]
+command = "npm run build"
+
+[build.environment_variables]
+NODE_VERSION = "20"
+NODE_ENV     = "production"
