@@ -1,3 +1,5 @@
+# DEPRECATED — Vercel uses vercel.json for headers.
+# See DEPLOYMENT.md. Retained for reference only.
 # Cloudflare Pages custom headers
 # Applied in addition to Cloudflare's default security headers
 

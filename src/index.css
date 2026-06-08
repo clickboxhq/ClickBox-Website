@@ -109,8 +109,8 @@
     .mobile-cta-bg {
       position: absolute;
       inset: 0;
-      background-size: cover !important;
-      background-position: 70% center !important;
+      background-size: auto 68% !important;
+      background-position: 72% 6% !important;
       background-repeat: no-repeat !important;
     }
   }

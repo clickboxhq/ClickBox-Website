@@ -28,9 +28,9 @@ const PremiumCTA = ({ asHero = false }: Props) => {
             className="absolute inset-0 mobile-cta-bg"
             style={{
               backgroundImage: `url(${hqImage})`,
-              backgroundSize: "cover",
-              /* Shift right so the logo (top-right corner) stays visible */
-              backgroundPosition: "70% center",
+              /* Slightly zoomed out vs cover — keeps full building + roof logo visible */
+              backgroundSize: "auto 68%",
+              backgroundPosition: "72% 6%",
               backgroundRepeat: "no-repeat",
             }}
           />

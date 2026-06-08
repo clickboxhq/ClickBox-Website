@@ -1,3 +1,7 @@
+# DEPRECATED — ClickBox production deploys via Vercel only.
+# This file is retained for reference. Vercel ignores netlify.toml.
+# See DEPLOYMENT.md for the canonical deployment architecture.
+
 # ─── Build settings ────────────────────────────────────────────────────────────
 [build]
   command = "npm run build"

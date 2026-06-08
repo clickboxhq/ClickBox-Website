@@ -1,4 +1,8 @@
-# Cloudflare Pages build configuration
+# DEPRECATED — ClickBox production deploys via Vercel only.
+# Cloudflare is DNS-only. Vercel ignores wrangler.toml.
+# See DEPLOYMENT.md for the canonical deployment architecture.
+
+# Cloudflare Pages build configuration (inactive)
 # This file tells Cloudflare Pages exactly how to build and deploy the project.
 # Ensure your Cloudflare Pages project is connected to:
 #   Repository : https://github.com/iamprinceefe/clickbox-shield-guard
