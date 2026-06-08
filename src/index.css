@@ -92,70 +92,9 @@
     user-select: none;
   }
 
-  /* CTA building image — mobile anchors to top-right to keep logo in frame */
+  /* CTA building image — desktop only (mobile uses dedicated layout in PremiumCTA) */
   .building-img {
     object-position: top center;
-  }
-
-  /* Mobile CTA — taller showcase, vertical composition (desktop unchanged below md) */
-  .cta-building-wrapper {
-    padding-bottom: min(88vw, 400px);
-  }
-
-  .cta-content-wrapper {
-    margin-top: -72px;
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-    padding-bottom: 3.5rem;
-  }
-
-  .cta-content-inner {
-    max-width: 22rem;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-  }
-
-  .cta-gradient-left {
-    display: none;
-  }
-
-  .cta-gradient-bottom {
-    height: 58%;
-  }
-
-  @media (min-width: 768px) {
-    .cta-building-wrapper {
-      padding-bottom: clamp(280px, 62vw, 580px);
-    }
-
-    .cta-content-wrapper {
-      margin-top: clamp(-180px, -20vw, -240px);
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-      padding-bottom: 6rem;
-    }
-
-    .cta-content-inner {
-      max-width: 36rem;
-      margin-left: 0;
-      margin-right: 0;
-      text-align: left;
-    }
-
-    .cta-gradient-left {
-      display: block;
-    }
-
-    .cta-gradient-bottom {
-      height: 50%;
-    }
-  }
-
-  @media (max-width: 767px) {
-    .building-img {
-      object-position: top right;
-    }
   }
 
   /* Admin portal — allow selection inside editable fields only */

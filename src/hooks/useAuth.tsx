@@ -17,7 +17,6 @@ type AuthState = {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
-  requestPasswordReset: (email: string) => Promise<{ error: string | null }>;
 };
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
@@ -159,16 +158,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     void logAuthEvent("AUTH_LOGOUT", user?.email, uid);
   }, [user]);
 
-  const requestPasswordReset = useCallback(async (email: string) => {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/admin/reset-password`,
-    });
-    return { error: error?.message ?? null };
-  }, []);
-
   return (
     <AuthContext.Provider
-      value={{ session, user, isAdmin, loading, signIn, signOut, requestPasswordReset }}
+      value={{ session, user, isAdmin, loading, signIn, signOut }}
     >
       {children}
     </AuthContext.Provider>

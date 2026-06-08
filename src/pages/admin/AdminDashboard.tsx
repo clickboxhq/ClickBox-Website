@@ -158,35 +158,53 @@ const buildStatusUpdates = (next: string): Record<string, unknown> => {
   return updates;
 };
 
-/** Applies status update; retries without rejected_at if column missing in remote DB. */
+const TIMESTAMP_COLUMNS = [
+  "rejected_at",
+  "shortlisted_at",
+  "contacted_at",
+  "reviewed_at",
+] as const;
+
+const isMissingColumnError = (message: string, column: string): boolean =>
+  message.includes(column) &&
+  /(schema cache|could not find|does not exist|column)/i.test(message);
+
+/** Applies status update; strips missing timestamp columns and retries automatically. */
 const applyStatusUpdate = async (
   tableName: string,
   rowId: string,
   updates: Record<string, unknown>,
 ): Promise<{ error: { message: string } | null; applied: Record<string, unknown>; partial?: boolean }> => {
-  const { error } = await supabase
-    .from(tableName as never)
-    .update(updates as never)
-    .eq("id", rowId);
+  let payload = { ...updates };
+  let partial = false;
 
-  if (!error) return { error: null, applied: updates };
-
-  const missingRejected =
-    error.message.includes("rejected_at") && "rejected_at" in updates;
-
-  if (missingRejected) {
-    const { rejected_at: _removed, ...fallback } = updates;
-    const retry = await supabase
+  for (let attempt = 0; attempt <= TIMESTAMP_COLUMNS.length; attempt++) {
+    const { error } = await supabase
       .from(tableName as never)
-      .update(fallback as never)
+      .update(payload as never)
       .eq("id", rowId);
-    if (!retry.error) {
-      return { error: null, applied: fallback, partial: true };
+
+    if (!error) {
+      return { error: null, applied: payload, partial: partial || undefined };
     }
-    return { error: retry.error, applied: fallback };
+
+    const missingCol = TIMESTAMP_COLUMNS.find(
+      (col) => col in payload && isMissingColumnError(error.message, col),
+    );
+
+    if (!missingCol) {
+      return { error, applied: payload };
+    }
+
+    const { [missingCol]: _removed, ...rest } = payload;
+    payload = rest;
+    partial = true;
   }
 
-  return { error, applied: updates };
+  return {
+    error: { message: "Unable to update submission status." },
+    applied: payload,
+  };
 };
 
 const FIELD_LABELS: Record<string, string> = {

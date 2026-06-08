@@ -22,7 +22,6 @@ const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const SetupMFA = lazy(() => import("./pages/admin/SetupMFA"));
 const VerifyMFA = lazy(() => import("./pages/admin/VerifyMFA"));
-const AdminResetPassword = lazy(() => import("./pages/admin/AdminResetPassword"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -86,14 +85,6 @@ const App = () => (
                 element={
                   <AdminLayout>
                     <VerifyMFA />
-                  </AdminLayout>
-                }
-              />
-              <Route
-                path="/admin/reset-password"
-                element={
-                  <AdminLayout>
-                    <AdminResetPassword />
                   </AdminLayout>
                 }
               />
