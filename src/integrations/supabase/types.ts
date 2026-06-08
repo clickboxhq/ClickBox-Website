@@ -56,6 +56,7 @@ export type Database = {
           notes: string | null
           phone: string | null
           reviewed_at: string | null
+          rejected_at: string | null
           shortlisted_at: string | null
           status: string
           subject: string
@@ -72,6 +73,7 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           reviewed_at?: string | null
+          rejected_at?: string | null
           shortlisted_at?: string | null
           status?: string
           subject: string
@@ -88,6 +90,7 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           reviewed_at?: string | null
+          rejected_at?: string | null
           shortlisted_at?: string | null
           status?: string
           subject?: string
@@ -112,6 +115,7 @@ export type Database = {
           relevant_experience: string | null
           resume_url: string | null
           reviewed_at: string | null
+          rejected_at: string | null
           shortlisted_at: string | null
           status: string
           updated_at: string
@@ -132,6 +136,7 @@ export type Database = {
           relevant_experience?: string | null
           resume_url?: string | null
           reviewed_at?: string | null
+          rejected_at?: string | null
           shortlisted_at?: string | null
           status?: string
           updated_at?: string
@@ -152,6 +157,7 @@ export type Database = {
           relevant_experience?: string | null
           resume_url?: string | null
           reviewed_at?: string | null
+          rejected_at?: string | null
           shortlisted_at?: string | null
           status?: string
           updated_at?: string
@@ -170,6 +176,7 @@ export type Database = {
           notes: string | null
           product_interest: string
           reviewed_at: string | null
+          rejected_at: string | null
           shortlisted_at: string | null
           status: string
           updated_at: string
@@ -185,6 +192,7 @@ export type Database = {
           notes?: string | null
           product_interest: string
           reviewed_at?: string | null
+          rejected_at?: string | null
           shortlisted_at?: string | null
           status?: string
           updated_at?: string
@@ -200,6 +208,7 @@ export type Database = {
           notes?: string | null
           product_interest?: string
           reviewed_at?: string | null
+          rejected_at?: string | null
           shortlisted_at?: string | null
           status?: string
           updated_at?: string

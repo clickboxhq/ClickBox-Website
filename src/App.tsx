@@ -8,6 +8,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import CookieConsent from "./components/CookieConsent";
 import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedAdminRoute from "@/components/admin/ProtectedAdminRoute";
+import AdminLayout from "@/components/admin/AdminLayout";
 import Index from "./pages/Index";
 
 const Product = lazy(() => import("./pages/Product"));
@@ -21,6 +22,7 @@ const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const SetupMFA = lazy(() => import("./pages/admin/SetupMFA"));
 const VerifyMFA = lazy(() => import("./pages/admin/VerifyMFA"));
+const AdminResetPassword = lazy(() => import("./pages/admin/AdminResetPassword"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -63,15 +65,46 @@ const App = () => (
               <Route path="/internship" element={<Internship />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy" element={<Privacy />} />
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin/setup-mfa" element={<SetupMFA />} />
-              <Route path="/admin/verify-mfa" element={<VerifyMFA />} />
+              <Route
+                path="/admin/login"
+                element={
+                  <AdminLayout>
+                    <AdminLogin />
+                  </AdminLayout>
+                }
+              />
+              <Route
+                path="/admin/setup-mfa"
+                element={
+                  <AdminLayout>
+                    <SetupMFA />
+                  </AdminLayout>
+                }
+              />
+              <Route
+                path="/admin/verify-mfa"
+                element={
+                  <AdminLayout>
+                    <VerifyMFA />
+                  </AdminLayout>
+                }
+              />
+              <Route
+                path="/admin/reset-password"
+                element={
+                  <AdminLayout>
+                    <AdminResetPassword />
+                  </AdminLayout>
+                }
+              />
               <Route
                 path="/admin"
                 element={
-                  <ProtectedAdminRoute>
-                    <AdminDashboard />
-                  </ProtectedAdminRoute>
+                  <AdminLayout>
+                    <ProtectedAdminRoute>
+                      <AdminDashboard />
+                    </ProtectedAdminRoute>
+                  </AdminLayout>
                 }
               />
               <Route path="*" element={<NotFound />} />

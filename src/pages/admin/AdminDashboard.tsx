@@ -45,6 +45,13 @@ import {
   ADMIN_SESSION_RESET_EVENT,
 } from "@/lib/adminSession";
 import logo from "@/assets/clickbox-logo.jpeg";
+import { runExport, type ExportFormat } from "@/lib/adminExport";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -141,28 +148,45 @@ const fmtRelative = (iso?: string | null) => {
   return `${d}d ago`;
 };
 
-const toCsv = (rows: Row[]) => {
-  if (rows.length === 0) return "";
-  const keys = Object.keys(rows[0]);
-  const esc = (v: unknown) => {
-    const s =
-      v == null ? "" : typeof v === "object" ? JSON.stringify(v) : String(v);
-    return `"${s.replace(/"/g, '""')}"`;
-  };
-  return [
-    keys.join(","),
-    ...rows.map((r) => keys.map((k) => esc(r[k])).join(",")),
-  ].join("\n");
+const buildStatusUpdates = (next: string): Record<string, unknown> => {
+  const now = new Date().toISOString();
+  const updates: Record<string, unknown> = { status: next };
+  if (next === "reviewed") updates.reviewed_at = now;
+  if (next === "contacted") updates.contacted_at = now;
+  if (next === "shortlisted") updates.shortlisted_at = now;
+  if (next === "rejected") updates.rejected_at = now;
+  return updates;
 };
 
-const downloadBlob = (content: string, filename: string, mime: string) => {
-  const blob = new Blob([content], { type: mime });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
+/** Applies status update; retries without rejected_at if column missing in remote DB. */
+const applyStatusUpdate = async (
+  tableName: string,
+  rowId: string,
+  updates: Record<string, unknown>,
+): Promise<{ error: { message: string } | null; applied: Record<string, unknown>; partial?: boolean }> => {
+  const { error } = await supabase
+    .from(tableName as never)
+    .update(updates as never)
+    .eq("id", rowId);
+
+  if (!error) return { error: null, applied: updates };
+
+  const missingRejected =
+    error.message.includes("rejected_at") && "rejected_at" in updates;
+
+  if (missingRejected) {
+    const { rejected_at: _removed, ...fallback } = updates;
+    const retry = await supabase
+      .from(tableName as never)
+      .update(fallback as never)
+      .eq("id", rowId);
+    if (!retry.error) {
+      return { error: null, applied: fallback, partial: true };
+    }
+    return { error: retry.error, applied: fallback };
+  }
+
+  return { error, applied: updates };
 };
 
 const FIELD_LABELS: Record<string, string> = {
@@ -187,6 +211,7 @@ const FIELD_LABELS: Record<string, string> = {
   reviewed_at: "Reviewed",
   contacted_at: "Contacted",
   shortlisted_at: "Shortlisted",
+  rejected_at: "Rejected",
   status: "Status",
 };
 
@@ -330,15 +355,15 @@ const DISPLAY_FIELD_ORDER: Record<TableKey, string[]> = {
     "full_name", "email", "linkedin", "preferred_pathway", "resume_url",
     "certifications", "certification_links", "relevant_experience",
     "motivation", "portfolio", "status", "created_at", "reviewed_at",
-    "contacted_at", "shortlisted_at", "id",
+    "contacted_at", "shortlisted_at", "rejected_at", "id",
   ],
   product: [
     "name", "email", "company", "product_interest", "message",
-    "status", "created_at", "reviewed_at", "contacted_at", "id",
+    "status", "created_at", "reviewed_at", "contacted_at", "shortlisted_at", "rejected_at", "id",
   ],
   contact: [
     "name", "email", "phone", "company", "subject", "message",
-    "status", "created_at", "reviewed_at", "contacted_at", "id",
+    "status", "created_at", "reviewed_at", "contacted_at", "shortlisted_at", "rejected_at", "id",
   ],
 };
 
@@ -534,6 +559,7 @@ const SubmissionsView = ({
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<Row | null>(null);
   const [sortDir, setSortDir] = useState<"desc" | "asc">("desc");
+  const [exporting, setExporting] = useState(false);
 
   const writeAudit = useCallback(
     async (action: string, targetId: string, payload: Record<string, unknown>) => {
@@ -580,24 +606,33 @@ const SubmissionsView = ({
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
 
   const handleStatusChange = async (row: Row, next: string) => {
-    const updates: Record<string, unknown> = { status: next };
-    if (next === "reviewed") updates.reviewed_at = new Date().toISOString();
-    if (next === "contacted") updates.contacted_at = new Date().toISOString();
-    if (next === "shortlisted") updates.shortlisted_at = new Date().toISOString();
-    if (next === "rejected") updates.rejected_at = new Date().toISOString();
+    const updates = buildStatusUpdates(next);
 
-    const { error } = await supabase
-      .from(tableName as never)
-      .update(updates as never)
-      .eq("id", row.id);
+    const { error, applied, partial } = await applyStatusUpdate(
+      tableName,
+      row.id,
+      updates,
+    );
 
-    if (error) return toast.error("Update failed", { description: error.message });
+    if (error) {
+      return toast.error("Update failed", { description: error.message });
+    }
+
+    if (partial) {
+      toast.warning("Status updated", {
+        description:
+          "Rejection recorded. Apply the latest database migration to enable rejection timestamps.",
+      });
+    }
+
     await writeAudit("status_change", row.id, { from: row.status ?? "new", to: next });
 
-    setRows((rs) => rs.map((r) => (r.id === row.id ? { ...r, ...updates } : r)));
-    setSelected((s) => (s?.id === row.id ? { ...s, ...updates } : s));
-    const meta = getStatus(next);
-    toast.success(`Marked as ${meta.label}`);
+    setRows((rs) => rs.map((r) => (r.id === row.id ? { ...r, ...applied } : r)));
+    setSelected((s) => (s?.id === row.id ? { ...s, ...applied } : s));
+    if (!partial) {
+      const meta = getStatus(next);
+      toast.success(`Marked as ${meta.label}`);
+    }
   };
 
   const handleSaveNotes = async (row: Row, notes: string) => {
@@ -618,7 +653,7 @@ const SubmissionsView = ({
       .from(tableName as never)
       .update({
         deleted_at: new Date().toISOString(),
-        deleted_by: user?.id,
+        deleted_by: adminId,
       } as never)
       .eq("id", row.id);
     if (error) return toast.error("Delete failed", { description: error.message });
@@ -628,17 +663,31 @@ const SubmissionsView = ({
     toast.success("Submission archived");
   };
 
-  const exportCsv = () => {
-    const csv = toCsv(filtered);
-    downloadBlob(
-      csv,
-      `clickbox-${tableKey}-${new Date().toISOString().slice(0, 10)}.csv`,
-      "text/csv;charset=utf-8",
-    );
-    void writeAudit("audit_log_exported", "", {
-      record_count: filtered.length,
-      table: tableKey,
-    });
+  const handleExport = async (format: ExportFormat) => {
+    if (filtered.length === 0) {
+      toast.error("Nothing to export", { description: "No records match the current filters." });
+      return;
+    }
+
+    setExporting(true);
+    try {
+      await runExport(format, filtered, `clickbox-${tableKey}`, {
+        title,
+        logoUrl: logo,
+      });
+      void writeAudit("audit_log_exported", "", {
+        record_count: filtered.length,
+        table: tableKey,
+        format,
+      });
+      toast.success(`Exported as ${format.toUpperCase()}`);
+    } catch (err) {
+      toast.error("Export failed", {
+        description: err instanceof Error ? err.message : "Please try again.",
+      });
+    } finally {
+      setExporting(false);
+    }
   };
 
   const getPrimary = (r: Row) => {
@@ -682,13 +731,32 @@ const SubmissionsView = ({
             </p>
           </div>
         </div>
-        <button
-          onClick={exportCsv}
-          className="inline-flex items-center gap-2 rounded-lg border border-white/8 bg-white/[0.03] px-3 py-2 text-xs font-medium text-foreground hover:bg-white/[0.06] transition"
-        >
-          <Download className="h-3.5 w-3.5" />
-          Export CSV
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              disabled={exporting}
+              className="inline-flex items-center gap-2 rounded-lg border border-white/8 bg-white/[0.03] px-3 py-2 text-xs font-medium text-foreground hover:bg-white/[0.06] transition disabled:opacity-50"
+            >
+              {exporting ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Download className="h-3.5 w-3.5" />
+              )}
+              Export
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-44">
+            <DropdownMenuItem onClick={() => void handleExport("csv")}>
+              Export CSV
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => void handleExport("excel")}>
+              Export Excel
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => void handleExport("pdf")}>
+              Export PDF
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Status quick-filters */}

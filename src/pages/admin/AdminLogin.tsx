@@ -1,18 +1,21 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Lock, Loader2, ShieldCheck } from "lucide-react";
+import { Lock, Loader2, ShieldCheck, Mail } from "lucide-react";
 import { useAuth, isSignInRateLimited } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { sanitizeEmail } from "@/lib/inputSanitization";
+import { ADMIN_PASSWORD_HINT } from "@/lib/adminPasswordPolicy";
 import logo from "@/assets/clickbox-logo.jpeg";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { signIn, user, isAdmin, loading } = useAuth();
+  const { signIn, requestPasswordReset, user, isAdmin, loading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [resetting, setResetting] = useState(false);
+  const [showReset, setShowReset] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
   const [rateLimited, setRateLimited] = useState(isSignInRateLimited());
 
@@ -51,8 +54,8 @@ const AdminLogin = () => {
     if (!safeEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(safeEmail)) {
       errors.email = "Please enter a valid email address";
     }
-    if (password.length < 6) {
-      errors.password = "Password must be at least 6 characters";
+    if (password.length < 1) {
+      errors.password = "Password is required";
     }
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
@@ -73,6 +76,31 @@ const AdminLogin = () => {
 
   const blockClipboard = (e: React.ClipboardEvent) => {
     e.preventDefault();
+    toast.info("Copying and pasting is disabled in the ClickBox Admin Portal.", {
+      duration: 2200,
+    });
+  };
+
+  const handlePasswordReset = async () => {
+    const safeEmail = sanitizeEmail(email);
+    if (!safeEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(safeEmail)) {
+      toast.error("Enter a valid admin email to receive a reset link.");
+      return;
+    }
+
+    setResetting(true);
+    const { error } = await requestPasswordReset(safeEmail);
+    setResetting(false);
+
+    if (error) {
+      toast.error("Reset request failed", { description: error });
+      return;
+    }
+
+    toast.success("Reset link sent", {
+      description: "If this email is registered, you will receive a secure password reset link.",
+    });
+    setShowReset(false);
   };
 
   const inputClass = (field: keyof typeof fieldErrors) =>
@@ -175,7 +203,7 @@ const AdminLogin = () => {
               type="password"
               required
               autoComplete="current-password"
-              minLength={6}
+              minLength={1}
               maxLength={128}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -184,9 +212,12 @@ const AdminLogin = () => {
               onPaste={blockClipboard}
               disabled={rateLimited}
               aria-invalid={!!fieldErrors.password}
-              aria-describedby={fieldErrors.password ? "admin-pw-error" : undefined}
+              aria-describedby={fieldErrors.password ? "admin-pw-error" : "admin-pw-hint"}
               className={inputClass("password")}
             />
+            <p id="admin-pw-hint" className="mt-1.5 text-[11px] text-muted-foreground/80">
+              {ADMIN_PASSWORD_HINT}
+            </p>
             {fieldErrors.password && (
               <p id="admin-pw-error" className="mt-1.5 text-xs text-red-400" role="alert">
                 {fieldErrors.password}
@@ -206,6 +237,45 @@ const AdminLogin = () => {
             )}
             {submitting ? "Signing in…" : "Sign in"}
           </button>
+
+          <div className="border-t border-white/8 pt-4">
+            {!showReset ? (
+              <button
+                type="button"
+                onClick={() => setShowReset(true)}
+                className="w-full text-center text-xs text-primary hover:underline"
+              >
+                Forgot password?
+              </button>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-xs text-muted-foreground">
+                  Enter your admin email. A secure reset link will be sent — no passwords are stored
+                  in the application.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => void handlePasswordReset()}
+                  disabled={resetting || rateLimited}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-4 py-2.5 text-xs font-medium text-foreground hover:bg-white/[0.06] disabled:opacity-50"
+                >
+                  {resetting ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Mail className="h-3.5 w-3.5" />
+                  )}
+                  Send reset link
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowReset(false)}
+                  className="w-full text-center text-xs text-muted-foreground hover:text-foreground"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+          </div>
 
           <p className="text-center text-xs text-muted-foreground">
             Admin accounts are provisioned internally.{" "}
