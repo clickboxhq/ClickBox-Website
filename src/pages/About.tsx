@@ -53,9 +53,9 @@ const About = () => (
             Security expertise meets <span className="text-gradient">strategic thinking.</span>
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            ClickBox Information Technology Ltd is a cybersecurity company focused on helping
-            organizations strengthen their security posture, protect sensitive data, and stay
-            compliant in an evolving digital landscape.
+            ClickBox is a cybersecurity company focused on helping organizations strengthen
+            their security posture, protect sensitive data, and stay compliant in an evolving
+            digital landscape.
           </p>
         </motion.div>
 
@@ -72,11 +72,6 @@ const About = () => (
               businesses identify vulnerabilities and build resilient systems. We work alongside
               security, engineering, and leadership teams to translate complex risk into clear,
               actionable programs.
-            </p>
-            <p>
-              Beyond services, we're building an AI-powered cybersecurity platform designed to
-              enhance vulnerability detection, threat intelligence, and risk monitoring for modern
-              enterprises.
             </p>
             <p>
               Whether you are scaling rapidly, modernizing infrastructure, or strengthening your
