@@ -92,6 +92,29 @@
     user-select: none;
   }
 
+  /* ═══════════════════════════════════════════════════════
+     MOBILE CTA HERO — explicit CSS guarantee
+     Inline styles in PremiumCTA.tsx are the primary source,
+     but these rules act as a hard CSS fallback so production
+     always renders the full-height cover layout regardless
+     of JS hydration timing or CDN delivery order.
+     ═══════════════════════════════════════════════════════ */
+  @media (max-width: 767px) {
+    .mobile-cta-wrapper {
+      position: relative;
+      width: 100%;
+      min-height: 82vh;
+    }
+
+    .mobile-cta-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover !important;
+      background-position: 70% center !important;
+      background-repeat: no-repeat !important;
+    }
+  }
+
   /* CTA building image — desktop only (mobile uses dedicated layout in PremiumCTA) */
   .building-img {
     object-position: top center;

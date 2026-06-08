@@ -1,3 +1,23 @@
+# ─── Build settings ────────────────────────────────────────────────────────────
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS   = "--legacy-peer-deps"
+
+# Flush Netlify's build cache on every deploy so stale CSS/JS never surfaces
+[build.processing]
+  skip_processing = false
+
+# ─── SPA fallback (all routes → index.html) ───────────────────────────────────
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# ─── Security headers ──────────────────────────────────────────────────────────
 [[headers]]
   for = "/*"
   [headers.values]
@@ -14,6 +34,12 @@
 
 [[headers]]
   for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# Root index.html must always be fresh so browser loads the latest hashed bundles
+[[headers]]
+  for = "/"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
 

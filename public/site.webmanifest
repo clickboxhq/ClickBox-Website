@@ -1,0 +1,17 @@
+{
+  "name": "ClickBox",
+  "short_name": "ClickBox",
+  "description": "Enterprise Cybersecurity Consulting & SOCaaS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "/clickbox-logo.jpeg",
+      "sizes": "any",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

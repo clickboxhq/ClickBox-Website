@@ -20,12 +20,12 @@ const PremiumCTA = ({ asHero = false }: Props) => {
           ═══════════════════════════════════════ */}
       <div className="md:hidden">
         <div
-          className="relative w-full"
+          className="relative w-full mobile-cta-wrapper"
           style={{ minHeight: "82vh" }}
         >
           {/* Background: building fills the whole hero */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 mobile-cta-bg"
             style={{
               backgroundImage: `url(${hqImage})`,
               backgroundSize: "cover",
