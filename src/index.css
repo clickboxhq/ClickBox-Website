@@ -103,14 +103,15 @@
     .mobile-cta-wrapper {
       position: relative;
       width: 100%;
-      min-height: 82vh;
+      min-height: 100dvh;
+      overflow: hidden;
     }
 
     .mobile-cta-bg {
       position: absolute;
       inset: 0;
-      background-size: auto 68% !important;
-      background-position: 72% 6% !important;
+      background-size: cover !important;
+      background-position: 70% center !important;
       background-repeat: no-repeat !important;
     }
   }

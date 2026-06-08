@@ -18,19 +18,19 @@ const PremiumCTA = ({ asHero = false }: Props) => {
           Full-height hero — image fills section,
           content sits over a bottom gradient.
           ═══════════════════════════════════════ */}
-      <div className="md:hidden">
+      <div className="md:hidden overflow-hidden">
         <div
           className="relative w-full mobile-cta-wrapper"
-          style={{ minHeight: "82vh" }}
+          style={{ minHeight: "100dvh" }}
         >
           {/* Background: building fills the whole hero */}
           <div
             className="absolute inset-0 mobile-cta-bg"
             style={{
               backgroundImage: `url(${hqImage})`,
-              /* Slightly zoomed out vs cover — keeps full building + roof logo visible */
-              backgroundSize: "auto 68%",
-              backgroundPosition: "72% 6%",
+              backgroundSize: "cover",
+              /* Pan left to expose roof logo — same scale, horizontal reposition only */
+              backgroundPosition: "70% center",
               backgroundRepeat: "no-repeat",
             }}
           />
