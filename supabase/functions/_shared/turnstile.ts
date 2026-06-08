@@ -2,10 +2,19 @@ export async function verifyTurnstile(
   token: string,
   ip: string | null,
 ): Promise<{ success: boolean }> {
+  if (token === "dev-token") {
+    return { success: false };
+  }
+
   const secretKey = Deno.env.get("TURNSTILE_SECRET_KEY");
   if (!secretKey) {
-    // If secret not configured, skip verification (dev mode).
-    console.warn("TURNSTILE_SECRET_KEY not set — skipping verification");
+    const isProd = Deno.env.get("ENVIRONMENT") === "production"
+      || Deno.env.get("DENO_ENV") === "production";
+    if (isProd) {
+      console.error("TURNSTILE_SECRET_KEY not set in production");
+      return { success: false };
+    }
+    console.warn("TURNSTILE_SECRET_KEY not set — skipping verification (dev only)");
     return { success: true };
   }
 

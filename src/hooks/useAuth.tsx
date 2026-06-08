@@ -68,15 +68,27 @@ export const isSignInRateLimited = (): boolean =>
 async function logAuthEvent(
   event: string,
   email?: string,
-  userId?: string,
+  accessToken?: string,
 ): Promise<void> {
   try {
     const url = import.meta.env.VITE_SUPABASE_URL;
-    if (!url) return;
+    const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+    if (!url || !anonKey) return;
+
+    let token = accessToken;
+    if (!token) {
+      const { data: { session } } = await supabase.auth.getSession();
+      token = session?.access_token ?? anonKey;
+    }
+
     await fetch(`${url}/functions/v1/log-auth-event`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ event, email, user_id: userId }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        apikey: anonKey,
+      },
+      body: JSON.stringify({ event, email }),
     });
   } catch {
     /* non-blocking — never throw */
@@ -146,16 +158,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     resetAttempts();
-    void logAuthEvent("AUTH_LOGIN", email, data.user?.id);
+    void logAuthEvent("AUTH_LOGIN", email, data.session?.access_token);
     return { error: null };
   }, []);
 
   const signOut = useCallback(async () => {
-    const uid = user?.id;
     await supabase.auth.signOut();
     setIsAdmin(false);
     resetAttempts();
-    void logAuthEvent("AUTH_LOGOUT", user?.email, uid);
+    void logAuthEvent("AUTH_LOGOUT", user?.email);
   }, [user]);
 
   return (

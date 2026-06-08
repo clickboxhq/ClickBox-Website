@@ -96,6 +96,12 @@ serve(async (req) => {
       return jsonResponse({ success: true });
     }
 
+    // LinkedIn must be a linkedin.com profile URL
+    const linkedinCheck = validateResumeUrl(linkedin);
+    if (!linkedinCheck.valid || !linkedinCheck.domain?.includes("linkedin.com")) {
+      return errorResponse("LinkedIn profile must be a valid https://linkedin.com URL.", 422);
+    }
+
     // Resume URL domain validation
     let resumeUrlDomain: string | null = null;
     if (resume_url) {
@@ -107,6 +113,26 @@ serve(async (req) => {
         );
       }
       resumeUrlDomain = validation.domain ?? null;
+    }
+
+    if (portfolio) {
+      const portfolioCheck = validateResumeUrl(portfolio);
+      if (!portfolioCheck.valid) {
+        return errorResponse("Portfolio must be a valid HTTPS URL from an allowed host.", 422);
+      }
+    }
+
+    if (certification_links) {
+      const lines = certification_links.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+      for (const line of lines) {
+        const certCheck = validateResumeUrl(line);
+        if (!certCheck.valid) {
+          return errorResponse(
+            "Each certification link must be a valid HTTPS URL from an allowed host.",
+            422,
+          );
+        }
+      }
     }
 
     const clean = {

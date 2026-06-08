@@ -466,7 +466,7 @@ export const submitContact = async (fd: FormData): Promise<SubmitResult> => {
   return callEdgeFunction("submit-contact", {
     ...parsed.data,
     message: normalizedMessage,
-    honeypot: "",
+    honeypot: (fd.get("website") as string) ?? "",
     turnstile_token: fd.get("turnstile_token") ?? "",
     submitted_at: Number(fd.get("submitted_at") ?? Date.now()),
   });
@@ -493,7 +493,7 @@ export const submitProduct = async (fd: FormData): Promise<SubmitResult> => {
   return callEdgeFunction("submit-product", {
     ...parsed.data,
     message: normalizedMessage,
-    honeypot: "",
+    honeypot: (fd.get("website") as string) ?? "",
     turnstile_token: fd.get("turnstile_token") ?? "",
     submitted_at: Number(fd.get("submitted_at") ?? Date.now()),
   });
@@ -536,7 +536,7 @@ export const submitFellowship = async (fd: FormData): Promise<SubmitResult> => {
   return callEdgeFunction("submit-fellowship", {
     ...parsed.data,
     motivation: normalizedMotivation,
-    honeypot: "",
+    honeypot: (fd.get("website") as string) ?? "",
     turnstile_token: fd.get("turnstile_token") ?? "",
     submitted_at: Number(fd.get("submitted_at") ?? Date.now()),
   });

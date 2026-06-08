@@ -10,10 +10,9 @@ export function TurnstileWidget({ onSuccess, onExpire, onError }: Props) {
   const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
 
   if (!siteKey) {
-    // Turnstile not configured in this environment — auto-grant a placeholder
-    // token so forms remain usable during local development.
-    // The Edge Function skips verification when TURNSTILE_SECRET_KEY is unset.
-    setTimeout(() => onSuccess("dev-token"), 0);
+    if (import.meta.env.DEV) {
+      setTimeout(() => onSuccess("dev-token"), 0);
+    }
     return null;
   }
 
