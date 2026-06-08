@@ -29,8 +29,8 @@ const PremiumCTA = ({ asHero = false }: Props) => {
             style={{
               backgroundImage: `url(${hqImage})`,
               backgroundSize: "cover",
-              /* Pan left to expose roof logo — same scale, horizontal reposition only */
-              backgroundPosition: "70% center",
+              /* Shift view left to expose building logo — cover scale unchanged */
+              backgroundPosition: "48% center",
               backgroundRepeat: "no-repeat",
             }}
           />
