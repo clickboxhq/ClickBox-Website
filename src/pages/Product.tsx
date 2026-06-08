@@ -2,12 +2,7 @@ import { Shield, FlaskConical, FileBarChart, Brain } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import productHero from "@/assets/product-hero.jpeg";
-import {
-  FormField,
-  FormShell,
-  fieldClass,
-  submitProduct,
-} from "@/components/forms/FormShell";
+import { TallyEmbed } from "@/components/forms/TallyEmbed";
 
 const features = [
   {
@@ -108,49 +103,11 @@ const Product = () => {
             </p>
           </div>
 
-          <FormShell
-            onSubmit={submitProduct}
-            successTitle="Inquiry received"
-            successMessage="Thanks — our team will be in touch about next steps."
-          >
-            {({ fieldErrors }) => (
-              <>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <FormField name="name" label="Name" required error={fieldErrors.name}>
-                    <input required maxLength={120} autoComplete="name" />
-                  </FormField>
-                  <FormField name="company" label="Company" required error={fieldErrors.company}>
-                    <input required maxLength={150} autoComplete="organization" />
-                  </FormField>
-                </div>
-                <FormField name="email" label="Email" required error={fieldErrors.email}>
-                  <input type="email" required maxLength={255} autoComplete="email" />
-                </FormField>
-                <FormField
-                  name="product_interest"
-                  label="Product Interest"
-                  required
-                  error={fieldErrors.product_interest}
-                >
-                  <select required className={fieldClass}>
-                    <option value="">Select an option…</option>
-                    <option>Request a demo</option>
-                    <option>Beta access</option>
-                    <option>Partnership</option>
-                    <option>General inquiry</option>
-                  </select>
-                </FormField>
-                <FormField name="message" label="Message" required error={fieldErrors.message}>
-                  <textarea
-                    required
-                    rows={5}
-                    maxLength={5000}
-                    placeholder="Tell us about your use case..."
-                  />
-                </FormField>
-              </>
-            )}
-          </FormShell>
+          <TallyEmbed
+            formId="81r5Jr"
+            height={200}
+            title="Product Inquiries, Demos & Beta Access"
+          />
         </div>
       </section>
 

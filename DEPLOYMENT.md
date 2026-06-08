@@ -80,8 +80,10 @@ Set in **Vercel → Project → Settings → Environment Variables** for Product
 
 | Variable | Purpose |
 |---|---|
-| `VITE_SUPABASE_URL` | Supabase API endpoint |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase anon key (public) |
+| `ADMIN_EMAIL` | Admin login email (server-only) |
+| `ADMIN_PASSWORD` | Admin login password (server-only) |
+| `ADMIN_SECRET` | JWT signing secret, min 16 chars (server-only) |
+| `BLOB_READ_WRITE_TOKEN` | Optional — persistent submission store on Vercel |
 | `VITE_TURNSTILE_SITE_KEY` | Cloudflare Turnstile on forms (optional but recommended) |
 
 See `.env.example` for the template. **Never commit `.env` to Git.**

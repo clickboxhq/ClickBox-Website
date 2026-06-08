@@ -6,9 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import ScrollToTop from "./components/ScrollToTop";
 import CookieConsent from "./components/CookieConsent";
-import { AuthProvider } from "@/hooks/useAuth";
-import ProtectedAdminRoute from "@/components/admin/ProtectedAdminRoute";
-import AdminLayout from "@/components/admin/AdminLayout";
 import Index from "./pages/Index";
 
 const Product = lazy(() => import("./pages/Product"));
@@ -18,10 +15,6 @@ const Resources = lazy(() => import("./pages/Resources"));
 const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 const Internship = lazy(() => import("./pages/Internship"));
 const About = lazy(() => import("./pages/About"));
-const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
-const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
-const SetupMFA = lazy(() => import("./pages/admin/SetupMFA"));
-const VerifyMFA = lazy(() => import("./pages/admin/VerifyMFA"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -39,7 +32,7 @@ const PageFallback = () => (
   <div className="flex min-h-screen items-center justify-center bg-background" aria-hidden="true">
     <div className="h-1 w-24 overflow-hidden rounded-full bg-white/8">
       <div
-        className="h-full w-1/2 rounded-full bg-primary/60 animate-[slide_1.2s_ease-in-out_infinite]"
+        className="h-full w-1/2 rounded-full bg-primary/60"
         style={{ animation: "navLoader 1.2s ease-in-out infinite" }}
       />
     </div>
@@ -52,57 +45,21 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AuthProvider>
-          <ScrollToTop />
-          <Suspense fallback={<PageFallback />}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/product" element={<Product />} />
-              <Route path="/resources" element={<Resources />} />
-              <Route path="/resources/:slug" element={<BlogPostPage />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/internship" element={<Internship />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route
-                path="/admin/login"
-                element={
-                  <AdminLayout>
-                    <AdminLogin />
-                  </AdminLayout>
-                }
-              />
-              <Route
-                path="/admin/setup-mfa"
-                element={
-                  <AdminLayout>
-                    <SetupMFA />
-                  </AdminLayout>
-                }
-              />
-              <Route
-                path="/admin/verify-mfa"
-                element={
-                  <AdminLayout>
-                    <VerifyMFA />
-                  </AdminLayout>
-                }
-              />
-              <Route
-                path="/admin"
-                element={
-                  <AdminLayout>
-                    <ProtectedAdminRoute>
-                      <AdminDashboard />
-                    </ProtectedAdminRoute>
-                  </AdminLayout>
-                }
-              />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-          <CookieConsent />
-        </AuthProvider>
+        <ScrollToTop />
+        <Suspense fallback={<PageFallback />}>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/product" element={<Product />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/resources/:slug" element={<BlogPostPage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/internship" element={<Internship />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+        <CookieConsent />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

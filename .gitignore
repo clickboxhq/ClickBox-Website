@@ -20,11 +20,8 @@ lerna-debug.log*
 .env.development
 .env.*.local
 
-# Supabase local config
-supabase/.env
-supabase/config.toml.local
-supabase/.branches
-supabase/.temp
+# ClickBox submission store (lives on the deployment, not in git)
+data/clickbox-store.json
 
 # Editor directories and files
 .vscode/*

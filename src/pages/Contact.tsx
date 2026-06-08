@@ -1,12 +1,7 @@
 import { Mail, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import {
-  FormField,
-  FormShell,
-  fieldClass,
-  submitContact,
-} from "@/components/forms/FormShell";
+import { TallyEmbed } from "@/components/forms/TallyEmbed";
 
 const Contact = () => {
   return (
@@ -61,36 +56,11 @@ const Contact = () => {
               </p>
             </div>
 
-            <FormShell
-              onSubmit={submitContact}
-              successTitle="Message sent"
-              successMessage="Thanks — our team will respond shortly."
-            >
-              {({ fieldErrors }) => (
-                <>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <FormField name="name" label="Name" required error={fieldErrors.name}>
-                      <input required maxLength={120} autoComplete="name" />
-                    </FormField>
-                    <FormField name="email" label="Email" required error={fieldErrors.email}>
-                      <input type="email" required maxLength={255} autoComplete="email" />
-                    </FormField>
-                    <FormField name="phone" label="Phone" error={fieldErrors.phone}>
-                      <input maxLength={40} autoComplete="tel" inputMode="tel" />
-                    </FormField>
-                    <FormField name="company" label="Company" error={fieldErrors.company}>
-                      <input maxLength={150} autoComplete="organization" />
-                    </FormField>
-                  </div>
-                  <FormField name="subject" label="Subject" required error={fieldErrors.subject}>
-                    <input required maxLength={200} />
-                  </FormField>
-                  <FormField name="message" label="Message" required error={fieldErrors.message}>
-                    <textarea required rows={5} maxLength={5000} />
-                  </FormField>
-                </>
-              )}
-            </FormShell>
+            <TallyEmbed
+              formId="44Odpr"
+              height={1051}
+              title="Contact Us"
+            />
           </div>
         </div>
       </section>
