@@ -31,6 +31,7 @@ import {
   hasEmbeddedCredentials,
   isOpenRedirect,
 } from "@/lib/urlValidation";
+import { supabase } from "@/integrations/supabase/client";
 
 type SubmitResult = { ok: true } | { ok: false; message: string; fieldErrors?: FieldErrors };
 
@@ -146,7 +147,10 @@ export const FormShell = ({
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileEnabled = !!import.meta.env.VITE_TURNSTILE_SITE_KEY;
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(
+    turnstileEnabled ? null : "ready",
+  );
   const successRef = useRef<HTMLDivElement>(null);
   const formStartTime = useRef<number>(Date.now());
 
@@ -184,8 +188,6 @@ export const FormShell = ({
       return;
     }
 
-    // Append Turnstile token and timing to FormData
-    fd.set("turnstile_token", turnstileToken ?? "");
     fd.set("submitted_at", String(formStartTime.current));
 
     setSubmitting(true);
@@ -247,14 +249,16 @@ export const FormShell = ({
         aria-hidden="true"
       />
       {children({ submitting, submitted, fieldErrors })}
-      <TurnstileWidget
-        onSuccess={setTurnstileToken}
-        onExpire={() => setTurnstileToken(null)}
-        onError={() => setTurnstileToken(null)}
-      />
+      {turnstileEnabled && (
+        <TurnstileWidget
+          onSuccess={setTurnstileToken}
+          onExpire={() => setTurnstileToken(null)}
+          onError={() => setTurnstileToken(null)}
+        />
+      )}
       <button
         type="submit"
-        disabled={submitting || turnstileToken === null}
+        disabled={submitting || (turnstileEnabled && turnstileToken === null)}
         className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90 disabled:opacity-60"
       >
         {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
@@ -420,28 +424,23 @@ const parseForm = <T,>(schema: z.ZodType<T>, data: unknown): { ok: true; data: T
   return formatZodError(parsed.error);
 };
 
-// ─── Edge Function helpers ─────────────────────────────────────────────────────
+// ─── Direct database submission (no Edge Functions required) ───────────────────
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
-
-async function callEdgeFunction(
-  path: string,
-  payload: Record<string, unknown>,
+async function insertSubmission(
+  table: "contact_submissions" | "product_inquiries" | "fellowship_applications",
+  row: Record<string, unknown>,
 ): Promise<SubmitResult> {
-  try {
-    const res = await fetch(`${SUPABASE_URL}/functions/v1/${path}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      return { ok: false, message: (json as { error?: string }).error ?? "Submission failed. Please try again." };
+  const { error } = await supabase.from(table).insert(row as never);
+  if (error) {
+    if (error.message.includes("policy") || error.code === "42501") {
+      return {
+        ok: false,
+        message: "Form submissions are temporarily unavailable. Please email info@useclickbox.com directly.",
+      };
     }
-    return { ok: true };
-  } catch {
-    return { ok: false, message: "Network error — please check your connection and try again." };
+    return { ok: false, message: error.message || "Submission failed. Please try again." };
   }
+  return { ok: true };
 }
 
 // ─── Contact ───────────────────────────────────────────────────────────────────
@@ -463,12 +462,14 @@ export const submitContact = async (fd: FormData): Promise<SubmitResult> => {
     return { ok: false, message: "Your message contains invalid content." };
   }
 
-  return callEdgeFunction("submit-contact", {
-    ...parsed.data,
+  return insertSubmission("contact_submissions", {
+    name: parsed.data.name,
+    email: parsed.data.email,
+    phone: parsed.data.phone || null,
+    company: parsed.data.company || null,
+    subject: parsed.data.subject,
     message: normalizedMessage,
-    honeypot: (fd.get("website") as string) ?? "",
-    turnstile_token: fd.get("turnstile_token") ?? "",
-    submitted_at: Number(fd.get("submitted_at") ?? Date.now()),
+    status: "new",
   });
 };
 
@@ -490,12 +491,13 @@ export const submitProduct = async (fd: FormData): Promise<SubmitResult> => {
     return { ok: false, message: "Your message contains invalid content." };
   }
 
-  return callEdgeFunction("submit-product", {
-    ...parsed.data,
+  return insertSubmission("product_inquiries", {
+    name: parsed.data.name,
+    company: parsed.data.company,
+    email: parsed.data.email,
+    product_interest: parsed.data.product_interest,
     message: normalizedMessage,
-    honeypot: (fd.get("website") as string) ?? "",
-    turnstile_token: fd.get("turnstile_token") ?? "",
-    submitted_at: Number(fd.get("submitted_at") ?? Date.now()),
+    status: "new",
   });
 };
 
@@ -533,11 +535,17 @@ export const submitFellowship = async (fd: FormData): Promise<SubmitResult> => {
     return { ok: false, message: "Your submission contains invalid content." };
   }
 
-  return callEdgeFunction("submit-fellowship", {
-    ...parsed.data,
+  return insertSubmission("fellowship_applications", {
+    full_name: parsed.data.full_name,
+    email: parsed.data.email,
+    linkedin: parsed.data.linkedin,
+    resume_url: parsed.data.resume_url || null,
+    preferred_pathway: parsed.data.preferred_pathway,
+    certifications: parsed.data.certifications || null,
+    certification_links: parsed.data.certification_links || null,
+    relevant_experience: parsed.data.relevant_experience || null,
     motivation: normalizedMotivation,
-    honeypot: (fd.get("website") as string) ?? "",
-    turnstile_token: fd.get("turnstile_token") ?? "",
-    submitted_at: Number(fd.get("submitted_at") ?? Date.now()),
+    portfolio: parsed.data.portfolio || null,
+    status: "new",
   });
 };
