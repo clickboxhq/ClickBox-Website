@@ -93,9 +93,13 @@ const services: Service[] = [
   },
 ];
 
-const ServicesAccordion = () => {
+const ServicesAccordion = ({ variant = "dark" }: { variant?: "dark" | "light" }) => {
   const [open, setOpen] = useState<number | null>(null);
+  const isLight = variant === "light";
 
+  const cardClass = isLight
+    ? "rounded-xl border border-neutral-200 bg-neutral-50 shadow-sm transition-all duration-300 hover:border-primary/40 hover:shadow-md"
+    : "glass-card transition-all duration-300";
 
   return (
     <div className="space-y-3">
@@ -108,7 +112,7 @@ const ServicesAccordion = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.4, delay: i * 0.05 }}
-            className={`glass-card overflow-hidden ${
+            className={`overflow-hidden ${cardClass} ${
               isOpen ? "border-primary/40" : ""
             }`}
           >
@@ -121,10 +125,18 @@ const ServicesAccordion = () => {
                 <s.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-heading text-base md:text-lg font-semibold text-foreground">
+                <h3
+                  className={`font-heading text-base md:text-lg font-semibold ${
+                    isLight ? "text-neutral-900" : "text-foreground"
+                  }`}
+                >
                   {s.title}
                 </h3>
-                <p className="mt-1 text-sm text-muted-foreground line-clamp-1">
+                <p
+                  className={`mt-1 text-sm line-clamp-1 ${
+                    isLight ? "text-neutral-600" : "text-muted-foreground"
+                  }`}
+                >
                   {s.summary}
                 </p>
               </div>
@@ -143,8 +155,16 @@ const ServicesAccordion = () => {
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   className="overflow-hidden"
                 >
-                  <div className="border-t border-white/5 px-6 py-5 pl-[5.25rem]">
-                    <ul className="space-y-2.5 text-sm text-muted-foreground leading-relaxed">
+                  <div
+                    className={`border-t px-6 py-5 pl-[5.25rem] ${
+                      isLight ? "border-neutral-200" : "border-white/5"
+                    }`}
+                  >
+                    <ul
+                      className={`space-y-2.5 text-sm leading-relaxed ${
+                        isLight ? "text-neutral-600" : "text-muted-foreground"
+                      }`}
+                    >
                       {s.details.map((d) => (
                         <li key={d} className="flex items-start gap-3">
                           <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />

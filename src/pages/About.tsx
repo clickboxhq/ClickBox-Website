@@ -90,16 +90,16 @@ const About = () => (
       </div>
     </section>
 
-    <section className="section-padding border-t border-white/5">
+    <section className="section-padding border-t border-black/5 bg-white">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-2xl">
           <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
             What Drives Us
           </p>
-          <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+          <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
             Our values.
           </h2>
-          <p className="mt-4 text-muted-foreground leading-relaxed">
+          <p className="mt-4 leading-relaxed text-neutral-600">
             The principles that shape how we work, who we hire, and how we partner with our clients.
           </p>
         </div>
@@ -111,7 +111,7 @@ const About = () => (
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="glass-card group p-6 transition-all hover:border-primary/40 hover:-translate-y-1"
+              className="glass-card-dark group rounded-xl p-6 transition-all duration-300 hover:border-primary/40 hover:-translate-y-1"
             >
               <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20 transition group-hover:bg-primary/15">
                 <v.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />

@@ -13,7 +13,21 @@ const formatDate = (iso: string) =>
     day: "numeric",
   });
 
-const PostCard = ({ post, featured = false }: { post: BlogPost; featured?: boolean }) => (
+const PostCard = ({
+  post,
+  featured = false,
+  variant = "dark",
+}: {
+  post: BlogPost;
+  featured?: boolean;
+  variant?: "dark" | "light";
+}) => {
+  const isLight = variant === "light";
+  const cardClass = isLight
+    ? "glass-card-dark group block h-full overflow-hidden rounded-xl transition-all duration-300 hover:border-primary/40"
+    : "glass-card group block h-full overflow-hidden transition hover:border-primary/40";
+
+  return (
   <motion.article
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -21,10 +35,7 @@ const PostCard = ({ post, featured = false }: { post: BlogPost; featured?: boole
     transition={{ duration: 0.4 }}
     className={featured ? "lg:col-span-2" : ""}
   >
-    <Link
-      to={`/resources/${post.slug}`}
-      className="glass-card group block h-full overflow-hidden transition hover:border-primary/40"
-    >
+    <Link to={`/resources/${post.slug}`} className={cardClass}>
       {post.heroImage && (
         <div className="relative aspect-[16/9] w-full overflow-hidden">
           <img
@@ -68,7 +79,8 @@ const PostCard = ({ post, featured = false }: { post: BlogPost; featured?: boole
       </div>
     </Link>
   </motion.article>
-);
+  );
+};
 
 const Resources = () => {
   const [query, setQuery] = useState("");
@@ -146,14 +158,14 @@ const Resources = () => {
       </section>
 
       {featured.length > 0 && group === "All" && !query && (
-        <section className="section-padding border-t border-white/5 pt-12">
+        <section className="section-padding border-t border-black/5 bg-white pt-12">
           <div className="mx-auto max-w-7xl">
             <p className="mb-6 text-sm font-semibold uppercase tracking-widest text-primary">
               Featured Articles
             </p>
             <div className="grid gap-6 lg:grid-cols-2">
               {featured.map((p) => (
-                <PostCard key={p.slug} post={p} />
+                <PostCard key={p.slug} post={p} variant="light" />
               ))}
             </div>
           </div>

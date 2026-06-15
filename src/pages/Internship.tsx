@@ -253,19 +253,27 @@ const FaqItem = ({
   open,
   onToggle,
   i,
+  variant = "dark",
 }: {
   q: string;
   a: string;
   open: boolean;
   onToggle: () => void;
   i: number;
-}) => (
+  variant?: "dark" | "light";
+}) => {
+  const cardClass =
+    variant === "light"
+      ? "glass-card-dark overflow-hidden rounded-xl transition-all duration-300"
+      : "glass-card overflow-hidden";
+
+  return (
   <motion.div
     initial={{ opacity: 0, y: 10 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-50px" }}
     transition={{ duration: 0.3, delay: i * 0.04 }}
-    className="glass-card overflow-hidden"
+    className={cardClass}
   >
     <button onClick={onToggle} className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left" aria-expanded={open}>
       <span className="font-heading text-base font-semibold text-foreground">{q}</span>
@@ -285,7 +293,8 @@ const FaqItem = ({
       )}
     </AnimatePresence>
   </motion.div>
-);
+  );
+};
 
 const Internship = () => {
   const [openWeek, setOpenWeek] = useState<number | null>(null);
@@ -340,16 +349,16 @@ const Internship = () => {
       </section>
 
       {/* Overview */}
-      <section id="overview" className="section-padding border-t border-white/5">
+      <section id="overview" className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
           <motion.div {...fadeUp} className="grid gap-12 lg:grid-cols-2">
             <div>
               <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Program Overview</p>
-              <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+              <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
                 Develop Practical Cybersecurity Skills Through Real-World Experience.
               </h2>
             </div>
-            <div className="space-y-4 text-muted-foreground leading-relaxed">
+            <div className="space-y-4 leading-relaxed text-neutral-600">
               <p>The ClickBox Cybersecurity Fellowship is a highly selective, hands-on career development program designed for aspiring cybersecurity professionals seeking practical experience, mentorship, and exposure to real-world security operations.</p>
               <p>Unlike traditional training programs that focus solely on theory, the fellowship provides participants with opportunities to work on practical projects, industry-relevant scenarios, and collaborative security initiatives that reflect modern cybersecurity environments.</p>
               <p>Our mission is to help bridge the cybersecurity skills gap by developing the next generation of cybersecurity professionals.</p>
@@ -507,11 +516,11 @@ const Internship = () => {
       </section>
 
       {/* Pathways (overview) */}
-      <section id="pathways" className="section-padding border-t border-white/5">
+      <section id="pathways" className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Fellowship Tracks</p>
-            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+            <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
               Five specialized cybersecurity pathways.
             </h2>
           </div>
@@ -523,7 +532,7 @@ const Internship = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: i * 0.07 }}
-                className="glass-card p-8"
+                className="glass-card-dark rounded-xl p-8 transition-all duration-300"
               >
                 <p.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
                 <h3 className="font-heading text-lg font-semibold text-foreground">{p.title}</h3>
@@ -598,11 +607,11 @@ const Internship = () => {
       </section>
 
       {/* Timeline */}
-      <section className="section-padding border-t border-white/5">
+      <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Program Timeline</p>
-            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">From application to alumni.</h2>
+            <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">From application to alumni.</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {timeline.map((t, i) => (
@@ -612,7 +621,7 @@ const Internship = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="glass-card p-6"
+                className="glass-card-dark rounded-xl p-6 transition-all duration-300"
               >
                 <div className="flex items-center gap-2 text-primary">
                   <Calendar className="h-4 w-4" />
@@ -633,12 +642,12 @@ const Internship = () => {
       </section>
 
       {/* Selection Process */}
-      <section className="section-padding border-t border-white/5">
+      <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Selection Process</p>
-            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">Six competitive stages.</h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
+            <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">Six competitive stages.</h2>
+            <p className="mt-4 leading-relaxed text-neutral-600">
               Only the top candidates advance through each stage — and only 10 fellows are selected.
             </p>
           </div>
@@ -650,7 +659,7 @@ const Internship = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="glass-card p-6"
+                className="glass-card-dark rounded-xl p-6 transition-all duration-300"
               >
                 <div className="flex items-center gap-3">
                   <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/40 bg-primary/10 font-heading text-sm font-bold text-primary">
@@ -698,11 +707,11 @@ const Internship = () => {
       </section>
 
       {/* FAQ */}
-      <section className="section-padding border-t border-white/5">
+      <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-4xl">
           <div className="mb-12">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">FAQ</p>
-            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+            <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
               Frequently asked questions.
             </h2>
           </div>
@@ -715,6 +724,7 @@ const Internship = () => {
                 i={i}
                 open={openFaq === i}
                 onToggle={() => setOpenFaq(openFaq === i ? null : i)}
+                variant="light"
               />
             ))}
           </div>

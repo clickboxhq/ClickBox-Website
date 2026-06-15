@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import logo from "@/assets/clickbox-logo.jpeg";
 
 const Footer = () => (
-  <footer className="border-t border-border bg-background">
+  <footer className="border-t border-white/5 bg-background">
     <div className="mx-auto max-w-7xl px-6 py-12">
       <div className="grid gap-8 md:grid-cols-3">
         <div>
@@ -24,7 +24,6 @@ const Footer = () => (
             <Link to="/product" className="text-sm text-muted-foreground hover:text-primary transition-colors">Product</Link>
             <Link to="/internship" className="text-sm text-muted-foreground hover:text-primary transition-colors">Fellowship</Link>
             <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">Privacy</Link>
-
           </div>
         </div>
         <div>
@@ -46,7 +45,7 @@ const Footer = () => (
           </div>
         </div>
       </div>
-      <div className="mt-10 border-t border-border pt-6 text-center text-xs text-muted-foreground">
+      <div className="mt-10 border-t border-white/5 pt-6 text-center text-xs text-muted-foreground">
         © {new Date().getFullYear()} ClickBox Information Technology Ltd. All rights reserved.
       </div>
     </div>

@@ -68,17 +68,20 @@ const Product = () => {
         </div>
       </section>
 
-      <section className="section-padding border-b border-white/5">
+      <section className="section-padding border-b border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
           <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
             Key Features
           </p>
-          <h2 className="mb-12 font-heading text-3xl font-bold text-foreground md:text-4xl">
+          <h2 className="mb-12 font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
             What Makes It Different
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {features.map((f) => (
-              <div key={f.title} className="glass-card p-6">
+              <div
+                key={f.title}
+                className="glass-card-dark rounded-xl p-6 transition-all duration-300"
+              >
                 <f.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
                 <h3 className="font-heading text-base font-semibold text-foreground">{f.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>

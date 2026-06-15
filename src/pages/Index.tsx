@@ -125,17 +125,17 @@ const Index = () => {
       <PremiumCTA asHero />
 
       {/* Consulting Hero */}
-      <section className="section-padding border-t border-white/5">
+      <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
-            <div className="mb-6 inline-block rounded-full border border-white/10 bg-secondary/60 px-4 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur">
+            <div className="mb-6 inline-block rounded-full border border-neutral-200 bg-neutral-100 px-4 py-1.5 text-xs font-medium text-neutral-600">
               Cybersecurity Consulting
             </div>
-            <h2 className="font-heading text-4xl font-bold leading-tight text-foreground md:text-5xl lg:text-6xl">
+            <h2 className="font-heading text-4xl font-bold leading-tight text-neutral-900 md:text-5xl lg:text-6xl">
               We don't just secure systems —{" "}
               <span className="text-gradient">we help organizations build securely.</span>
             </h2>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-neutral-600">
               Practical, enterprise-focused cybersecurity services that combine technical expertise
               with strategic risk management.
             </p>
@@ -148,7 +148,7 @@ const Index = () => {
               </a>
               <Link
                 to="/product"
-                className="rounded-md border border-white/10 bg-secondary/80 px-6 py-3 text-sm font-semibold text-secondary-foreground backdrop-blur transition-all hover:bg-muted"
+                className="rounded-md border border-neutral-200 bg-neutral-50 px-6 py-3 text-sm font-semibold text-neutral-900 transition-all hover:bg-neutral-100"
               >
                 Explore Our Product
               </Link>
@@ -167,7 +167,7 @@ const Index = () => {
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
               Enterprise-Focused Security Services
             </h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
+            <p className="mt-4 leading-relaxed text-muted-foreground">
               Tap any service to explore the practical capabilities we deliver.
             </p>
           </div>
@@ -176,13 +176,13 @@ const Index = () => {
       </section>
 
       {/* Who We Serve */}
-      <section className="section-padding border-t border-white/5">
+      <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
               Who We Serve
             </p>
-            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+            <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
               Our Services Are Ideal For
             </h2>
           </div>
@@ -194,7 +194,7 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: i * 0.07 }}
-                className="glass-card p-8"
+                className="glass-card-dark rounded-xl p-8 transition-all duration-300"
               >
                 <a.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
                 <h3 className="font-heading text-lg font-semibold text-foreground">{a.title}</h3>
@@ -242,22 +242,22 @@ const Index = () => {
       </section>
 
       {/* Certifications & Expertise */}
-      <section className="section-padding border-t border-white/5">
+      <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
               Certifications & Expertise
             </p>
-            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+            <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
               Industry-recognized credentials backing every engagement.
             </h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
+            <p className="mt-4 leading-relaxed text-neutral-600">
               Our team combines industry-recognized certifications, practical cybersecurity
               experience, and business-focused expertise to deliver solutions that help organizations
               strengthen security, manage risk, and operate with confidence.
             </p>
           </div>
-          <CertificationsMarquee />
+          <CertificationsMarquee variant="light" />
         </div>
       </section>
 

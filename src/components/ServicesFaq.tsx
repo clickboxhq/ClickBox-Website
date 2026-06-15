@@ -33,14 +33,14 @@ const ServicesFaq = () => {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section className="section-padding border-t border-white/5">
+    <section className="section-padding border-t border-black/5 bg-white">
       <div className="mx-auto max-w-4xl">
         <div className="mb-12 max-w-2xl">
           <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">FAQ</p>
-          <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+          <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
             Frequently Asked Questions
           </h2>
-          <p className="mt-4 text-muted-foreground leading-relaxed">
+          <p className="mt-4 leading-relaxed text-neutral-600">
             Answers to the questions we hear most often about ClickBox cybersecurity services.
           </p>
         </div>
@@ -55,7 +55,7 @@ const ServicesFaq = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.3, delay: i * 0.04 }}
-                className="glass-card overflow-hidden"
+                className="glass-card-dark overflow-hidden rounded-xl transition-all duration-300"
               >
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}

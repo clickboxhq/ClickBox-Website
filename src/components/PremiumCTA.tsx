@@ -6,10 +6,17 @@ type Props = {
   asHero?: boolean;
 };
 
+const HeroHeadline = ({ className = "" }: { className?: string }) => (
+  <h1 className={`hero-headline font-heading font-bold ${className}`}>
+    <span className="hero-headline-line">Build Securely</span>
+    <span className="hero-headline-line-muted">With ClickBox</span>
+  </h1>
+);
+
 const PremiumCTA = ({ asHero = false }: Props) => {
   return (
     <section
-      className={`relative w-full bg-[hsl(0_0%_4%)] ${
+      className={`relative w-full bg-background ${
         asHero ? "" : "border-t border-white/5"
       }`}
     >
@@ -63,12 +70,7 @@ const PremiumCTA = ({ asHero = false }: Props) => {
               Enterprise Cybersecurity
             </div>
 
-            <h1 className="font-heading text-[2rem] font-bold leading-tight text-white">
-              Build Securely With{" "}
-              <span className="hero-brand-outline" data-text="ClickBox.">
-                ClickBox.
-              </span>
-            </h1>
+            <HeroHeadline className="text-[2rem]" />
 
             <div className="mt-5 flex flex-col gap-3">
               <Link
@@ -109,21 +111,21 @@ const PremiumCTA = ({ asHero = false }: Props) => {
             className="building-img absolute inset-0 h-full w-full"
             style={{
               objectFit: "contain",
-              background: "hsl(0 0% 4%)",
+              background: "hsl(var(--background))",
             }}
           />
           <div
             className="pointer-events-none absolute inset-x-0 bottom-0 z-10"
             style={{
               height: "50%",
-              background: "linear-gradient(to bottom, transparent, hsl(0 0% 4%))",
+              background: "linear-gradient(to bottom, transparent, hsl(var(--background)))",
             }}
           />
           <div
             className="pointer-events-none absolute inset-x-0 top-0 z-10"
             style={{
               height: "22%",
-              background: "linear-gradient(to bottom, hsl(0 0% 4%), transparent)",
+              background: "linear-gradient(to bottom, hsl(var(--background)), transparent)",
             }}
           />
           <div
@@ -131,7 +133,7 @@ const PremiumCTA = ({ asHero = false }: Props) => {
             style={{
               width: "55%",
               background:
-                "linear-gradient(to right, hsl(0 0% 4% / 0.72), hsl(0 0% 4% / 0.28) 60%, transparent)",
+                "linear-gradient(to right, hsl(var(--background) / 0.72), hsl(var(--background) / 0.28) 60%, transparent)",
             }}
           />
         </div>
@@ -146,12 +148,7 @@ const PremiumCTA = ({ asHero = false }: Props) => {
               Enterprise Cybersecurity
             </div>
 
-            <h1 className="font-heading text-3xl font-bold leading-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl">
-              Build Securely With{" "}
-              <span className="hero-brand-outline" data-text="ClickBox.">
-                ClickBox.
-              </span>
-            </h1>
+            <HeroHeadline className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl" />
 
             <div className="mt-6 flex flex-wrap gap-3 md:mt-8 md:gap-4">
               <Link
