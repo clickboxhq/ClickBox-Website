@@ -14,6 +14,7 @@ const Privacy = lazy(() => import("./pages/Privacy"));
 const Resources = lazy(() => import("./pages/Resources"));
 const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 const Internship = lazy(() => import("./pages/Internship"));
+const Assessment = lazy(() => import("./pages/Assessment"));
 const About = lazy(() => import("./pages/About"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -54,6 +55,7 @@ const App = () => (
             <Route path="/resources/:slug" element={<BlogPostPage />} />
             <Route path="/about" element={<About />} />
             <Route path="/internship" element={<Internship />} />
+            <Route path="/assessment" element={<Assessment />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="*" element={<NotFound />} />
