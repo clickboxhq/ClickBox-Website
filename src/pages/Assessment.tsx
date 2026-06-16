@@ -13,6 +13,11 @@ const Assessment = () => {
     robotsMeta.content = "noindex, nofollow";
     document.head.appendChild(robotsMeta);
 
+    const previousOverflow = document.documentElement.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    document.documentElement.style.overflow = "auto";
+    document.body.style.overflow = "auto";
+
     if (typeof window !== "undefined" && (window as Record<string, unknown>).Tally) {
       (window as Record<string, unknown> & { Tally: { loadEmbeds: () => void } }).Tally.loadEmbeds();
     }
@@ -20,21 +25,28 @@ const Assessment = () => {
     return () => {
       document.title = previousTitle;
       document.head.removeChild(robotsMeta);
+      document.documentElement.style.overflow = previousOverflow;
+      document.body.style.overflow = previousBodyOverflow;
     };
   }, []);
 
   return (
-    <div className="fixed inset-0 overflow-hidden bg-background">
+    <div className="min-h-[100dvh] w-full bg-background">
       <iframe
-        data-tally-src={`https://tally.so/embed/${FORM_ID}?dynamicHeight=1`}
+        data-tally-src={`https://tally.so/embed/${FORM_ID}?alignLeft=1&dynamicHeight=1`}
         loading="eager"
         width="100%"
-        height="100%"
+        height={1200}
         frameBorder={0}
         marginHeight={0}
         marginWidth={0}
         title={PAGE_TITLE}
-        className="absolute inset-0 h-full w-full border-0"
+        style={{
+          border: "none",
+          width: "100%",
+          display: "block",
+          minHeight: "100dvh",
+        }}
       />
     </div>
   );
