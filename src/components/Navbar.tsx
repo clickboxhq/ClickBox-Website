@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
-import logo from "@/assets/clickbox-logo.png";
+import logo from "@/assets/clickbox-logo.jpeg";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -236,18 +236,18 @@ const Navbar = () => {
             <img
               src={logo}
               alt="ClickBox"
-              width={64}
-              height={64}
-              className={`rounded-md object-contain transition-all duration-500 ${
+              width={56}
+              height={56}
+              className={`rounded-lg object-cover ring-1 ring-white/10 transition-all duration-500 group-hover:ring-primary/30 ${
                 isDesktop
                   ? effectiveCompact
-                    ? "h-11 w-11 md:h-12 md:w-12"
+                    ? "h-9 w-9 md:h-10 md:w-10"
                     : scrolled
-                      ? "h-12 w-12 md:h-14 md:w-14"
-                      : "h-14 w-14 md:h-16 md:w-16"
+                      ? "h-9 w-9 md:h-10 md:w-10"
+                      : "h-12 w-12 md:h-14 md:w-14"
                   : mobileScrolled
-                    ? "h-11 w-11"
-                    : "h-12 w-12"
+                    ? "h-9 w-9"
+                    : "h-11 w-11"
               }`}
             />
             <span

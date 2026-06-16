@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "@/assets/clickbox-logo.png";
+import logo from "@/assets/clickbox-logo.jpeg";
 
 const Footer = () => (
   <footer className="border-t border-white/5 bg-background">
@@ -7,7 +7,7 @@ const Footer = () => (
       <div className="grid gap-8 md:grid-cols-3">
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <img src={logo} alt="ClickBox" className="h-12 w-12 rounded-md object-contain" />
+            <img src={logo} alt="ClickBox" className="h-8 w-8 rounded-md object-cover" />
             <span className="font-heading text-lg font-bold text-foreground">ClickBox</span>
           </div>
           <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
