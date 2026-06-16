@@ -17,7 +17,7 @@ const PremiumCTA = ({ asHero = false }: Props) => {
   return (
     <section
       className={`relative w-full bg-background ${
-        asHero ? "" : "border-t border-white/5"
+        asHero ? "mobile-cta-section-root" : "border-t border-white/5"
       }`}
     >
       {/* ═══════════════════════════════════════
@@ -25,11 +25,8 @@ const PremiumCTA = ({ asHero = false }: Props) => {
           Full-height hero — image fills section,
           content sits over a bottom gradient.
           ═══════════════════════════════════════ */}
-      <div className="md:hidden overflow-hidden">
-        <div
-          className="relative w-full mobile-cta-wrapper"
-          style={{ minHeight: "100dvh" }}
-        >
+      <div className="mobile-cta-screen md:hidden">
+        <div className="mobile-cta-wrapper">
           {/* Background: building fills the whole hero */}
           <div
             className="absolute inset-0 mobile-cta-bg"

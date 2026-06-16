@@ -104,10 +104,31 @@
      of JS hydration timing or CDN delivery order.
      ═══════════════════════════════════════════════════════ */
   @media (max-width: 767px) {
+    /* Hero section — exactly one viewport; section 2 stays below the fold */
+    .mobile-cta-section-root {
+      height: 100svh;
+      height: 100dvh;
+      min-height: 100svh;
+      min-height: 100dvh;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    .mobile-cta-screen {
+      height: 100%;
+      min-height: 100%;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+    }
+
     .mobile-cta-wrapper {
       position: relative;
       width: 100%;
-      min-height: 100dvh;
+      height: 100%;
+      min-height: 100%;
       overflow: hidden;
     }
 
