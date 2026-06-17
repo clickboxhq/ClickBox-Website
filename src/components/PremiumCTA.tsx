@@ -39,9 +39,9 @@ const BackgroundSlideshow = ({
         fetchPriority={asHero && index === 0 ? "high" : "auto"}
         decoding="async"
         sizes="100vw"
-        className={`absolute inset-0 h-full w-full transition-opacity duration-1000 ease-in-out ${
+        className={`absolute left-0 top-0 h-full w-full max-w-none transition-opacity duration-1000 ease-in-out ${
           desktop
-            ? "object-contain object-[center_20%] bg-background"
+            ? "object-cover object-[center_30%]"
             : "object-cover object-center"
         } ${index === activeIndex ? "opacity-100" : "opacity-0"}`}
       />
