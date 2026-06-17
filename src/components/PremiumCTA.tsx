@@ -22,11 +22,9 @@ const HeroHeadline = ({ className = "" }: { className?: string }) => (
 const BackgroundSlideshow = ({
   activeIndex,
   asHero,
-  desktop = false,
 }: {
   activeIndex: number;
   asHero: boolean;
-  desktop?: boolean;
 }) => (
   <>
     {SLIDE_IMAGES.map((src, index) => (
@@ -39,11 +37,9 @@ const BackgroundSlideshow = ({
         fetchPriority={asHero && index === 0 ? "high" : "auto"}
         decoding="async"
         sizes="100vw"
-        className={`absolute left-0 top-0 h-full w-full max-w-none transition-opacity duration-1000 ease-in-out ${
-          desktop
-            ? "origin-center scale-[0.85] object-cover object-center"
-            : "object-cover object-center"
-        } ${index === activeIndex ? "opacity-100" : "opacity-0"}`}
+        className={`absolute left-0 top-0 h-full w-full max-w-none object-cover object-center transition-opacity duration-1000 ease-in-out ${
+          index === activeIndex ? "opacity-100" : "opacity-0"
+        }`}
       />
     ))}
   </>
@@ -127,12 +123,12 @@ const PremiumCTA = ({ asHero = false }: Props) => {
           DESKTOP / TABLET  (min-width: 768px)
           Unchanged — do NOT modify.
           ═══════════════════════════════════════ */}
-      <div className="hidden md:block">
+      <div className="hidden min-h-screen md:block">
         <div
-          className="relative h-[clamp(420px,70vh,600px)] w-full overflow-hidden"
+          className="relative min-h-screen w-full overflow-hidden"
           aria-hidden="true"
         >
-          <BackgroundSlideshow activeIndex={activeIndex} asHero={asHero} desktop />
+          <BackgroundSlideshow activeIndex={activeIndex} asHero={asHero} />
           <div
             className="pointer-events-none absolute inset-x-0 bottom-0 z-10"
             style={{
