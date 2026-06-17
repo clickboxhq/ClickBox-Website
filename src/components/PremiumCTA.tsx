@@ -41,7 +41,7 @@ const BackgroundSlideshow = ({
         sizes="100vw"
         className={`absolute left-0 top-0 h-full w-full max-w-none transition-opacity duration-1000 ease-in-out ${
           desktop
-            ? "object-cover object-[center_30%]"
+            ? "origin-center scale-[0.85] object-cover object-center"
             : "object-cover object-center"
         } ${index === activeIndex ? "opacity-100" : "opacity-0"}`}
       />
