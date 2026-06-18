@@ -61,14 +61,11 @@ const SecurityArchitectureScroll = () => {
           </div>
           <div className="grid gap-6 md:grid-cols-2">
             {phases.map((phase) => (
-              <div
-                key={phase.id}
-                className="rounded-xl border border-neutral-200 bg-neutral-50 p-8 shadow-sm"
-              >
+              <div key={phase.id} className="glass-card-dark rounded-xl p-8">
                 <phase.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
                 <p className="text-xs font-semibold uppercase tracking-widest text-primary">{phase.label}</p>
-                <h3 className="mt-2 font-heading text-lg font-semibold text-neutral-900">{phase.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-neutral-600">{phase.desc}</p>
+                <h3 className="mt-2 font-heading text-lg font-semibold text-foreground">{phase.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{phase.desc}</p>
               </div>
             ))}
           </div>
@@ -140,9 +137,9 @@ const ArchitectureVisual = ({
       style={{ opacity, y, willChange: "transform, opacity" }}
       className="absolute inset-0 flex items-center"
     >
-      <div className="relative w-full overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50 p-8 shadow-sm md:p-10">
+      <div className="glass-card-dark relative w-full overflow-hidden rounded-2xl p-8 md:p-10">
         <div
-          className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${phase.accent} opacity-40`}
+          className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${phase.accent} opacity-60`}
           aria-hidden
         />
         <div className="relative">
@@ -150,8 +147,8 @@ const ArchitectureVisual = ({
             <phase.icon className="h-7 w-7 text-primary" strokeWidth={1.5} />
           </div>
           <p className="text-xs font-semibold uppercase tracking-widest text-primary">{phase.label}</p>
-          <h3 className="mt-2 font-heading text-2xl font-semibold text-neutral-900">{phase.title}</h3>
-          <p className="mt-3 leading-relaxed text-neutral-600">{phase.desc}</p>
+          <h3 className="mt-2 font-heading text-2xl font-semibold text-foreground">{phase.title}</h3>
+          <p className="mt-3 leading-relaxed text-muted-foreground">{phase.desc}</p>
         </div>
       </div>
     </motion.div>
