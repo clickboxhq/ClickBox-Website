@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
   Building2,
   Rocket,
@@ -21,7 +20,11 @@ import ServicesAccordion from "@/components/ServicesAccordion";
 import CertificationsMarquee from "@/components/CertificationsMarquee";
 import PremiumCTA from "@/components/PremiumCTA";
 import ServicesFaq from "@/components/ServicesFaq";
-
+import ScrollReveal from "@/components/scroll/ScrollReveal";
+import CountUpStat from "@/components/scroll/CountUpStat";
+import HowItWorksScroll from "@/components/scroll/HowItWorksScroll";
+import SecurityArchitectureScroll from "@/components/scroll/SecurityArchitectureScroll";
+import EngagementTimeline from "@/components/scroll/EngagementTimeline";
 
 const audiences = [
   {
@@ -116,18 +119,39 @@ const whyPartner = [
   },
 ];
 
+const engagementMilestones = [
+  {
+    year: "Week 1",
+    title: "Discovery & scoping",
+    desc: "We learn your environment, stakeholders, and priorities to define a focused engagement plan.",
+  },
+  {
+    year: "Weeks 2–4",
+    title: "Assessment & alignment",
+    desc: "Risk and posture are evaluated alongside business goals to shape a practical security roadmap.",
+  },
+  {
+    year: "Month 2+",
+    title: "Delivery & integration",
+    desc: "Controls, processes, and tooling are implemented with clear ownership and measurable outcomes.",
+  },
+  {
+    year: "Ongoing",
+    title: "Partnership & evolution",
+    desc: "Continuous monitoring, refinement, and strategic guidance as your organization grows.",
+  },
+];
+
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero — Premium building CTA */}
       <PremiumCTA asHero />
 
-      {/* Consulting Hero */}
       <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
-          <div className="max-w-3xl">
+          <ScrollReveal className="max-w-3xl">
             <div className="mb-6 inline-block rounded-full border border-neutral-200 bg-neutral-100 px-4 py-1.5 text-xs font-medium text-neutral-600">
               Cybersecurity Consulting
             </div>
@@ -153,14 +177,15 @@ const Index = () => {
                 Explore Our Product
               </Link>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
-      {/* Services — accordion */}
+      <HowItWorksScroll steps={approach} />
+
       <section id="services" className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-5xl">
-          <div className="mb-12 max-w-2xl">
+          <ScrollReveal className="mb-12 max-w-2xl">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
               What We Do
             </p>
@@ -170,81 +195,65 @@ const Index = () => {
             <p className="mt-4 leading-relaxed text-muted-foreground">
               Tap any service to explore the practical capabilities we deliver.
             </p>
-          </div>
+          </ScrollReveal>
           <ServicesAccordion />
         </div>
       </section>
 
-      {/* Who We Serve */}
       <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-12 max-w-2xl">
+          <ScrollReveal className="mb-12 max-w-2xl">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
               Who We Serve
             </p>
             <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
               Our Services Are Ideal For
             </h2>
-          </div>
+          </ScrollReveal>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {audiences.map((a, i) => (
-              <motion.div
-                key={a.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.07 }}
-                className="glass-card-dark rounded-xl p-8 transition-all duration-300"
-              >
+              <ScrollReveal key={a.title} delay={i * 0.06} className="glass-card-dark rounded-xl p-8 transition-all duration-300">
                 <a.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
                 <h3 className="font-heading text-lg font-semibold text-foreground">{a.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{a.desc}</p>
-              </motion.div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Our Approach */}
-      <section className="section-padding border-t border-white/5">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-12 max-w-2xl">
+      <section className="section-padding relative overflow-hidden border-t border-white/5">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-40"
+          aria-hidden
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 50% at 50% 0%, hsl(var(--primary) / 0.12), transparent 70%)",
+          }}
+        />
+        <div className="relative mx-auto max-w-7xl">
+          <ScrollReveal className="mb-12 max-w-2xl text-center md:mx-auto">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-              Our Approach
+              By The Numbers
             </p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-              A practical methodology for measurable outcomes.
+              Measurable impact across every engagement.
             </h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
-              A business-aligned methodology for delivering measurable cybersecurity outcomes.
-            </p>
-          </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {approach.map((a, i) => (
-              <motion.div
-                key={a.n}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="glass-card p-8 relative"
-              >
-                <span className="absolute right-6 top-6 font-heading text-3xl font-bold text-primary/20">
-                  {a.n}
-                </span>
-                <a.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
-                <h3 className="font-heading text-lg font-semibold text-foreground">{a.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{a.desc}</p>
-              </motion.div>
-            ))}
+          </ScrollReveal>
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            <CountUpStat value={8} suffix="+" label="Industry certifications" />
+            <CountUpStat value={4} label="Core engagement phases" />
+            <CountUpStat value={24} suffix="/7" label="SOC monitoring coverage" />
+            <CountUpStat value={100} suffix="%" label="Business-aligned delivery" />
           </div>
         </div>
       </section>
 
-      {/* Certifications & Expertise */}
+      <SecurityArchitectureScroll />
+
       <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-12 max-w-2xl">
+          <ScrollReveal className="mb-12 max-w-2xl">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
               Certifications & Expertise
             </p>
@@ -256,42 +265,37 @@ const Index = () => {
               experience, and business-focused expertise to deliver solutions that help organizations
               strengthen security, manage risk, and operate with confidence.
             </p>
-          </div>
-          <CertificationsMarquee variant="light" />
+          </ScrollReveal>
+          <ScrollReveal delay={0.15}>
+            <CertificationsMarquee variant="light" />
+          </ScrollReveal>
         </div>
       </section>
 
-      {/* Why Partner */}
-      <section className="section-padding border-t border-white/5">
+      <EngagementTimeline milestones={engagementMilestones} />
 
+      <section className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-12 max-w-2xl">
+          <ScrollReveal className="mb-12 max-w-2xl">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
               Why Partner With ClickBox
             </p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
               Intelligent cybersecurity that helps you build securely.
             </h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
+            <p className="mt-4 leading-relaxed text-muted-foreground">
               Delivering intelligent cybersecurity solutions that help organizations build securely.
             </p>
-          </div>
+          </ScrollReveal>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {whyPartner.map((w, i) => (
-              <motion.div
-                key={w.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.07 }}
-                className="glass-card p-8"
-              >
-                <div className="flex h-11 w-11 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20 mb-4">
+              <ScrollReveal key={w.title} delay={i * 0.06} className="glass-card p-8">
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20">
                   <w.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
                 </div>
                 <h3 className="font-heading text-lg font-semibold text-foreground">{w.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{w.desc}</p>
-              </motion.div>
+              </ScrollReveal>
             ))}
           </div>
         </div>

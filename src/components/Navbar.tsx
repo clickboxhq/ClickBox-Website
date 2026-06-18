@@ -205,10 +205,20 @@ const Navbar = () => {
       role="navigation"
       aria-label="Main navigation"
       style={!isDesktop ? { y: springMobileOffset } : undefined}
-      className={`fixed left-0 right-0 top-0 z-50 border-b transition-colors duration-500 ${
+      className={`fixed left-0 right-0 top-0 z-50 border-b transition-all duration-500 ${
         isDesktop
-          ? `${desktopShadow} ${effectiveCompact ? "border-white/10 bg-background/88 backdrop-blur-2xl" : scrolled ? "border-white/10 bg-background/80 backdrop-blur-2xl" : "border-white/5 bg-background/50 backdrop-blur-xl"}`
-          : `${mobileShadow} ${mobileScrolled ? "border-white/12 bg-background/92 backdrop-blur-2xl" : "border-white/8 bg-background/72 backdrop-blur-xl"}`
+          ? `${desktopShadow} ${
+              effectiveCompact
+                ? "border-white/10 bg-background/88 backdrop-blur-2xl"
+                : scrolled
+                  ? "border-white/10 bg-background/92 backdrop-blur-2xl"
+                  : "border-transparent bg-transparent backdrop-blur-sm"
+            }`
+          : `${mobileShadow} ${
+              mobileScrolled
+                ? "border-white/12 bg-background/92 backdrop-blur-2xl"
+                : "border-transparent bg-transparent backdrop-blur-sm"
+            }`
       }`}
     >
       <motion.div

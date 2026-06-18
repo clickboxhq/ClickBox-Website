@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ShieldCheck } from "lucide-react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import img9576 from "@/assets/IMG_9576.png";
 import img9574 from "@/assets/IMG_9574.jpeg";
 import img9571 from "@/assets/IMG_9571.jpeg";
@@ -47,6 +49,16 @@ const BackgroundSlideshow = ({
 
 const PremiumCTA = ({ asHero = false }: Props) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const heroContentScale = useTransform(scrollYProgress, [0, 0.4], [1, reduced ? 1 : 0.96]);
+  const heroBgY = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : 28]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -58,6 +70,7 @@ const PremiumCTA = ({ asHero = false }: Props) => {
 
   return (
     <section
+      ref={sectionRef}
       className={`relative w-full bg-background ${
         asHero ? "mobile-cta-section-root" : "border-t border-white/5"
       }`}
@@ -128,7 +141,9 @@ const PremiumCTA = ({ asHero = false }: Props) => {
           className="relative min-h-screen w-full overflow-hidden"
           aria-hidden="true"
         >
-          <BackgroundSlideshow activeIndex={activeIndex} asHero={asHero} />
+          <motion.div className="absolute inset-0" style={{ y: heroBgY, willChange: "transform" }}>
+            <BackgroundSlideshow activeIndex={activeIndex} asHero={asHero} />
+          </motion.div>
           <div
             className="pointer-events-none absolute inset-x-0 bottom-0 z-10"
             style={{
@@ -153,9 +168,14 @@ const PremiumCTA = ({ asHero = false }: Props) => {
           />
         </div>
 
-        <div
+        <motion.div
           className="relative z-20 mx-auto max-w-7xl px-6 pb-16 md:pb-24"
-          style={{ marginTop: "clamp(-180px, -20vw, -240px)" }}
+          style={{
+            marginTop: "clamp(-180px, -20vw, -240px)",
+            scale: heroContentScale,
+            transformOrigin: "left bottom",
+            willChange: "transform",
+          }}
         >
           <div className={`max-w-sm sm:max-w-md md:max-w-xl ${asHero ? "pt-0" : "pt-4"}`}>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-black/25 bg-white/80 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-black backdrop-blur-sm md:text-[11px]">
@@ -180,7 +200,7 @@ const PremiumCTA = ({ asHero = false }: Props) => {
               </Link>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       <span className="sr-only">ClickBox headquarters building</span>
