@@ -9,6 +9,7 @@ import {
   Lock,
   Activity,
   Plus,
+  Wrench,
   type LucideIcon,
 } from "lucide-react";
 
@@ -89,6 +90,16 @@ const services: Service[] = [
       "Control reviews against your chosen framework",
       "Policy, process, and technical configuration audits",
       "Independent findings with practical remediation roadmaps",
+    ],
+  },
+  {
+    icon: Wrench,
+    title: "Security Solutions",
+    summary: "We design and build tailored security solutions for your organization.",
+    details: [
+      "Custom architectures aligned to your business and risk profile",
+      "Integration with existing tools, workflows, and infrastructure",
+      "Scalable implementations that evolve as your organization grows",
     ],
   },
 ];

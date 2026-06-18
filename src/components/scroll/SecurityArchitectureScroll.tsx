@@ -61,11 +61,14 @@ const SecurityArchitectureScroll = () => {
           </div>
           <div className="grid gap-6 md:grid-cols-2">
             {phases.map((phase) => (
-              <div key={phase.id} className="glass-card-dark rounded-xl p-8">
+              <div
+                key={phase.id}
+                className="rounded-xl border border-neutral-200 bg-neutral-50 p-8 shadow-sm"
+              >
                 <phase.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
                 <p className="text-xs font-semibold uppercase tracking-widest text-primary">{phase.label}</p>
-                <h3 className="mt-2 font-heading text-lg font-semibold text-foreground">{phase.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{phase.desc}</p>
+                <h3 className="mt-2 font-heading text-lg font-semibold text-neutral-900">{phase.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-neutral-600">{phase.desc}</p>
               </div>
             ))}
           </div>
@@ -90,9 +93,6 @@ const SecurityArchitectureScroll = () => {
             <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl lg:text-5xl">
               End-to-end protection, designed for how you operate.
             </h2>
-            <p className="mt-4 leading-relaxed text-neutral-600">
-              The left side stays anchored as each layer of the ClickBox security model comes into focus.
-            </p>
           </div>
 
           <div className="relative min-h-[360px] md:min-h-[440px]">
@@ -140,9 +140,9 @@ const ArchitectureVisual = ({
       style={{ opacity, y, willChange: "transform, opacity" }}
       className="absolute inset-0 flex items-center"
     >
-      <div className="glass-card-dark w-full overflow-hidden rounded-2xl border border-neutral-200/80 p-8 md:p-10">
+      <div className="relative w-full overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50 p-8 shadow-sm md:p-10">
         <div
-          className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${phase.accent} opacity-80`}
+          className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${phase.accent} opacity-40`}
           aria-hidden
         />
         <div className="relative">

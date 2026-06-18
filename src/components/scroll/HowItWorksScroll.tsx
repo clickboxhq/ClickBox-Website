@@ -63,9 +63,6 @@ const HowItWorksScroll = ({ steps }: Props) => {
               <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
                 How ClickBox strengthens your security posture.
               </h2>
-              <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">
-                Scroll to follow each phase of our engagement — revealed one step at a time.
-              </p>
             </div>
 
             <div className="relative flex min-h-[320px] items-center md:min-h-[420px]">

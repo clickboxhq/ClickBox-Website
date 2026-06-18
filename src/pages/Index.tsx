@@ -193,7 +193,7 @@ const Index = () => {
               Enterprise-Focused Security Services
             </h2>
             <p className="mt-4 leading-relaxed text-muted-foreground">
-              Tap any service to explore the practical capabilities we deliver.
+              We deliver practical security services and build tailored solutions for your organization.
             </p>
           </ScrollReveal>
           <ServicesAccordion />
