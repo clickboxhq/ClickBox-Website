@@ -12,7 +12,7 @@ const Contact = () => {
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-16 lg:grid-cols-2">
             <div>
-              <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+              <p className="section-label mb-3">
                 Get in Touch
               </p>
               <h1 className="font-heading text-3xl font-bold text-foreground md:text-5xl">

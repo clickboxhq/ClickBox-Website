@@ -36,13 +36,13 @@ const EngagementTimeline = ({ milestones }: Props) => {
           {!reduced && (
             <motion.div
               style={{ scaleY: lineScale, transformOrigin: "top" }}
-              className="absolute bottom-0 left-[11px] top-0 w-px bg-primary md:left-1/2 md:-translate-x-px"
+              className="absolute bottom-0 left-[11px] top-0 w-px timeline-accent-line md:left-1/2 md:-translate-x-px"
               aria-hidden
             />
           )}
           {reduced && (
             <div
-              className="absolute bottom-0 left-[11px] top-0 w-px bg-primary md:left-1/2 md:-translate-x-px"
+              className="absolute bottom-0 left-[11px] top-0 w-px timeline-accent-line md:left-1/2 md:-translate-x-px"
               aria-hidden
             />
           )}
@@ -67,7 +67,7 @@ const EngagementTimeline = ({ milestones }: Props) => {
 
 const ScrollHeader = () => (
   <div className="max-w-2xl">
-    <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Engagement Journey</p>
+    <p className="section-label mb-3">Engagement Journey</p>
     <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
       From first conversation to long-term partnership.
     </h2>
@@ -101,14 +101,14 @@ const TimelineItem = ({
       }`}
     >
       <span
-        className="absolute left-0 top-1.5 flex h-6 w-6 items-center justify-center rounded-full border border-primary/40 bg-background md:left-1/2 md:-translate-x-1/2"
+        className="absolute left-0 top-1.5 flex h-6 w-6 items-center justify-center rounded-full timeline-node md:left-1/2 md:-translate-x-1/2"
         aria-hidden
       >
         <span className="h-2 w-2 rounded-full bg-primary" />
       </span>
 
       <div className={`md:text-right ${isEven ? "md:pr-10" : "md:pl-10 md:text-left"}`}>
-        <p className="text-sm font-semibold text-primary">{milestone.year}</p>
+        <p className="text-sm font-semibold text-foreground">{milestone.year}</p>
         <h3 className="mt-1 font-heading text-lg font-semibold text-foreground">{milestone.title}</h3>
       </div>
 

@@ -166,7 +166,7 @@ const Index = () => {
             <div className="mt-10 flex flex-wrap gap-4">
               <a
                 href="#services"
-                className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
+                className="rounded-md border border-[rgba(208,201,195,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-[#007A48] hover:border-[rgba(208,201,195,0.55)]"
               >
                 Our Services
               </a>
@@ -186,7 +186,7 @@ const Index = () => {
       <section id="services" className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-5xl">
           <ScrollReveal className="mb-12 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+            <p className="section-label mb-3">
               What We Do
             </p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
@@ -203,7 +203,7 @@ const Index = () => {
       <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal className="mb-12 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+            <p className="section-label mb-3">
               Who We Serve
             </p>
             <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
@@ -233,7 +233,7 @@ const Index = () => {
         />
         <div className="relative mx-auto max-w-7xl">
           <ScrollReveal className="mb-12 max-w-2xl text-center md:mx-auto">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+            <p className="section-label mb-3">
               By The Numbers
             </p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
@@ -254,7 +254,7 @@ const Index = () => {
       <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal className="mb-12 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+            <p className="section-label mb-3">
               Certifications & Expertise
             </p>
             <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
@@ -277,7 +277,7 @@ const Index = () => {
       <section className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
           <ScrollReveal className="mb-12 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+            <p className="section-label mb-3">
               Why Partner With ClickBox
             </p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
@@ -290,7 +290,7 @@ const Index = () => {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {whyPartner.map((w, i) => (
               <ScrollReveal key={w.title} delay={i * 0.06} className="glass-card p-8">
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20">
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md icon-accent-wrap">
                   <w.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
                 </div>
                 <h3 className="font-heading text-lg font-semibold text-foreground">{w.title}</h3>

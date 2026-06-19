@@ -117,7 +117,7 @@ const PremiumCTA = ({ asHero = false }: Props) => {
             <div className="mt-5 flex flex-col gap-3">
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-all border border-[rgba(208,201,195,0.4)] hover:bg-[#007A48] hover:border-[rgba(208,201,195,0.55)]"
               >
                 Book a Security Consultation <ArrowRight className="h-4 w-4" />
               </Link>
@@ -188,7 +188,7 @@ const PremiumCTA = ({ asHero = false }: Props) => {
             <div className="mt-6 flex flex-wrap gap-3 md:mt-8 md:gap-4">
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90 md:px-6 md:py-3"
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-all border border-[rgba(208,201,195,0.4)] hover:bg-[#007A48] hover:border-[rgba(208,201,195,0.55)] md:px-6 md:py-3"
               >
                 Book a Security Consultation <ArrowRight className="h-4 w-4" />
               </Link>

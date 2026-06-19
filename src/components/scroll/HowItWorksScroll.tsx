@@ -34,7 +34,7 @@ const HowItWorksScroll = ({ steps }: Props) => {
         <div className="section-padding">
           <div className="mx-auto max-w-3xl space-y-10">
             <div className="max-w-2xl">
-              <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+              <p className="section-label mb-3">
                 How It Works
               </p>
               <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
@@ -44,7 +44,7 @@ const HowItWorksScroll = ({ steps }: Props) => {
             {steps.map((step) => (
               <div key={step.n} className="glass-card rounded-xl p-8">
                 <step.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
-                <span className="text-xs font-semibold uppercase tracking-widest text-primary/70">
+                <span className="micro-label opacity-70">
                   Step {step.n}
                 </span>
                 <h3 className="mt-2 font-heading text-xl font-semibold text-foreground">{step.title}</h3>
@@ -57,7 +57,7 @@ const HowItWorksScroll = ({ steps }: Props) => {
         <div className="sticky top-0 flex h-screen items-center overflow-hidden">
           <div className="mx-auto grid w-full max-w-7xl gap-12 px-6 md:grid-cols-2 md:px-12 lg:px-24">
             <div className="flex flex-col justify-center">
-              <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+              <p className="section-label mb-3">
                 How It Works
               </p>
               <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
@@ -122,7 +122,7 @@ const StepPanel = ({
           <step.icon className="h-9 w-9 text-primary" strokeWidth={1.5} />
           <span className="font-heading text-4xl font-bold text-primary/20">{step.n}</span>
         </div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-primary">Step {step.n}</p>
+        <p className="micro-label">Step {step.n}</p>
         <h3 className="mt-2 font-heading text-2xl font-semibold text-foreground">{step.title}</h3>
         <p className="mt-4 leading-relaxed text-muted-foreground">{step.desc}</p>
       </div>

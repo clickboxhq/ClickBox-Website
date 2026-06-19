@@ -70,7 +70,7 @@ const Product = () => {
 
       <section className="section-padding border-b border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+          <p className="section-label mb-3">
             Key Features
           </p>
           <h2 className="mb-12 font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
@@ -94,7 +94,7 @@ const Product = () => {
       <section className="section-padding">
         <div className="mx-auto max-w-3xl">
           <div className="mb-12 text-center">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+            <p className="section-label mb-3">
               Get In Touch
             </p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">

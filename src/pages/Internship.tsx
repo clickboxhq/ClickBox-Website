@@ -198,11 +198,11 @@ const WeekCard = ({
       className="glass-card overflow-hidden"
     >
       <button onClick={onToggle} className="w-full text-left px-6 py-5 flex items-center gap-5" aria-expanded={open}>
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20 font-heading text-xs font-bold text-primary">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md icon-accent-wrap font-heading text-xs font-bold text-primary">
           {String(i + 1).padStart(2, "0")}
         </span>
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-wider text-primary">{w.n}</p>
+          <p className="micro-label">{w.n}</p>
           <h4 className="mt-1 font-heading text-base font-semibold text-foreground">{w.title}</h4>
         </div>
         <ChevronDown className={`h-5 w-5 shrink-0 text-primary transition-transform ${open ? "rotate-180" : ""}`} />
@@ -218,7 +218,7 @@ const WeekCard = ({
           >
             <div className="grid gap-6 border-t border-white/5 px-6 py-5 sm:grid-cols-2">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-primary mb-2">Activities</p>
+                <p className="micro-label mb-2">Activities</p>
                 <ul className="space-y-1.5 text-sm text-muted-foreground">
                   {w.activities.map((a) => (
                     <li key={a} className="flex items-start gap-2">
@@ -229,7 +229,7 @@ const WeekCard = ({
                 </ul>
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-primary mb-2">Focus Areas</p>
+                <p className="micro-label mb-2">Focus Areas</p>
                 <ul className="space-y-1.5 text-sm text-muted-foreground">
                   {w.focus.map((f) => (
                     <li key={f} className="flex items-start gap-2">
@@ -308,8 +308,8 @@ const Internship = () => {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.12),transparent_60%)]" />
         <div className="mx-auto max-w-7xl relative">
           <motion.div {...fadeUp} className="max-w-4xl">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-medium text-primary backdrop-blur">
-              <Shield className="h-3.5 w-3.5" />
+            <div className="badge-accent-frame mb-6 rounded-full bg-[#131211] px-4 py-1.5 backdrop-blur">
+              <Shield className="h-3.5 w-3.5 text-primary" />
               ClickBox Cybersecurity Fellowship · Cohort 2026
             </div>
             <h1 className="font-heading text-4xl font-bold leading-tight text-foreground md:text-6xl lg:text-7xl">
@@ -322,7 +322,7 @@ const Internship = () => {
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
-              <a href="#apply" className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90">
+              <a href="#apply" className="inline-flex items-center gap-2 rounded-md border border-[rgba(208,201,195,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-[#007A48] hover:border-[rgba(208,201,195,0.55)]">
                 Apply Now <ArrowRight className="h-4 w-4" />
               </a>
               <a href="#overview" className="rounded-md border border-white/10 bg-secondary/80 px-6 py-3 text-sm font-semibold text-secondary-foreground backdrop-blur transition-all hover:bg-muted">
@@ -353,7 +353,7 @@ const Internship = () => {
         <div className="mx-auto max-w-7xl">
           <motion.div {...fadeUp} className="grid gap-12 lg:grid-cols-2">
             <div>
-              <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Program Overview</p>
+              <p className="section-label mb-3">Program Overview</p>
               <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
                 Develop Practical Cybersecurity Skills Through Real-World Experience.
               </h2>
@@ -371,7 +371,7 @@ const Internship = () => {
       <section className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
           <motion.div {...fadeUp} className="mb-12 max-w-3xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+            <p className="section-label mb-3">
               Fellowship Learning Journey
             </p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-5xl">
@@ -398,11 +398,11 @@ const Internship = () => {
             ].map((p) => (
               <div key={p.label} className="glass-card p-6">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md icon-accent-wrap">
                     <p.icon className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">{p.label}</p>
+                    <p className="micro-label">{p.label}</p>
                     <p className="text-xs text-muted-foreground">{p.weeks}</p>
                   </div>
                 </div>
@@ -413,7 +413,7 @@ const Internship = () => {
 
           {/* Phase 1 timeline */}
           <div className="mb-6">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary">Phase 1 · Weeks 1–6</p>
+            <p className="micro-label">Phase 1 · Weeks 1–6</p>
             <h3 className="mt-2 font-heading text-2xl font-bold text-foreground">Foundation & Technical Development</h3>
           </div>
           <div className="space-y-3">
@@ -430,7 +430,7 @@ const Internship = () => {
 
           {/* Phase 2 */}
           <div className="mt-16 mb-6">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary">Phase 2 · Weeks 7–10</p>
+            <p className="micro-label">Phase 2 · Weeks 7–10</p>
             <h3 className="mt-2 font-heading text-2xl font-bold text-foreground">Career Pathway Specialization</h3>
             <p className="mt-3 max-w-3xl text-muted-foreground leading-relaxed">
               Participants focus on their selected cybersecurity pathway through practical
@@ -452,7 +452,7 @@ const Internship = () => {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.overview}</p>
                 <div className="mt-5 space-y-4 text-sm">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">Skills Learned</p>
+                    <p className="micro-label">Skills Learned</p>
                     <ul className="mt-2 space-y-1 text-muted-foreground">
                       {p.skills.map((s) => (
                         <li key={s} className="flex items-start gap-2">
@@ -463,7 +463,7 @@ const Internship = () => {
                     </ul>
                   </div>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">Career Outcomes</p>
+                    <p className="micro-label">Career Outcomes</p>
                     <ul className="mt-2 space-y-1 text-muted-foreground">
                       {p.outcomes.map((o) => (
                         <li key={o} className="flex items-start gap-2">
@@ -480,7 +480,7 @@ const Internship = () => {
 
           {/* Phase 3 */}
           <div className="mt-16 mb-6">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary">Phase 3 · Weeks 11–12</p>
+            <p className="micro-label">Phase 3 · Weeks 11–12</p>
             <h3 className="mt-2 font-heading text-2xl font-bold text-foreground">Practical Experience & Capstone</h3>
             <p className="mt-3 max-w-3xl text-muted-foreground leading-relaxed">
               Participants apply their learning through collaborative projects, simulations,
@@ -489,7 +489,7 @@ const Internship = () => {
           </div>
           <div className="grid gap-6 lg:grid-cols-2">
             <div className="glass-card p-8">
-              <p className="text-xs font-semibold uppercase tracking-wider text-primary">Activities</p>
+              <p className="micro-label">Activities</p>
               <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
                 {["Security Projects", "Team Collaboration", "Security Exercises", "Technical Presentations", "Career Development Sessions"].map((a) => (
                   <li key={a} className="flex items-start gap-2">
@@ -500,7 +500,7 @@ const Internship = () => {
               </ul>
             </div>
             <div className="glass-card p-8">
-              <p className="text-xs font-semibold uppercase tracking-wider text-primary">Capstone Project</p>
+              <p className="micro-label">Capstone Project</p>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 Each fellow completes and presents a cybersecurity project aligned with their
                 selected pathway. The capstone demonstrates practical skills, critical thinking,
@@ -519,7 +519,7 @@ const Internship = () => {
       <section id="pathways" className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Fellowship Tracks</p>
+            <p className="section-label mb-3">Fellowship Tracks</p>
             <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
               Five specialized cybersecurity pathways.
             </h2>
@@ -547,7 +547,7 @@ const Internship = () => {
       <section className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Program Benefits</p>
+            <p className="section-label mb-3">Program Benefits</p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
               What you'll get as a ClickBox Fellow.
             </h2>
@@ -562,7 +562,7 @@ const Internship = () => {
                 transition={{ duration: 0.4, delay: i * 0.05 }}
                 className="glass-card flex items-center gap-4 p-5"
               >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md icon-accent-wrap">
                   <b.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
                 </div>
                 <p className="text-sm font-medium text-foreground">{b.label}</p>
@@ -576,7 +576,7 @@ const Internship = () => {
       <section className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Eligibility Requirements</p>
+            <p className="section-label mb-3">Eligibility Requirements</p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">Minimum eligibility.</h2>
           </div>
           <div className="grid gap-6 lg:grid-cols-2">
@@ -610,7 +610,7 @@ const Internship = () => {
       <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Program Timeline</p>
+            <p className="section-label mb-3">Program Timeline</p>
             <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">From application to alumni.</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -645,7 +645,7 @@ const Internship = () => {
       <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Selection Process</p>
+            <p className="section-label mb-3">Selection Process</p>
             <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">Six competitive stages.</h2>
             <p className="mt-4 leading-relaxed text-neutral-600">
               Only the top candidates advance through each stage — and only 10 fellows are selected.
@@ -665,7 +665,7 @@ const Internship = () => {
                   <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/40 bg-primary/10 font-heading text-sm font-bold text-primary">
                     {i + 1}
                   </span>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-primary">{s.month}</p>
+                  <p className="micro-label">{s.month}</p>
                 </div>
                 <h3 className="mt-4 font-heading text-base font-semibold text-foreground">{s.stage}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.detail}</p>
@@ -679,7 +679,7 @@ const Internship = () => {
       <section id="apply" className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-4xl">
           <motion.div {...fadeUp} className="text-center">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Apply Now</p>
+            <p className="section-label mb-3">Apply Now</p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
               Begin your cybersecurity journey with ClickBox.
             </h2>
@@ -710,7 +710,7 @@ const Internship = () => {
       <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-4xl">
           <div className="mb-12">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">FAQ</p>
+            <p className="section-label mb-3">FAQ</p>
             <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
               Frequently asked questions.
             </h2>

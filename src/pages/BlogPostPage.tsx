@@ -76,7 +76,7 @@ const BlogPostPage = () => {
             transition={{ duration: 0.5 }}
             className="mt-8"
           >
-            <span className="inline-block rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary">
+            <span className="badge-accent-frame inline-block rounded-full bg-[#131211] px-3 py-1">
               {post.category}
             </span>
             <h1 className="mt-4 font-heading text-3xl font-bold leading-tight text-foreground md:text-5xl">
@@ -182,7 +182,7 @@ const BlogPostPage = () => {
         {related.length > 0 && (
           <section className="section-padding mt-16 border-t border-white/5">
             <div className="mx-auto max-w-7xl">
-              <p className="mb-6 text-sm font-semibold uppercase tracking-widest text-primary">
+              <p className="section-label mb-6">
                 Related articles
               </p>
               <div className="grid gap-6 md:grid-cols-3">
@@ -192,7 +192,7 @@ const BlogPostPage = () => {
                     to={`/resources/${r.slug}`}
                     className="glass-card group block p-6 transition hover:border-primary/40"
                   >
-                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+                    <p className="micro-label">
                       {r.category}
                     </p>
                     <h3 className="mt-3 font-heading text-lg font-semibold text-foreground transition-colors group-hover:text-primary">

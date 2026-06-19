@@ -36,7 +36,7 @@ const ServicesFaq = () => {
     <section className="section-padding border-t border-black/5 bg-white">
       <div className="mx-auto max-w-4xl">
         <div className="mb-12 max-w-2xl">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">FAQ</p>
+          <p className="section-label mb-3">FAQ</p>
           <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
             Frequently Asked Questions
           </h2>

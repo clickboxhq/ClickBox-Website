@@ -19,6 +19,14 @@ export default {
       },
       colors: {
         border: "hsl(var(--border))",
+        brand: {
+          green: "#006D3E",
+          "green-secondary": "#007A48",
+          "green-glow": "#008853",
+          highlight: "#D0C9C3",
+          headline: "#FFFFFF",
+          surface: "#131211",
+        },
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",

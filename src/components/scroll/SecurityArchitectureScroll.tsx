@@ -52,7 +52,7 @@ const SecurityArchitectureScroll = () => {
       <section className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl space-y-10">
           <div className="max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+            <p className="section-label mb-3">
               Security Architecture
             </p>
             <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
@@ -63,7 +63,7 @@ const SecurityArchitectureScroll = () => {
             {phases.map((phase) => (
               <div key={phase.id} className="glass-card-dark rounded-xl p-8">
                 <phase.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
-                <p className="text-xs font-semibold uppercase tracking-widest text-primary">{phase.label}</p>
+                <p className="micro-label">{phase.label}</p>
                 <h3 className="mt-2 font-heading text-lg font-semibold text-foreground">{phase.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{phase.desc}</p>
               </div>
@@ -84,7 +84,7 @@ const SecurityArchitectureScroll = () => {
       <div className="sticky top-0 flex h-screen items-center">
         <div className="mx-auto grid w-full max-w-7xl items-center gap-12 px-6 md:grid-cols-2 md:px-12 lg:px-24">
           <div className="max-w-lg">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+            <p className="section-label mb-3">
               Security Architecture
             </p>
             <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl lg:text-5xl">
@@ -143,10 +143,10 @@ const ArchitectureVisual = ({
           aria-hidden
         />
         <div className="relative">
-          <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-primary/20">
+          <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl icon-accent-wrap">
             <phase.icon className="h-7 w-7 text-primary" strokeWidth={1.5} />
           </div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary">{phase.label}</p>
+          <p className="micro-label">{phase.label}</p>
           <h3 className="mt-2 font-heading text-2xl font-semibold text-foreground">{phase.title}</h3>
           <p className="mt-3 leading-relaxed text-muted-foreground">{phase.desc}</p>
         </div>

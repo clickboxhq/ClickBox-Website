@@ -49,7 +49,7 @@ const PostCard = ({
       )}
       <div className="p-6 md:p-8">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary">
+          <span className="badge-accent-frame rounded-full bg-[#131211] px-2.5 py-0.5">
             {post.category}
           </span>
           <span>·</span>
@@ -113,8 +113,8 @@ const Resources = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="max-w-3xl"
           >
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-medium text-primary backdrop-blur">
-              <BookOpen className="h-3.5 w-3.5" />
+            <div className="badge-accent-frame mb-6 rounded-full bg-[#131211] px-4 py-1.5 backdrop-blur">
+              <BookOpen className="h-3.5 w-3.5 text-primary" />
               ClickBox Resource Center
             </div>
             <h1 className="font-heading text-4xl font-bold leading-tight text-foreground md:text-6xl">
@@ -160,7 +160,7 @@ const Resources = () => {
       {featured.length > 0 && group === "All" && !query && (
         <section className="section-padding border-t border-black/5 bg-white pt-12">
           <div className="mx-auto max-w-7xl">
-            <p className="mb-6 text-sm font-semibold uppercase tracking-widest text-primary">
+            <p className="section-label mb-6">
               Featured Articles
             </p>
             <div className="grid gap-6 lg:grid-cols-2">
@@ -175,7 +175,7 @@ const Resources = () => {
       <section className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
           <div className="mb-6 flex items-end justify-between gap-4">
-            <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+            <p className="section-label">
               {query || group !== "All" ? "Results" : "Recent Posts"}
             </p>
             <p className="text-xs text-muted-foreground">

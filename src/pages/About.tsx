@@ -46,7 +46,7 @@ const About = () => (
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+          <p className="section-label mb-3">
             About ClickBox
           </p>
           <h1 className="font-heading text-4xl font-bold leading-tight text-foreground md:text-6xl">
@@ -93,7 +93,7 @@ const About = () => (
     <section className="section-padding border-t border-black/5 bg-white">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-2xl">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+          <p className="section-label mb-3">
             What Drives Us
           </p>
           <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
@@ -113,7 +113,7 @@ const About = () => (
               transition={{ duration: 0.4, delay: i * 0.08 }}
               className="glass-card-dark group rounded-xl p-6 transition-all duration-300 hover:border-primary/40 hover:-translate-y-1"
             >
-              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20 transition group-hover:bg-primary/15">
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md icon-accent-wrap transition group-hover:bg-primary/15">
                 <v.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
               </div>
               <h3 className="font-heading text-base font-semibold text-foreground">{v.title}</h3>
@@ -133,7 +133,7 @@ const About = () => (
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+          <p className="section-label mb-3">
             Certifications & Expertise
           </p>
           <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">

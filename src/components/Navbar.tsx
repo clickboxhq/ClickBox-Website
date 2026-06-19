@@ -44,10 +44,10 @@ const NavLink = ({
             ? `block rounded-xl px-4 py-3.5 text-[15px] font-medium transition-colors ${
                 active
                   ? "text-foreground"
-                  : "text-muted-foreground hover:bg-white/[0.04] hover:text-foreground"
+                  : "text-muted-foreground hover:bg-white/[0.04] hover:text-primary"
               }`
             : `text-sm font-medium transition-colors ${
-                active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                active ? "text-foreground" : "text-muted-foreground hover:text-primary"
               }`
         }
       >
@@ -58,8 +58,8 @@ const NavLink = ({
           layoutId={mobile ? "nav-mobile-active" : "nav-desktop-active"}
           className={
             mobile
-              ? "absolute bottom-2 left-4 right-4 h-px bg-primary/70"
-              : "absolute -bottom-[14px] left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-primary"
+              ? "absolute bottom-2 left-4 right-4 h-px nav-accent-indicator-mobile"
+              : "absolute -bottom-[14px] left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full nav-accent-indicator"
           }
           transition={{ type: "spring", stiffness: 380, damping: 28 }}
         />
