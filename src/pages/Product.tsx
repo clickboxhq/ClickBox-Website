@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import productHero from "@/assets/product-hero.jpeg";
+import { TallyEmbed } from "@/components/forms/TallyEmbed";
 
 const Product = () => {
   return (
@@ -40,6 +41,27 @@ const Product = () => {
               />
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="section-padding">
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-12 text-center">
+            <p className="section-label mb-3">Get In Touch</p>
+            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+              Product Inquiries, Demos & Beta Access
+            </h2>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              Request a demo, join the beta, or explore a partnership. Submit the form below and our
+              team will follow up.
+            </p>
+          </div>
+
+          <TallyEmbed
+            formId="81r5Jr"
+            height={200}
+            title="Product Inquiries, Demos & Beta Access"
+          />
         </div>
       </section>
 
