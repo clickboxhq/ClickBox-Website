@@ -2,15 +2,24 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
+import NavDropdown from "@/components/NavDropdown";
 import logo from "@/assets/clickbox-logo.jpeg";
 
 const navLinks = [
   { label: "Home", path: "/" },
   { label: "Services", path: "/#services" },
   { label: "About", path: "/about" },
-  { label: "Resources", path: "/resources" },
-  { label: "Product", path: "/product" },
   { label: "Contact", path: "/contact" },
+];
+
+const solutionsItems = [{ label: "PhishBox Ai", path: "/product" }];
+
+const resourcesItems = [
+  { label: "Blog", path: "/resources?group=Blog" },
+  { label: "Insights", path: "/resources?group=Insights" },
+  { label: "Threat Intelligence", path: "/resources?group=Threat Intelligence" },
+  { label: "Updates", path: "/resources?group=Updates" },
+  { label: "Fellowship News", path: "/resources?group=Fellowship News" },
 ];
 
 const SPRING = { stiffness: 180, damping: 22, mass: 0.95 };
@@ -279,7 +288,27 @@ const Navbar = () => {
         {/* Desktop/tablet — centered nav group (fixed relative spacing) */}
         <div className="hidden min-w-0 flex-1 items-center justify-center md:flex">
           <div className="flex items-center gap-7" role="list">
-            {navLinks.map((link) => (
+            {navLinks.slice(0, 3).map((link) => (
+              <NavLink
+                key={link.label}
+                link={link}
+                pathname={location.pathname}
+                onClick={handleNavClick}
+              />
+            ))}
+            <NavDropdown
+              label="Solutions"
+              items={solutionsItems}
+              onNavigate={() => handleNavClick("/product")}
+              isActive={location.pathname === "/product"}
+            />
+            <NavDropdown
+              label="Resources"
+              items={resourcesItems}
+              onNavigate={() => handleNavClick("/resources")}
+              isActive={location.pathname.startsWith("/resources")}
+            />
+            {navLinks.slice(3).map((link) => (
               <NavLink
                 key={link.label}
                 link={link}
@@ -357,7 +386,30 @@ const Navbar = () => {
               aria-label="Mobile navigation"
             >
               <div className="space-y-1 p-3" role="list">
-                {navLinks.map((link) => (
+                {navLinks.slice(0, 3).map((link) => (
+                  <NavLink
+                    key={link.label}
+                    link={link}
+                    pathname={location.pathname}
+                    onClick={handleNavClick}
+                    mobile
+                  />
+                ))}
+                <NavDropdown
+                  label="Solutions"
+                  items={solutionsItems}
+                  onNavigate={() => setMobileOpen(false)}
+                  mobile
+                  isActive={location.pathname === "/product"}
+                />
+                <NavDropdown
+                  label="Resources"
+                  items={resourcesItems}
+                  onNavigate={() => setMobileOpen(false)}
+                  mobile
+                  isActive={location.pathname.startsWith("/resources")}
+                />
+                {navLinks.slice(3).map((link) => (
                   <NavLink
                     key={link.label}
                     link={link}

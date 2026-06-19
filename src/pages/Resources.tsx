@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useMemo, useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Search, Clock, ArrowRight, BookOpen } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -83,8 +83,16 @@ const PostCard = ({
 };
 
 const Resources = () => {
+  const [searchParams] = useSearchParams();
   const [query, setQuery] = useState("");
   const [group, setGroup] = useState<(typeof resourceGroups)[number]>("All");
+
+  useEffect(() => {
+    const fromUrl = searchParams.get("group");
+    if (fromUrl && resourceGroups.includes(fromUrl as (typeof resourceGroups)[number])) {
+      setGroup(fromUrl as (typeof resourceGroups)[number]);
+    }
+  }, [searchParams]);
 
   const featured = useMemo(() => blogPosts.filter((p) => p.featured), []);
   const filtered = useMemo(() => {
