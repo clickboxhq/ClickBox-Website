@@ -33,21 +33,24 @@ const BackgroundSlideshow = ({
   asHero: boolean;
 }) => (
   <>
-    {SLIDE_IMAGES.map((src, index) => (
-      <img
-        key={src}
-        src={src}
-        alt=""
-        role="presentation"
-        loading={asHero && index === 0 ? "eager" : "lazy"}
-        fetchPriority={asHero && index === 0 ? "high" : "auto"}
-        decoding="async"
-        sizes="100vw"
-        className={`absolute left-0 top-0 h-full w-full max-w-none object-cover object-center transition-opacity duration-1000 ease-in-out ${
-          index === activeIndex ? "opacity-100" : "opacity-0"
-        }`}
-      />
-    ))}
+    {SLIDE_IMAGES.map((src, index) => {
+      const isActive = index === activeIndex;
+      return (
+        <img
+          key={src}
+          src={src}
+          alt=""
+          role="presentation"
+          loading={asHero && index === 0 ? "eager" : "lazy"}
+          fetchPriority={asHero && index === 0 ? "high" : "auto"}
+          decoding="async"
+          sizes="100vw"
+          className={`absolute left-0 top-0 h-full w-full max-w-none object-cover object-center transition-opacity duration-[1200ms] ease-in-out will-change-[opacity,transform] ${
+            isActive ? "opacity-100 animate-ken-burns" : "opacity-0"
+          }`}
+        />
+      );
+    })}
   </>
 );
 
