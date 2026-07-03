@@ -3,12 +3,16 @@ import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
-import img9576 from "@/assets/IMG_9576.png";
-import img9574 from "@/assets/IMG_9574.jpeg";
-import img9571 from "@/assets/IMG_9571.jpeg";
+import scene1 from "@/assets/cta/scene-1.jpg";
+import scene2 from "@/assets/cta/scene-2.jpg";
+import scene3 from "@/assets/cta/scene-3.jpg";
+import scene4 from "@/assets/cta/scene-4.jpg";
+import scene5 from "@/assets/cta/scene-5.jpg";
+import scene6 from "@/assets/cta/scene-6.jpg";
+import scene7 from "@/assets/cta/scene-7.jpg";
 
-const SLIDE_IMAGES = [img9576, img9574, img9571] as const;
-const SLIDE_INTERVAL_MS = 4000;
+const SLIDE_IMAGES = [scene1, scene2, scene3, scene4, scene5, scene6, scene7] as const;
+const SLIDE_INTERVAL_MS = 6000;
 
 type Props = {
   asHero?: boolean;
@@ -29,21 +33,24 @@ const BackgroundSlideshow = ({
   asHero: boolean;
 }) => (
   <>
-    {SLIDE_IMAGES.map((src, index) => (
-      <img
-        key={src}
-        src={src}
-        alt=""
-        role="presentation"
-        loading={asHero && index === 0 ? "eager" : "lazy"}
-        fetchPriority={asHero && index === 0 ? "high" : "auto"}
-        decoding="async"
-        sizes="100vw"
-        className={`absolute left-0 top-0 h-full w-full max-w-none object-cover object-center transition-opacity duration-1000 ease-in-out ${
-          index === activeIndex ? "opacity-100" : "opacity-0"
-        }`}
-      />
-    ))}
+    {SLIDE_IMAGES.map((src, index) => {
+      const isActive = index === activeIndex;
+      return (
+        <img
+          key={src}
+          src={src}
+          alt=""
+          role="presentation"
+          loading={asHero && index === 0 ? "eager" : "lazy"}
+          fetchPriority={asHero && index === 0 ? "high" : "auto"}
+          decoding="async"
+          sizes="100vw"
+          className={`absolute left-0 top-0 h-full w-full max-w-none object-cover object-center transition-opacity duration-[1200ms] ease-in-out will-change-[opacity,transform] ${
+            isActive ? "opacity-100 animate-ken-burns" : "opacity-0"
+          }`}
+        />
+      );
+    })}
   </>
 );
 

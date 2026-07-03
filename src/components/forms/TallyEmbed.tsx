@@ -14,8 +14,9 @@ export function TallyEmbed({
   title = 'Form',
 }: TallyEmbedProps) {
   useEffect(() => {
-    if (typeof window !== 'undefined' && (window as Record<string, unknown>).Tally) {
-      (window as Record<string, unknown> & { Tally: { loadEmbeds: () => void } }).Tally.loadEmbeds();
+    const w = window as unknown as { Tally?: { loadEmbeds: () => void } };
+    if (typeof window !== 'undefined' && w.Tally) {
+      w.Tally.loadEmbeds();
     }
   }, [formId]);
 
