@@ -3,10 +3,15 @@ import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
-import ref1 from "@/assets/cta/ref-1.jpg.asset.json";
-import ref2 from "@/assets/cta/ref-2.jpg.asset.json";
+import scene1 from "@/assets/cta/scene-1.jpg";
+import scene2 from "@/assets/cta/scene-2.jpg";
+import scene3 from "@/assets/cta/scene-3.jpg";
+import scene4 from "@/assets/cta/scene-4.jpg";
+import scene5 from "@/assets/cta/scene-5.jpg";
+import scene6 from "@/assets/cta/scene-6.jpg";
+import scene7 from "@/assets/cta/scene-7.jpg";
 
-const SLIDE_IMAGES = [ref1.url, ref2.url] as const;
+const SLIDE_IMAGES = [scene1, scene2, scene3, scene4, scene5, scene6, scene7] as const;
 const SLIDE_INTERVAL_MS = 6000;
 
 type Props = {
