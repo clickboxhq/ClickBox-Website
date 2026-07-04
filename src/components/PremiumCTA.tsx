@@ -74,16 +74,7 @@ const PremiumCTA = ({ asHero = false }: Props) => {
             Enterprise Cybersecurity
           </div>
 
-          <h1 className="font-heading text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl">
-            Secure. Scale. <span className="text-primary">Transform.</span>
-          </h1>
-
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-white/80 md:text-lg">
-            Partner with ClickBox to build resilient cybersecurity, AI, cloud, and
-            enterprise technology solutions trusted by modern organizations.
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-3 md:gap-4">
+          <div className="mt-6 flex flex-wrap gap-3 md:gap-4">
             <Link
               to="/contact"
               className="inline-flex items-center gap-2 rounded-md border border-[rgba(208,201,195,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-[#007A48] hover:border-[rgba(208,201,195,0.55)]"
