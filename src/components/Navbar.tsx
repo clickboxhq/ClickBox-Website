@@ -325,7 +325,7 @@ const Navbar = () => {
           className="relative z-20 hidden shrink-0 md:block"
         >
           <Link to="/internship" className={fellowshipBtn}>
-            Fellowship
+            Careers
           </Link>
         </motion.div>
 
@@ -425,7 +425,7 @@ const Navbar = () => {
                   onClick={() => setMobileOpen(false)}
                   className={`flex w-full items-center justify-center ${fellowshipBtn} py-3`}
                 >
-                  Fellowship
+                  Careers
                 </Link>
               </div>
             </motion.div>
