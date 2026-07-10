@@ -12,7 +12,10 @@ const navLinks = [
   { label: "Contact", path: "/contact" },
 ];
 
-const solutionsItems = [{ label: "PhishBox Ai", path: "/product" }];
+const solutionsItems = [
+  { label: "PhishBox Ai", path: "/product" },
+  { label: "SOCBOX", path: "/socbox" },
+];
 
 const resourcesItems = [
   { label: "Blog", path: "/resources?group=Blog" },
