@@ -9,6 +9,7 @@ import CookieConsent from "./components/CookieConsent";
 import Index from "./pages/Index";
 
 const Product = lazy(() => import("./pages/Product"));
+const Socbox = lazy(() => import("./pages/Socbox"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Resources = lazy(() => import("./pages/Resources"));
