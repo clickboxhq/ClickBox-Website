@@ -33,6 +33,7 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/scroll/ScrollReveal";
+import { PreviewDashboard, PreviewIncidents, PreviewGraph, PreviewPlaybook } from "@/components/socbox/SocboxPreviews";
 
 const capabilities = [
   { icon: Cpu, title: "AI Threat Detection", desc: "Machine learning models surface anomalies and attacker behaviour across your environment in real time." },
