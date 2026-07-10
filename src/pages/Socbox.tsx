@@ -388,7 +388,7 @@ const Socbox = () => {
         </div>
       </section>
 
-      {/* Product screenshots placeholder */}
+      {/* Product screenshots */}
       <section className="section-padding border-b border-white/5">
         <div className="mx-auto max-w-6xl">
           <ScrollReveal className="mb-12 max-w-2xl">
@@ -397,38 +397,44 @@ const Socbox = () => {
               A workspace designed for analysts.
             </h2>
             <p className="mt-4 leading-relaxed text-muted-foreground">
-              Product tours, screenshots, and walkthrough videos are on the way. Request a demo to
-              see SOCBOX in action today.
+              A quick look at the SOCBOX analyst experience — from live threat monitoring to
+              guided investigations.
             </p>
           </ScrollReveal>
           <div className="grid gap-6 md:grid-cols-2">
-            {[0, 1, 2, 3].map((i) => (
+            {[
+              { label: "Threat Overview", title: "Live SOC dashboard", render: () => <PreviewDashboard /> },
+              { label: "Incidents", title: "Triage queue", render: () => <PreviewIncidents /> },
+              { label: "Investigation", title: "Entity graph", render: () => <PreviewGraph /> },
+              { label: "Automation", title: "Response playbook", render: () => <PreviewPlaybook /> },
+            ].map((p, i) => (
               <motion.div
-                key={i}
+                key={p.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.45, delay: (i % 2) * 0.08 }}
-                className="glass-card relative aspect-[16/10] overflow-hidden rounded-2xl"
+                className="glass-card group relative aspect-[16/10] overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/30"
               >
                 <div
-                  className="absolute inset-0 opacity-70"
+                  className="absolute inset-0 opacity-80"
                   style={{
                     background:
-                      "radial-gradient(60% 60% at 30% 20%, hsl(var(--primary) / 0.18), transparent 65%), linear-gradient(160deg, rgba(255,255,255,0.03), rgba(255,255,255,0))",
+                      "radial-gradient(60% 60% at 30% 20%, hsl(var(--primary) / 0.18), transparent 65%), linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0))",
                   }}
                 />
-                <div className="absolute inset-0 flex flex-col justify-between p-6">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
+                <div className="relative flex h-full flex-col">
+                  <div className="flex items-center justify-between border-b border-white/5 px-4 py-2.5">
+                    <div className="flex items-center gap-1.5">
+                      <span className="h-2.5 w-2.5 rounded-full bg-destructive/60" />
+                      <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/60" />
+                      <span className="h-2.5 w-2.5 rounded-full bg-primary/70" />
+                    </div>
+                    <span className="micro-label text-primary/80">{p.label}</span>
                   </div>
-                  <div>
-                    <p className="micro-label text-primary/80">Preview</p>
-                    <p className="font-heading text-sm text-muted-foreground">
-                      Analyst workspace · coming soon
-                    </p>
+                  <div className="relative flex-1 overflow-hidden p-4">{p.render()}</div>
+                  <div className="border-t border-white/5 px-4 py-2">
+                    <p className="font-heading text-xs text-muted-foreground">{p.title}</p>
                   </div>
                 </div>
               </motion.div>
