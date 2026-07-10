@@ -9,6 +9,7 @@ import CookieConsent from "./components/CookieConsent";
 import Index from "./pages/Index";
 
 const Product = lazy(() => import("./pages/Product"));
+const Socbox = lazy(() => import("./pages/Socbox"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Resources = lazy(() => import("./pages/Resources"));
@@ -51,6 +52,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/product" element={<Product />} />
+            <Route path="/socbox" element={<Socbox />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/resources/:slug" element={<BlogPostPage />} />
             <Route path="/about" element={<About />} />
