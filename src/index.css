@@ -6,55 +6,55 @@
 
 @layer base {
   :root {
-    /* ClickBox — Pantone 2465 CP green + warm grey support */
+    /* ClickBox — Axiom Blue brand system */
     --brand-hex: #153140;
     --brand-green-secondary: #1D4358;
     --brand-green-glow: #234F66;
     --highlight-grey-hex: #BDC4C6;
     --headline-hex: #FFFFFF;
-    --surface-hex: #000000;
+    --surface-hex: #0D2028;
     --surface-elevated-hex: #0D2028;
-    --brand: 154 100% 21%;
-    --surface: 0 0% 0%;
+    --brand: 203 51% 17%;
+    --surface: 199 51% 10%;
 
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
+    --background: 199 51% 10%;
+    --foreground: 15 27% 96%;
 
-    --card: 20 4% 7%;
-    --card-foreground: 0 0% 100%;
+    --card: 203 51% 13%;
+    --card-foreground: 15 27% 96%;
 
-    --popover: 20 4% 7%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 203 51% 13%;
+    --popover-foreground: 15 27% 96%;
 
-    --primary: 154 100% 21%;
+    --primary: 203 51% 17%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 20 4% 7%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 203 51% 13%;
+    --secondary-foreground: 15 27% 96%;
 
-    --muted: 20 4% 7%;
-    --muted-foreground: 27 10% 79%;
+    --muted: 203 40% 15%;
+    --muted-foreground: 193 6% 76%;
 
-    --accent: 154 85% 24%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 200 70% 60%;
+    --accent-foreground: 199 51% 10%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 353 100% 42%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 100%;
-    --input: 20 4% 7%;
-    --ring: 154 100% 21%;
+    --border: 193 6% 76%;
+    --input: 203 40% 15%;
+    --ring: 203 51% 17%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 0%;
-    --sidebar-foreground: 30 33% 92%;
-    --sidebar-primary: 154 100% 21%;
+    --sidebar-background: 199 51% 10%;
+    --sidebar-foreground: 15 27% 96%;
+    --sidebar-primary: 203 51% 17%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 20 4% 7%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 100%;
-    --sidebar-ring: 154 100% 21%;
+    --sidebar-accent: 203 51% 13%;
+    --sidebar-accent-foreground: 15 27% 96%;
+    --sidebar-border: 193 6% 76%;
+    --sidebar-ring: 203 51% 17%;
 
     --font-heading: 'Space Grotesk', sans-serif;
     --font-body: 'DM Sans', sans-serif;
