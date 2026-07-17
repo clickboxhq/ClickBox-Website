@@ -120,7 +120,7 @@ const Socbox = () => {
         />
         <div className="relative mx-auto max-w-5xl text-center">
           <ScrollReveal>
-            <div className="badge-accent-frame mb-6 inline-flex items-center gap-2 rounded-full bg-[#131211] px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-foreground">
+            <div className="badge-accent-frame mb-6 inline-flex items-center gap-2 rounded-full bg-[#0D2028] px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-foreground">
               <ShieldCheck className="h-3.5 w-3.5 text-primary" />
               ClickBox Solutions
             </div>
@@ -146,7 +146,7 @@ const Socbox = () => {
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 rounded-md border border-[rgba(208,201,195,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-[#007A48]"
+                className="inline-flex items-center gap-2 rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-[#1D4358]"
               >
                 Request a Demo <ArrowRight className="h-4 w-4" />
               </Link>
@@ -285,7 +285,7 @@ const Socbox = () => {
                 transition={{ duration: 0.45, delay: i * 0.06 }}
                 className="relative flex items-start gap-5"
               >
-                <div className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-primary/25 bg-background text-primary shadow-[0_8px_24px_rgba(0,109,62,0.18)]">
+                <div className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-primary/25 bg-background text-primary shadow-[0_8px_24px_rgba(21,49,64,0.18)]">
                   <step.icon className="h-6 w-6" strokeWidth={1.75} />
                 </div>
                 <div className="glass-card flex-1 rounded-2xl p-5">
@@ -514,7 +514,7 @@ const Socbox = () => {
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 rounded-md border border-[rgba(208,201,195,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-[#007A48]"
+                className="inline-flex items-center gap-2 rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-[#1D4358]"
               >
                 Book a Demo <ArrowRight className="h-4 w-4" />
               </Link>
