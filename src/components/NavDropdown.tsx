@@ -144,7 +144,7 @@ const NavDropdown = ({ label, items, onNavigate, mobile = false, isActive = fals
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 4 }}
             transition={{ duration: 0.18 }}
-            className="absolute left-0 top-[calc(100%+0.75rem)] z-50 min-w-[15rem] overflow-hidden rounded-md border border-[rgba(208,201,195,0.18)] bg-[#131211] py-2 shadow-[0_12px_40px_rgba(0,0,0,0.45)]"
+            className="absolute left-0 top-[calc(100%+0.75rem)] z-50 min-w-[15rem] overflow-hidden rounded-md border border-[rgba(189,196,198,0.18)] bg-[#0D2028] py-2 shadow-[0_12px_40px_rgba(0,0,0,0.45)]"
           >
             <ul>
               {items.map((item) => {

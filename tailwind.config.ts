@@ -20,12 +20,12 @@ export default {
       colors: {
         border: "hsl(var(--border))",
         brand: {
-          green: "#006D3E",
-          "green-secondary": "#007A48",
-          "green-glow": "#008853",
-          highlight: "#D0C9C3",
+          green: "#153140",
+          "green-secondary": "#1D4358",
+          "green-glow": "#234F66",
+          highlight: "#BDC4C6",
           headline: "#FFFFFF",
-          surface: "#131211",
+          surface: "#0D2028",
         },
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

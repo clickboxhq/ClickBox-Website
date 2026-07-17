@@ -49,7 +49,7 @@ const PostCard = ({
       )}
       <div className="p-6 md:p-8">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="badge-accent-frame rounded-full bg-[#131211] px-2.5 py-0.5">
+          <span className="badge-accent-frame rounded-full bg-[#0D2028] px-2.5 py-0.5">
             {post.category}
           </span>
           <span>·</span>
@@ -121,7 +121,7 @@ const Resources = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="max-w-3xl"
           >
-            <div className="badge-accent-frame mb-6 rounded-full bg-[#131211] px-4 py-1.5 backdrop-blur">
+            <div className="badge-accent-frame mb-6 rounded-full bg-[#0D2028] px-4 py-1.5 backdrop-blur">
               <BookOpen className="h-3.5 w-3.5 text-primary" />
               ClickBox Resource Center
             </div>

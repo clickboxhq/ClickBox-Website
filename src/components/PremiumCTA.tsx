@@ -77,7 +77,7 @@ const PremiumCTA = ({ asHero = false }: Props) => {
           <div className="mt-6 flex flex-wrap gap-3 md:gap-4">
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 rounded-md border border-[rgba(208,201,195,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-[#007A48] hover:border-[rgba(208,201,195,0.55)]"
+              className="inline-flex items-center gap-2 rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-[#1D4358] hover:border-[rgba(189,196,198,0.55)]"
             >
               Book a Strategy Call <ArrowRight className="h-4 w-4" />
             </Link>

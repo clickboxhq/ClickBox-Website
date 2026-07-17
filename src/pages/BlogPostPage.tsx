@@ -76,7 +76,7 @@ const BlogPostPage = () => {
             transition={{ duration: 0.5 }}
             className="mt-8"
           >
-            <span className="badge-accent-frame inline-block rounded-full bg-[#131211] px-3 py-1">
+            <span className="badge-accent-frame inline-block rounded-full bg-[#0D2028] px-3 py-1">
               {post.category}
             </span>
             <h1 className="mt-4 font-heading text-3xl font-bold leading-tight text-foreground md:text-5xl">

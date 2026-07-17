@@ -308,7 +308,7 @@ const Internship = () => {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.12),transparent_60%)]" />
         <div className="mx-auto max-w-7xl relative">
           <motion.div {...fadeUp} className="max-w-4xl">
-            <div className="badge-accent-frame mb-6 rounded-full bg-[#131211] px-4 py-1.5 backdrop-blur">
+            <div className="badge-accent-frame mb-6 rounded-full bg-[#0D2028] px-4 py-1.5 backdrop-blur">
               <Shield className="h-3.5 w-3.5 text-primary" />
               ClickBox Cybersecurity Fellowship · Cohort 2026
             </div>
@@ -322,7 +322,7 @@ const Internship = () => {
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
-              <a href="#apply" className="inline-flex items-center gap-2 rounded-md border border-[rgba(208,201,195,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-[#007A48] hover:border-[rgba(208,201,195,0.55)]">
+              <a href="#apply" className="inline-flex items-center gap-2 rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-[#1D4358] hover:border-[rgba(189,196,198,0.55)]">
                 Apply Now <ArrowRight className="h-4 w-4" />
               </a>
               <a href="#overview" className="rounded-md border border-white/10 bg-secondary/80 px-6 py-3 text-sm font-semibold text-secondary-foreground backdrop-blur transition-all hover:bg-muted">

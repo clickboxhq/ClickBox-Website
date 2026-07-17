@@ -7,13 +7,13 @@
 @layer base {
   :root {
     /* ClickBox — Pantone 2465 CP green + warm grey support */
-    --brand-hex: #006D3E;
-    --brand-green-secondary: #007A48;
-    --brand-green-glow: #008853;
-    --highlight-grey-hex: #D0C9C3;
+    --brand-hex: #153140;
+    --brand-green-secondary: #1D4358;
+    --brand-green-glow: #234F66;
+    --highlight-grey-hex: #BDC4C6;
     --headline-hex: #FFFFFF;
     --surface-hex: #000000;
-    --surface-elevated-hex: #131211;
+    --surface-elevated-hex: #0D2028;
     --brand: 154 100% 21%;
     --surface: 0 0% 0%;
 
@@ -60,8 +60,8 @@
     --font-body: 'DM Sans', sans-serif;
 
     --glow-primary: none;
-    --frame-grey: rgba(208, 201, 195, 0.4);
-    --frame-grey-soft: rgba(208, 201, 195, 0.22);
+    --frame-grey: rgba(189, 196, 198, 0.4);
+    --frame-grey-soft: rgba(189, 196, 198, 0.22);
   }
 }
 
@@ -171,28 +171,28 @@
 
   /* Icon: grey outer frame, green inner ring */
   .icon-accent-wrap {
-    background: rgba(0, 109, 62, 0.08);
+    background: rgba(21, 49, 64, 0.08);
     border: 1px solid var(--frame-grey);
-    box-shadow: inset 0 0 0 1px rgba(0, 109, 62, 0.45);
+    box-shadow: inset 0 0 0 1px rgba(21, 49, 64, 0.45);
   }
 
   /* Pill badge: grey border, green inset frame, white text */
   .badge-accent-frame {
     @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-foreground;
     border: 1px solid var(--frame-grey);
-    box-shadow: inset 0 0 0 1px rgba(0, 109, 62, 0.35);
+    box-shadow: inset 0 0 0 1px rgba(21, 49, 64, 0.35);
   }
 
   /* Primary CTA: green fill, grey architectural border — no glow */
   .cta-primary {
-    @apply inline-flex items-center justify-center rounded-md bg-[#006D3E] px-6 py-3 text-sm font-semibold text-white transition-all duration-300;
+    @apply inline-flex items-center justify-center rounded-md bg-[#153140] px-6 py-3 text-sm font-semibold text-white transition-all duration-300;
     border: 1px solid var(--frame-grey);
     box-shadow: inset 0 0 0 1px var(--frame-grey-soft);
   }
 
   .cta-primary:hover {
-    background-color: #007A48;
-    border-color: rgba(208, 201, 195, 0.55);
+    background-color: #1D4358;
+    border-color: rgba(189, 196, 198, 0.55);
   }
 
   /* Nav active indicator: green bar framed by grey */
@@ -222,14 +222,14 @@
     @apply border border-primary bg-background;
     box-shadow:
       0 0 0 1px var(--frame-grey),
-      inset 0 0 0 1px rgba(0, 109, 62, 0.35);
+      inset 0 0 0 1px rgba(21, 49, 64, 0.35);
   }
 }
 
 @layer utilities {
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, #008853, #006D3E);
+    background-image: linear-gradient(135deg, #234F66, #153140);
   }
 
   /* Hero headline — white + warm grey support */
@@ -309,7 +309,7 @@
 
   .border-glow {
     border: 1px solid var(--frame-grey);
-    box-shadow: inset 0 0 0 1px rgba(0, 109, 62, 0.35);
+    box-shadow: inset 0 0 0 1px rgba(21, 49, 64, 0.35);
   }
 
   .section-padding {
@@ -346,7 +346,7 @@
 
   /* Dark glass cards on light section backgrounds — opaque so content stays visible */
   .glass-card-dark {
-    background: #131211;
+    background: #0D2028;
     backdrop-filter: blur(18px) saturate(140%);
     -webkit-backdrop-filter: blur(18px) saturate(140%);
     border: 1px solid var(--frame-grey-soft);
@@ -392,16 +392,16 @@
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb {
-    background: rgba(208, 201, 195, 0.25);
+    background: rgba(189, 196, 198, 0.25);
     border-radius: 99px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #006D3E;
+    background: #153140;
   }
 
   /* Selection colour */
   ::selection {
-    background: rgba(0, 109, 62, 0.35);
+    background: rgba(21, 49, 64, 0.35);
     color: #FFFFFF;
   }
 }

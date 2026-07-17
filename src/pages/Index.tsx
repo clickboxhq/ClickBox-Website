@@ -166,7 +166,7 @@ const Index = () => {
             <div className="mt-10 flex flex-wrap gap-4">
               <a
                 href="#services"
-                className="rounded-md border border-[rgba(208,201,195,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-[#007A48] hover:border-[rgba(208,201,195,0.55)]"
+                className="rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-[#1D4358] hover:border-[rgba(189,196,198,0.55)]"
               >
                 Our Services
               </a>
