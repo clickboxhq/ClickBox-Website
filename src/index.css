@@ -72,7 +72,7 @@
 
   body {
     @apply bg-background;
-    color: rgba(242, 234, 227, 0.8);
+    color: rgba(247, 243, 242, 0.82);
     font-family: var(--font-body);
   }
 
