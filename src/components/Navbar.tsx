@@ -13,7 +13,6 @@ const navLinks = [
 ];
 
 const solutionsItems = [
-  { label: "PhishBox Ai", path: "/product" },
   { label: "SOCBOX", path: "/socbox" },
 ];
 
