@@ -250,6 +250,44 @@
     background-image: linear-gradient(135deg, #F7F3F2 0%, #BDC4C6 100%);
   }
 
+  /* ─────────────────────────────────────────────────────────────
+     Light-surface readability overrides
+     On white sections, foreground-based accents (section labels,
+     highlighted gradient phrases, hero badges) must switch to the
+     dark Axiom Blue system so they don't wash into the background.
+     ───────────────────────────────────────────────────────────── */
+  .bg-white .section-label,
+  section.bg-white .section-label {
+    color: #0D2028;
+  }
+  .bg-white .micro-label {
+    color: #0D2028;
+  }
+  .bg-white .text-gradient {
+    background-image: linear-gradient(135deg, #153140 0%, #455A63 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .bg-white .badge-accent-frame {
+    color: #0D2028;
+  }
+  /* Icons/accents inside light sections need dark ink, not the
+     global light-gray override above. */
+  .bg-white .text-primary,
+  section.bg-white .text-primary {
+    color: #153140 !important;
+  }
+  .bg-white .hover\:text-primary:hover {
+    color: #0D2028 !important;
+  }
+
+  /* Count-up statistic numerals — force max contrast on dark bg */
+  .stat-number {
+    color: #FFFFFF !important;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  }
+
 
   /* Hero headline — white + warm grey support */
   .hero-headline {

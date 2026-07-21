@@ -46,7 +46,7 @@ const CountUpStat = ({ value, suffix = "", prefix = "", label, duration = 1.6 }:
       transition={{ duration: reduced ? 0 : 0.5, ease: [0.25, 0.1, 0.25, 1] }}
       className="text-center"
     >
-      <p className="font-heading text-4xl font-bold text-foreground md:text-5xl">
+      <p className="stat-number font-heading text-5xl font-extrabold tracking-tight md:text-6xl">
         {prefix}
         {display}
         {suffix}
