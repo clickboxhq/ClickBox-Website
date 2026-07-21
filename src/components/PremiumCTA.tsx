@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, ShieldCheck } from "lucide-react";
-import icebergAsset from "@/assets/cta/iceberg.png.asset.json";
+
+// Served from /public so it ships with the Vercel build (Lovable CDN
+// /__l5e/ paths are not available on custom-domain deployments).
+const icebergAsset = { url: "/cta/iceberg.png" };
 
 type Props = {
   asHero?: boolean;
