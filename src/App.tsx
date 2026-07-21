@@ -8,7 +8,6 @@ import ScrollToTop from "./components/ScrollToTop";
 import CookieConsent from "./components/CookieConsent";
 import Index from "./pages/Index";
 
-const Product = lazy(() => import("./pages/Product"));
 const Socbox = lazy(() => import("./pages/Socbox"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Privacy = lazy(() => import("./pages/Privacy"));
@@ -51,7 +50,6 @@ const App = () => (
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/product" element={<Product />} />
             <Route path="/socbox" element={<Socbox />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/resources/:slug" element={<BlogPostPage />} />
