@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import NavDropdown from "@/components/NavDropdown";
+import CareersDropdown from "@/components/CareersDropdown";
 import logo from "@/assets/clickbox-logo.jpeg";
 
 const navLinks = [
@@ -12,8 +13,11 @@ const navLinks = [
   { label: "Contact", path: "/contact" },
 ];
 
-const solutionsItems = [
-  { label: "SOCBOX", path: "/socbox" },
+const solutionsLink = { label: "Solutions", path: "/product" };
+
+const careersItems = [
+  { label: "Internship", path: "/internship" },
+  { label: "Jobs", path: "/careers/jobs" },
 ];
 
 const resourcesItems = [
@@ -21,7 +25,6 @@ const resourcesItems = [
   { label: "Insights", path: "/resources?group=Insights" },
   { label: "Threat Intelligence", path: "/resources?group=Threat Intelligence" },
   { label: "Updates", path: "/resources?group=Updates" },
-  { label: "Fellowship News", path: "/resources?group=Fellowship News" },
 ];
 
 const SPRING = { stiffness: 180, damping: 22, mass: 0.95 };
@@ -93,14 +96,14 @@ const Navbar = () => {
 
   const maxWidthMV = useMotionValue(1280);
   const logoInsetMV = useMotionValue(0);
-  const fellowshipInsetMV = useMotionValue(0);
+  const careersInsetMV = useMotionValue(0);
   const paddingMV = useMotionValue(12);
   const mobileOffsetMV = useMotionValue(0);
   const mobileLogoScaleMV = useMotionValue(1);
 
   const springMaxWidth = useSpring(maxWidthMV, SPRING);
   const springLogoInset = useSpring(logoInsetMV, SPRING);
-  const springFellowshipInset = useSpring(fellowshipInsetMV, SPRING);
+  const springCareersInset = useSpring(careersInsetMV, SPRING);
   const springPadding = useSpring(paddingMV, SPRING);
   const springMobileOffset = useSpring(mobileOffsetMV, SPRING);
   const springMobileLogoScale = useSpring(mobileLogoScaleMV, SPRING);
@@ -109,12 +112,12 @@ const Navbar = () => {
     if (isDesktop) {
       maxWidthMV.set(effectiveCompact ? 900 : 1280);
       logoInsetMV.set(effectiveCompact ? 18 : 0);
-      fellowshipInsetMV.set(effectiveCompact ? -18 : 0);
+      careersInsetMV.set(effectiveCompact ? -18 : 0);
       paddingMV.set(effectiveCompact ? 8 : 12);
     } else {
       maxWidthMV.set(1280);
       logoInsetMV.set(0);
-      fellowshipInsetMV.set(0);
+      careersInsetMV.set(0);
       paddingMV.set(mobileScrolled ? 8 : 12);
       mobileLogoScaleMV.set(mobileScrolled ? 0.88 : 1);
       mobileOffsetMV.set(mobilePeek ? -6 : 0);
@@ -126,7 +129,7 @@ const Navbar = () => {
     mobilePeek,
     maxWidthMV,
     logoInsetMV,
-    fellowshipInsetMV,
+    careersInsetMV,
     paddingMV,
     mobileLogoScaleMV,
     mobileOffsetMV,
@@ -197,9 +200,6 @@ const Navbar = () => {
     },
     [location.pathname],
   );
-
-  const fellowshipBtn =
-    "rounded-md border border-white/10 bg-secondary/80 px-5 py-2 text-sm font-semibold text-secondary-foreground backdrop-blur transition-all hover:bg-muted hover:border-primary/20";
 
   const desktopShadow = effectiveCompact
     ? "shadow-[0_10px_52px_rgba(0,0,0,0.48)]"
@@ -298,11 +298,10 @@ const Navbar = () => {
                 onClick={handleNavClick}
               />
             ))}
-            <NavDropdown
-              label="Solutions"
-              items={solutionsItems}
-              onNavigate={() => handleNavClick("/product")}
-              isActive={location.pathname === "/product"}
+            <NavLink
+              link={solutionsLink}
+              pathname={location.pathname}
+              onClick={handleNavClick}
             />
             <NavDropdown
               label="Resources"
@@ -321,14 +320,12 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Fellowship — desktop/tablet only */}
+        {/* Careers — desktop/tablet only */}
         <motion.div
-          style={{ x: isDesktop ? springFellowshipInset : 0 }}
+          style={{ x: isDesktop ? springCareersInset : 0 }}
           className="relative z-20 hidden shrink-0 md:block"
         >
-          <Link to="/internship" className={fellowshipBtn}>
-            Careers
-          </Link>
+          <CareersDropdown items={careersItems} />
         </motion.div>
 
         {/* Mobile menu toggle */}
@@ -397,12 +394,11 @@ const Navbar = () => {
                     mobile
                   />
                 ))}
-                <NavDropdown
-                  label="Solutions"
-                  items={solutionsItems}
-                  onNavigate={() => setMobileOpen(false)}
+                <NavLink
+                  link={solutionsLink}
+                  pathname={location.pathname}
+                  onClick={handleNavClick}
                   mobile
-                  isActive={location.pathname === "/product"}
                 />
                 <NavDropdown
                   label="Resources"
@@ -422,13 +418,11 @@ const Navbar = () => {
                 ))}
               </div>
               <div className="border-t border-white/8 p-3">
-                <Link
-                  to="/internship"
-                  onClick={() => setMobileOpen(false)}
-                  className={`flex w-full items-center justify-center ${fellowshipBtn} py-3`}
-                >
-                  Careers
-                </Link>
+                <CareersDropdown
+                  items={careersItems}
+                  mobile
+                  onNavigate={() => setMobileOpen(false)}
+                />
               </div>
             </motion.div>
           </>

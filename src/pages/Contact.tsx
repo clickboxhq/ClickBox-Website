@@ -25,7 +25,7 @@ const Contact = () => {
 
               <div className="mt-12 space-y-6">
                 <div className="glass-card flex items-start gap-4 p-5">
-                  <Mail className="mt-1 h-5 w-5 text-primary" strokeWidth={1.5} />
+                  <Mail className="mt-1 h-5 w-5 text-[#53B5E0]" strokeWidth={1.5} />
                   <div>
                     <p className="text-sm font-semibold text-foreground">Email</p>
                     <a
@@ -37,7 +37,7 @@ const Contact = () => {
                   </div>
                 </div>
                 <div className="glass-card flex items-start gap-4 p-5">
-                  <MapPin className="mt-1 h-5 w-5 text-primary" strokeWidth={1.5} />
+                  <MapPin className="mt-1 h-5 w-5 text-[#53B5E0]" strokeWidth={1.5} />
                   <div>
                     <p className="text-sm font-semibold text-foreground">Location</p>
                     <p className="text-sm text-muted-foreground">Global</p>

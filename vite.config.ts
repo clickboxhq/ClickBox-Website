@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
   server: {
@@ -10,11 +9,14 @@ export default defineConfig(({ mode }) => ({
     hmr: {
       overlay: false,
     },
+    warmup: {
+      clientFiles: ["./src/main.tsx", "./src/App.tsx"],
+    },
   },
-  plugins: [
-    react(),
-    mode === "development" && componentTagger(),
-  ].filter(Boolean),
+  optimizeDeps: {
+    include: ["react", "react-dom", "react-dom/client", "react-router-dom", "framer-motion", "@tanstack/react-query"],
+  },
+  plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

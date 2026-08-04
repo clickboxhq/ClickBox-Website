@@ -28,7 +28,7 @@ const Product = () => {
                 URLs, see how they behave, and understand their risk level — all without
                 compromising your system.
               </p>
-              <p className="mt-4 text-sm font-medium text-primary">
+              <p className="mt-4 text-sm font-medium text-[#53B5E0]">
                 No complex setup. No cybersecurity degree required. Just smart protection made
                 simple.
               </p>

@@ -6,9 +6,7 @@ import {
   Repeat,
   TrendingUp,
   Users,
-  Search,
   Target,
-  Wrench,
   Handshake,
   Clock,
   DollarSign,
@@ -22,7 +20,6 @@ import PremiumCTA from "@/components/PremiumCTA";
 import ServicesFaq from "@/components/ServicesFaq";
 import ScrollReveal from "@/components/scroll/ScrollReveal";
 import CountUpStat from "@/components/scroll/CountUpStat";
-import HowItWorksScroll from "@/components/scroll/HowItWorksScroll";
 import SecurityArchitectureScroll from "@/components/scroll/SecurityArchitectureScroll";
 import EngagementTimeline from "@/components/scroll/EngagementTimeline";
 
@@ -56,33 +53,6 @@ const audiences = [
     icon: Users,
     title: "Resource-Constrained Teams",
     desc: "Organizations that need additional cybersecurity expertise and support without increasing internal headcount.",
-  },
-];
-
-const approach = [
-  {
-    n: "01",
-    icon: Search,
-    title: "Current State Discovery",
-    desc: "We begin by understanding your business environment, security posture, risk exposure, compliance obligations, and operational challenges to establish a clear baseline.",
-  },
-  {
-    n: "02",
-    icon: Target,
-    title: "Business Alignment",
-    desc: "We align cybersecurity initiatives with your business goals, risk tolerance, and growth objectives to ensure security supports the organization rather than slows it down.",
-  },
-  {
-    n: "03",
-    icon: Wrench,
-    title: "Solution Delivery",
-    desc: "We design and implement targeted cybersecurity solutions that address identified risks while improving resilience, visibility, and operational efficiency.",
-  },
-  {
-    n: "04",
-    icon: Repeat,
-    title: "Continuous Improvement",
-    desc: "We continuously monitor outcomes, refine controls, strengthen processes, and adapt security strategies to evolving threats and business requirements.",
   },
 ];
 
@@ -181,8 +151,6 @@ const Index = () => {
         </div>
       </section>
 
-      <HowItWorksScroll steps={approach} />
-
       <section id="services" className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-5xl">
           <ScrollReveal className="mb-12 max-w-2xl">
@@ -213,7 +181,7 @@ const Index = () => {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {audiences.map((a, i) => (
               <ScrollReveal key={a.title} delay={i * 0.06} className="glass-card-dark rounded-xl p-8 transition-all duration-300">
-                <a.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
+                <a.icon className="mb-4 h-8 w-8 text-[#53B5E0]" strokeWidth={1.5} />
                 <h3 className="font-heading text-lg font-semibold text-foreground">{a.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{a.desc}</p>
               </ScrollReveal>
@@ -291,7 +259,7 @@ const Index = () => {
             {whyPartner.map((w, i) => (
               <ScrollReveal key={w.title} delay={i * 0.06} className="glass-card p-8">
                 <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md icon-accent-wrap">
-                  <w.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
+                  <w.icon className="h-5 w-5 text-[#53B5E0]" strokeWidth={1.5} />
                 </div>
                 <h3 className="font-heading text-lg font-semibold text-foreground">{w.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{w.desc}</p>

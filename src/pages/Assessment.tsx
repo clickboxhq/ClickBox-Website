@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 const FORM_ID = "J9BrXd";
-const PAGE_TITLE = "The ClickBox Cybersecurity Fellowship 2026 Applicant Assessment";
+const PAGE_TITLE = "The ClickBox Cybersecurity Internship 2026 Applicant Assessment";
 
 const Assessment = () => {
   useEffect(() => {

@@ -10,7 +10,7 @@ export type BlogPost = {
     | "Best Practices"
     | "Company News"
     | "Product Updates"
-    | "Fellowship";
+    | "Internship";
   author: string;
   authorRole: string;
   publishedAt: string; // ISO
@@ -23,8 +23,8 @@ export type BlogPost = {
 // Group label shown in the Resources filter UI. Maps multiple categories.
 export const groupForCategory = (
   c: BlogPost["category"],
-): "Blog" | "Insights" | "Updates" | "Fellowship News" | "Threat Intelligence" => {
-  if (c === "Fellowship") return "Fellowship News";
+): "Blog" | "Insights" | "Updates" | "Threat Intelligence" => {
+  if (c === "Internship") return "Updates";
   if (c === "Company News" || c === "Product Updates") return "Updates";
   if (c === "Threat Intelligence") return "Threat Intelligence";
   if (c === "Industry Trends") return "Insights";
@@ -37,7 +37,6 @@ export const resourceGroups = [
   "Insights",
   "Threat Intelligence",
   "Updates",
-  "Fellowship News",
 ] as const;
 
 // Unsplash hero images — broadly licensed, topic-aligned.
@@ -46,7 +45,7 @@ const IMG = {
   iso: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1600&q=80",
   phishing: "https://images.unsplash.com/photo-1563206767-5b18f218e8de?auto=format&fit=crop&w=1600&q=80",
   vapt: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1600&q=80",
-  fellowship: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1600&q=80",
+  internship: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1600&q=80",
   data: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1600&q=80",
   ransomware: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=1600&q=80",
   cve: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1600&q=80",
@@ -144,23 +143,23 @@ export const blogPosts: BlogPost[] = [
     tags: ["VAPT", "Penetration Testing"],
   },
   {
-    slug: "clickbox-fellowship-cohort-2026",
-    title: "Introducing the ClickBox Cybersecurity Fellowship — Cohort 2026",
+    slug: "clickbox-internship-cohort-2026",
+    title: "Introducing the ClickBox Cybersecurity Internship — Cohort 2026",
     excerpt:
-      "Ten fellows. Five specialized pathways. Applications open in June. Here's what makes the program different.",
+      "Ten interns. Five specialized pathways. Applications open in June. Here's what makes the program different.",
     body: [
-      "The ClickBox Cybersecurity Fellowship is a highly selective, hands-on career development program for the next generation of cybersecurity professionals.",
-      "Fellows specialize in one of five pathways — SOC Analyst, Security Engineering, Penetration Testing, Vulnerability Management, or Governance, Risk & Compliance — and graduate with portfolio-ready project experience tied to real engagements.",
-      "What makes the program different: every fellow is paired with a senior practitioner mentor, every pathway includes a capstone engagement reviewed by ClickBox leadership, and successful fellows are considered first for full-time roles or partner placements.",
+      "The ClickBox Cybersecurity Internship is a highly selective, hands-on career development program for the next generation of cybersecurity professionals.",
+      "Interns specialize in one of five pathways — SOC Analyst, Security Engineering, Penetration Testing, Vulnerability Management, or Governance, Risk & Compliance — and graduate with portfolio-ready project experience tied to real engagements.",
+      "What makes the program different: every intern is paired with a senior practitioner mentor, every pathway includes a capstone engagement reviewed by ClickBox leadership, and successful interns are considered first for full-time roles or partner placements.",
       "Applications open in June. The selection process emphasizes problem-solving, curiosity, and demonstrated learning — not just credentials.",
     ],
-    category: "Fellowship",
+    category: "Internship",
     author: "ClickBox Team Editorial",
     authorRole: "Editorial Desk",
     publishedAt: "2026-04-15T09:00:00.000Z",
     readTime: 5,
-    heroImage: IMG.fellowship,
-    tags: ["Fellowship", "Careers"],
+    heroImage: IMG.internship,
+    tags: ["Internship", "Careers"],
   },
   {
     slug: "data-protection-essentials",
@@ -254,5 +253,5 @@ export const categories = [
   "Best Practices",
   "Company News",
   "Product Updates",
-  "Fellowship",
+  "Internship",
 ] as const;

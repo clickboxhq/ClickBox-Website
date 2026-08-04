@@ -49,7 +49,7 @@ const CookieConsent = () => {
       >
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md icon-accent-wrap">
-            <Cookie className="h-5 w-5 text-primary" />
+            <Cookie className="h-5 w-5 text-[#53B5E0]" />
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-heading text-base font-semibold text-foreground">

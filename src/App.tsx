@@ -8,12 +8,13 @@ import ScrollToTop from "./components/ScrollToTop";
 import CookieConsent from "./components/CookieConsent";
 import Index from "./pages/Index";
 
-const Socbox = lazy(() => import("./pages/Socbox"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Resources = lazy(() => import("./pages/Resources"));
 const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 const Internship = lazy(() => import("./pages/Internship"));
+const Jobs = lazy(() => import("./pages/Jobs"));
+const Product = lazy(() => import("./pages/Product"));
 const Assessment = lazy(() => import("./pages/Assessment"));
 const About = lazy(() => import("./pages/About"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -50,11 +51,12 @@ const App = () => (
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/socbox" element={<Socbox />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/resources/:slug" element={<BlogPostPage />} />
             <Route path="/about" element={<About />} />
             <Route path="/internship" element={<Internship />} />
+            <Route path="/careers/jobs" element={<Jobs />} />
+            <Route path="/product" element={<Product />} />
             <Route path="/assessment" element={<Assessment />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy" element={<Privacy />} />

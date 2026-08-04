@@ -122,7 +122,7 @@ const Resources = () => {
             className="max-w-3xl"
           >
             <div className="badge-accent-frame mb-6 rounded-full bg-[#0D2028] px-4 py-1.5 backdrop-blur">
-              <BookOpen className="h-3.5 w-3.5 text-primary" />
+              <BookOpen className="h-3.5 w-3.5 text-[#53B5E0]" />
               ClickBox Resource Center
             </div>
             <h1 className="font-heading text-4xl font-bold leading-tight text-foreground md:text-6xl">
@@ -153,7 +153,7 @@ const Resources = () => {
                   onClick={() => setGroup(c)}
                   className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition ${
                     group === c
-                      ? "border-primary/50 bg-primary/15 text-primary"
+                      ? "border-[#53B5E0]/50 bg-[#53B5E0]/15 text-[#53B5E0]"
                       : "border-white/10 bg-secondary/60 text-muted-foreground hover:text-foreground"
                   }`}
                 >

@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, ShieldCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck, Radar, Lock, Activity } from "lucide-react";
 
 // Served from /public so it ships with the Vercel build (Lovable CDN
 // /__l5e/ paths are not available on custom-domain deployments).
 const icebergAsset = { url: "/cta/iceberg.png" };
+
+const trustMarkers = [
+  { icon: Radar, label: "24/7 Threat Monitoring" },
+  { icon: Lock, label: "ISO 27001-Aligned" },
+  { icon: Activity, label: "AI-Powered Detection" },
+];
 
 type Props = {
   asHero?: boolean;
@@ -23,18 +29,28 @@ const PremiumCTA = ({ asHero = false }: Props) => {
           alt=""
           role="presentation"
           loading="eager"
-          fetchPriority="high"
+          fetchpriority="high"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-center animate-ken-burns will-change-transform"
         />
       </div>
+
+      {/* Subtle tech mesh — adds depth without competing with the photo */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-60"
+        aria-hidden
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 45% at 85% 8%, rgba(83,181,224,0.14), transparent 65%)",
+        }}
+      />
 
       {/* Axiom Blue brand overlay — blends image into brand */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(21,49,64,0.55) 0%, rgba(21,49,64,0.35) 40%, rgba(13,32,40,0.75) 80%, rgba(13,32,40,0.95) 100%)",
+            "linear-gradient(180deg, rgba(21,49,64,0.55) 0%, rgba(21,49,64,0.35) 40%, rgba(13,32,40,0.78) 80%, rgba(13,32,40,0.97) 100%)",
         }}
       />
       {/* Left-side vignette for text legibility */}
@@ -42,15 +58,15 @@ const PremiumCTA = ({ asHero = false }: Props) => {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(90deg, rgba(13,32,40,0.75) 0%, rgba(13,32,40,0.35) 40%, rgba(13,32,40,0) 70%)",
+            "linear-gradient(90deg, rgba(13,32,40,0.78) 0%, rgba(13,32,40,0.38) 40%, rgba(13,32,40,0) 70%)",
         }}
       />
 
       {/* CTA content */}
-      <div className="relative z-10 mx-auto flex min-h-[inherit] max-w-7xl flex-col justify-end px-6 pb-14 pt-28 md:pb-20 md:pt-32">
+      <div className="relative z-10 mx-auto flex min-h-[inherit] max-w-7xl flex-col justify-end px-6 pb-16 pt-28 md:pb-24 md:pt-32">
         <div className="max-w-2xl">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white backdrop-blur-sm md:text-[11px]">
-            <ShieldCheck className="h-3.5 w-3.5 text-[#BDC4C6]" />
+          <div className="badge-accent-frame mb-7 inline-flex rounded-full bg-[#0D2028]/70 px-4 py-1.5 backdrop-blur-sm">
+            <ShieldCheck className="h-3.5 w-3.5 text-[#53B5E0]" />
             Enterprise Cybersecurity
           </div>
 
@@ -65,12 +81,13 @@ const PremiumCTA = ({ asHero = false }: Props) => {
             Most organizations only see the surface of their risk. ClickBox secures everything beneath it.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-3 md:gap-4">
+          <div className="mt-9 flex flex-wrap gap-3 md:gap-4">
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-[#1D4358] hover:border-[rgba(189,196,198,0.55)]"
+              className="group inline-flex items-center gap-2 rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[0_8px_32px_-8px_rgba(83,181,224,0.35)] transition-all hover:bg-[#1D4358] hover:border-[rgba(189,196,198,0.55)] hover:shadow-[0_8px_36px_-6px_rgba(83,181,224,0.5)]"
             >
-              Book a Strategy Call <ArrowRight className="h-4 w-4" />
+              Book a Strategy Call{" "}
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <Link
               to="/#services"
@@ -79,8 +96,27 @@ const PremiumCTA = ({ asHero = false }: Props) => {
               Explore Our Solutions
             </Link>
           </div>
+
+          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/10 pt-6">
+            {trustMarkers.map(({ icon: Icon, label }) => (
+              <div key={label} className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-[#BDC4C6]">
+                <Icon className="h-3.5 w-3.5 text-[#53B5E0]" strokeWidth={1.75} />
+                {label}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+
+      {asHero && (
+        <div
+          className="pointer-events-none absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 opacity-60 md:flex"
+          aria-hidden
+        >
+          <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-[#BDC4C6]">Scroll</span>
+          <span className="h-8 w-px animate-scroll-cue bg-gradient-to-b from-[#BDC4C6] to-transparent" />
+        </div>
+      )}
     </section>
   );
 };

@@ -195,11 +195,11 @@ const BlogPostPage = () => {
                     <p className="micro-label">
                       {r.category}
                     </p>
-                    <h3 className="mt-3 font-heading text-lg font-semibold text-foreground transition-colors group-hover:text-primary">
+                    <h3 className="mt-3 font-heading text-lg font-semibold text-foreground transition-colors group-hover:text-[#53B5E0]">
                       {r.title}
                     </h3>
                     <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{r.excerpt}</p>
-                    <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[#53B5E0]">
                       Read article <ArrowRight className="h-4 w-4" />
                     </span>
                   </Link>

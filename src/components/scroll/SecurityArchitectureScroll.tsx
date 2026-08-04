@@ -62,7 +62,7 @@ const SecurityArchitectureScroll = () => {
           <div className="grid gap-6 md:grid-cols-2">
             {phases.map((phase) => (
               <div key={phase.id} className="glass-card-dark rounded-xl p-8">
-                <phase.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
+                <phase.icon className="mb-4 h-8 w-8 text-[#53B5E0]" strokeWidth={1.5} />
                 <p className="micro-label">{phase.label}</p>
                 <h3 className="mt-2 font-heading text-lg font-semibold text-foreground">{phase.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{phase.desc}</p>
@@ -144,7 +144,7 @@ const ArchitectureVisual = ({
         />
         <div className="relative">
           <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl icon-accent-wrap">
-            <phase.icon className="h-7 w-7 text-primary" strokeWidth={1.5} />
+            <phase.icon className="h-7 w-7 text-[#53B5E0]" strokeWidth={1.5} />
           </div>
           <p className="micro-label">{phase.label}</p>
           <h3 className="mt-2 font-heading text-2xl font-semibold text-foreground">{phase.title}</h3>

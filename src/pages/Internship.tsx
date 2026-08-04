@@ -96,7 +96,7 @@ const requiredEligibility = [
   "Basic networking knowledge",
   "Access to a laptop",
   "Reliable internet connection",
-  "Interest in one of the fellowship pathways",
+  "Interest in one of the internship pathways",
 ];
 
 const preferredEligibility = [
@@ -110,26 +110,26 @@ const preferredEligibility = [
 ];
 
 const selectionStages = [
-  { stage: "Application", detail: "Submit via the ClickBox Fellowship Portal", month: "June" },
+  { stage: "Application", detail: "Submit via the ClickBox Internship Portal", month: "June" },
   { stage: "Assessment", detail: "Aptitude + pathway-specific technical assessment", month: "June" },
   { stage: "Review", detail: "Applications evaluated by the ClickBox team", month: "June" },
   { stage: "Interview", detail: "Top candidates invited for a virtual interview", month: "June" },
-  { stage: "Final Selection", detail: "Top 10 candidates receive fellowship offers", month: "End of June" },
+  { stage: "Final Selection", detail: "Top 10 candidates receive internship offers", month: "End of June" },
   { stage: "Onboarding", detail: "Orientation and program kickoff", month: "July" },
 ];
 
 const timeline = [
   { month: "June", items: ["Applications open", "Assessment phase", "Candidate review", "Interviews", "Final selection"] },
-  { month: "July", items: ["Fellowship onboarding", "Program kickoff"] },
+  { month: "July", items: ["Internship onboarding", "Program kickoff"] },
   { month: "July – September", items: ["Hands-on projects", "Mentorship sessions", "Practical security exercises", "Technical workshops", "Career development sessions"] },
-  { month: "September", items: ["Program completion", "Fellowship certification", "Alumni network access"] },
+  { month: "September", items: ["Program completion", "Internship certification", "Alumni network access"] },
 ];
 
 // Learning Journey — Phase 1 weeks
 const phase1Weeks = [
   {
     n: "Week 1",
-    title: "Fellowship Onboarding & Cybersecurity Foundations",
+    title: "Internship Onboarding & Cybersecurity Foundations",
     activities: ["Program Orientation", "Meet the ClickBox Team", "Professional Development Session", "Cybersecurity Foundations", "Networking Session"],
     focus: ["Security Fundamentals", "Cyber Threat Landscape", "Cybersecurity Career Paths", "Professional Communication"],
   },
@@ -165,17 +165,17 @@ const phase1Weeks = [
   },
 ];
 
-// Fellowship outcomes removed per latest content update
+// Internship outcomes removed per latest content update
 
 
 const faqs = [
-  { q: "Is this fellowship paid?", a: "The fellowship is a career development program focused on practical experience, mentorship, and exposure." },
+  { q: "Is this internship paid?", a: "The internship is a career development program focused on practical experience, mentorship, and exposure." },
   { q: "Do I need certifications to apply?", a: "No. Certifications are not required, but credentials such as Security+, ISC2 CC, or the Google Cybersecurity Certificate are considered an advantage." },
   { q: "Can students apply?", a: "Yes. Students, recent graduates, career switchers, and self-taught learners are all encouraged to apply." },
   { q: "Is prior experience required?", a: "Foundational cybersecurity knowledge is expected, but professional experience is not required. Curiosity and commitment matter most." },
-  { q: "How many fellows are selected?", a: "Only 10 fellows are selected per cohort through a competitive selection process." },
-  { q: "How long is the program?", a: "The fellowship runs from July through September, with applications and selection taking place in June." },
-  { q: "Will I receive a certificate?", a: "Yes. Fellows who successfully complete the program receive an official ClickBox Cybersecurity Fellowship certificate and join the alumni network." },
+  { q: "How many interns are selected?", a: "Only 10 interns are selected per cohort through a competitive selection process." },
+  { q: "How long is the program?", a: "The internship runs from July through September, with applications and selection taking place in June." },
+  { q: "Will I receive a certificate?", a: "Yes. Interns who successfully complete the program receive an official ClickBox Cybersecurity Internship certificate and join the alumni network." },
 ];
 
 const WeekCard = ({
@@ -198,14 +198,14 @@ const WeekCard = ({
       className="glass-card overflow-hidden"
     >
       <button onClick={onToggle} className="w-full text-left px-6 py-5 flex items-center gap-5" aria-expanded={open}>
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md icon-accent-wrap font-heading text-xs font-bold text-primary">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md icon-accent-wrap font-heading text-xs font-bold text-[#53B5E0]">
           {String(i + 1).padStart(2, "0")}
         </span>
         <div className="flex-1 min-w-0">
           <p className="micro-label">{w.n}</p>
           <h4 className="mt-1 font-heading text-base font-semibold text-foreground">{w.title}</h4>
         </div>
-        <ChevronDown className={`h-5 w-5 shrink-0 text-primary transition-transform ${open ? "rotate-180" : ""}`} />
+        <ChevronDown className={`h-5 w-5 shrink-0 text-[#53B5E0] transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       <AnimatePresence initial={false}>
         {open && (
@@ -222,7 +222,7 @@ const WeekCard = ({
                 <ul className="space-y-1.5 text-sm text-muted-foreground">
                   {w.activities.map((a) => (
                     <li key={a} className="flex items-start gap-2">
-                      <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                      <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#53B5E0]" />
                       <span>{a}</span>
                     </li>
                   ))}
@@ -277,7 +277,7 @@ const FaqItem = ({
   >
     <button onClick={onToggle} className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left" aria-expanded={open}>
       <span className="font-heading text-base font-semibold text-foreground">{q}</span>
-      <ChevronDown className={`h-4 w-4 shrink-0 text-primary transition-transform ${open ? "rotate-180" : ""}`} />
+      <ChevronDown className={`h-4 w-4 shrink-0 text-[#53B5E0] transition-transform ${open ? "rotate-180" : ""}`} />
     </button>
     <AnimatePresence initial={false}>
       {open && (
@@ -309,15 +309,15 @@ const Internship = () => {
         <div className="mx-auto max-w-7xl relative">
           <motion.div {...fadeUp} className="max-w-4xl">
             <div className="badge-accent-frame mb-6 rounded-full bg-[#0D2028] px-4 py-1.5 backdrop-blur">
-              <Shield className="h-3.5 w-3.5 text-primary" />
-              ClickBox Cybersecurity Fellowship · Cohort 2026
+              <Shield className="h-3.5 w-3.5 text-[#53B5E0]" />
+              ClickBox Cybersecurity Internship · Cohort 2026
             </div>
             <h1 className="font-heading text-4xl font-bold leading-tight text-foreground md:text-6xl lg:text-7xl">
               Launch Your Cybersecurity Career With{" "}
               <span className="text-gradient">Real-World Experience.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-              Join the ClickBox Cybersecurity Fellowship and gain hands-on experience, mentorship, and
+              Join the ClickBox Cybersecurity Internship and gain hands-on experience, mentorship, and
               practical exposure across multiple cybersecurity career pathways.
             </p>
 
@@ -332,14 +332,14 @@ const Internship = () => {
 
             <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
               {[
-                { value: "10", label: "Fellows per cohort" },
+                { value: "10", label: "Interns per cohort" },
                 { value: "June", label: "Applications" },
                 { value: "Jul – Sep", label: "Program duration" },
                 { value: "5", label: "Career pathways" },
                 { value: "Competitive", label: "Selection process" },
               ].map((s) => (
                 <div key={s.label} className="glass-card p-5 text-center">
-                  <p className="font-heading text-lg font-bold text-primary">{s.value}</p>
+                  <p className="font-heading text-lg font-bold text-[#53B5E0]">{s.value}</p>
                   <p className="mt-1 text-xs text-muted-foreground">{s.label}</p>
                 </div>
               ))}
@@ -359,31 +359,31 @@ const Internship = () => {
               </h2>
             </div>
             <div className="space-y-4 leading-relaxed text-neutral-600">
-              <p>The ClickBox Cybersecurity Fellowship is a highly selective, hands-on career development program designed for aspiring cybersecurity professionals seeking practical experience, mentorship, and exposure to real-world security operations.</p>
-              <p>Unlike traditional training programs that focus solely on theory, the fellowship provides participants with opportunities to work on practical projects, industry-relevant scenarios, and collaborative security initiatives that reflect modern cybersecurity environments.</p>
+              <p>The ClickBox Cybersecurity Internship is a highly selective, hands-on career development program designed for aspiring cybersecurity professionals seeking practical experience, mentorship, and exposure to real-world security operations.</p>
+              <p>Unlike traditional training programs that focus solely on theory, the internship provides participants with opportunities to work on practical projects, industry-relevant scenarios, and collaborative security initiatives that reflect modern cybersecurity environments.</p>
               <p>Our mission is to help bridge the cybersecurity skills gap by developing the next generation of cybersecurity professionals.</p>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Fellowship Learning Journey */}
+      {/* Internship Learning Journey */}
       <section className="section-padding border-t border-white/5">
         <div className="mx-auto max-w-7xl">
           <motion.div {...fadeUp} className="mb-12 max-w-3xl">
             <p className="section-label mb-3">
-              Fellowship Learning Journey
+              Internship Learning Journey
             </p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-5xl">
-              12-Week Fellowship Experience
+              12-Week Internship Experience
             </h2>
             <p className="mt-4 text-muted-foreground leading-relaxed">
               From foundational cybersecurity concepts to practical project experience, the
-              fellowship is designed to help participants build job-relevant skills while gaining
+              internship is designed to help participants build job-relevant skills while gaining
               exposure to multiple cybersecurity disciplines and real-world security operations.
             </p>
             <p className="mt-4 text-muted-foreground leading-relaxed">
-              The fellowship combines structured technical learning, mentorship, practical
+              The internship combines structured technical learning, mentorship, practical
               exercises, collaborative projects, and career development activities designed around
               modern cybersecurity career pathways.
             </p>
@@ -399,7 +399,7 @@ const Internship = () => {
               <div key={p.label} className="glass-card p-6">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-md icon-accent-wrap">
-                    <p.icon className="h-5 w-5 text-primary" />
+                    <p.icon className="h-5 w-5 text-[#53B5E0]" />
                   </div>
                   <div>
                     <p className="micro-label">{p.label}</p>
@@ -447,7 +447,7 @@ const Internship = () => {
                 transition={{ duration: 0.5, delay: i * 0.07 }}
                 className="glass-card flex flex-col p-8"
               >
-                <p.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
+                <p.icon className="mb-4 h-8 w-8 text-[#53B5E0]" strokeWidth={1.5} />
                 <h4 className="font-heading text-lg font-semibold text-foreground">{p.title}</h4>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.overview}</p>
                 <div className="mt-5 space-y-4 text-sm">
@@ -456,7 +456,7 @@ const Internship = () => {
                     <ul className="mt-2 space-y-1 text-muted-foreground">
                       {p.skills.map((s) => (
                         <li key={s} className="flex items-start gap-2">
-                          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#53B5E0]" />
                           <span>{s}</span>
                         </li>
                       ))}
@@ -467,7 +467,7 @@ const Internship = () => {
                     <ul className="mt-2 space-y-1 text-muted-foreground">
                       {p.outcomes.map((o) => (
                         <li key={o} className="flex items-start gap-2">
-                          <ArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                          <ArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#53B5E0]" />
                           <span>{o}</span>
                         </li>
                       ))}
@@ -493,7 +493,7 @@ const Internship = () => {
               <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
                 {["Security Projects", "Team Collaboration", "Security Exercises", "Technical Presentations", "Career Development Sessions"].map((a) => (
                   <li key={a} className="flex items-start gap-2">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#53B5E0]" />
                     <span>{a}</span>
                   </li>
                 ))}
@@ -502,15 +502,15 @@ const Internship = () => {
             <div className="glass-card p-8">
               <p className="micro-label">Capstone Project</p>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Each fellow completes and presents a cybersecurity project aligned with their
+                Each intern completes and presents a cybersecurity project aligned with their
                 selected pathway. The capstone demonstrates practical skills, critical thinking,
                 technical communication, and professional development gained throughout the
-                fellowship.
+                internship.
               </p>
             </div>
           </div>
 
-          {/* Fellowship Outcomes section removed */}
+          {/* Internship Outcomes section removed */}
 
         </div>
       </section>
@@ -519,7 +519,7 @@ const Internship = () => {
       <section id="pathways" className="section-padding border-t border-black/5 bg-white">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-2xl">
-            <p className="section-label mb-3">Fellowship Tracks</p>
+            <p className="section-label mb-3">Internship Tracks</p>
             <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">
               Five specialized cybersecurity pathways.
             </h2>
@@ -534,7 +534,7 @@ const Internship = () => {
                 transition={{ duration: 0.5, delay: i * 0.07 }}
                 className="glass-card-dark rounded-xl p-8 transition-all duration-300"
               >
-                <p.icon className="mb-4 h-8 w-8 text-primary" strokeWidth={1.5} />
+                <p.icon className="mb-4 h-8 w-8 text-[#53B5E0]" strokeWidth={1.5} />
                 <h3 className="font-heading text-lg font-semibold text-foreground">{p.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.overview}</p>
               </motion.div>
@@ -549,7 +549,7 @@ const Internship = () => {
           <div className="mb-12 max-w-2xl">
             <p className="section-label mb-3">Program Benefits</p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-              What you'll get as a ClickBox Fellow.
+              What you'll get as a ClickBox Intern.
             </h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -563,7 +563,7 @@ const Internship = () => {
                 className="glass-card flex items-center gap-4 p-5"
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md icon-accent-wrap">
-                  <b.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
+                  <b.icon className="h-5 w-5 text-[#53B5E0]" strokeWidth={1.5} />
                 </div>
                 <p className="text-sm font-medium text-foreground">{b.label}</p>
               </motion.div>
@@ -585,7 +585,7 @@ const Internship = () => {
               <ul className="mt-4 space-y-2">
                 {requiredEligibility.map((r) => (
                   <li key={r} className="flex items-start gap-3 text-sm text-muted-foreground">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#53B5E0]" />
                     <span>{r}</span>
                   </li>
                 ))}
@@ -596,7 +596,7 @@ const Internship = () => {
               <ul className="mt-4 space-y-2">
                 {preferredEligibility.map((r) => (
                   <li key={r} className="flex items-start gap-3 text-sm text-muted-foreground">
-                    <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-[#53B5E0]" />
                     <span>{r}</span>
                   </li>
                 ))}
@@ -623,7 +623,7 @@ const Internship = () => {
                 transition={{ duration: 0.4, delay: i * 0.08 }}
                 className="glass-card-dark rounded-xl p-6 transition-all duration-300"
               >
-                <div className="flex items-center gap-2 text-primary">
+                <div className="flex items-center gap-2 text-[#53B5E0]">
                   <Calendar className="h-4 w-4" />
                   <p className="font-heading text-sm font-semibold">{t.month}</p>
                 </div>
@@ -648,7 +648,7 @@ const Internship = () => {
             <p className="section-label mb-3">Selection Process</p>
             <h2 className="font-heading text-3xl font-bold text-neutral-900 md:text-4xl">Six competitive stages.</h2>
             <p className="mt-4 leading-relaxed text-neutral-600">
-              Only the top candidates advance through each stage — and only 10 fellows are selected.
+              Only the top candidates advance through each stage — and only 10 interns are selected.
             </p>
           </div>
           <ol className="relative grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -662,7 +662,7 @@ const Internship = () => {
                 className="glass-card-dark rounded-xl p-6 transition-all duration-300"
               >
                 <div className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/40 bg-primary/10 font-heading text-sm font-bold text-primary">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/40 bg-primary/10 font-heading text-sm font-bold text-[#53B5E0]">
                     {i + 1}
                   </span>
                   <p className="micro-label">{s.month}</p>
@@ -684,7 +684,7 @@ const Internship = () => {
               Begin your cybersecurity journey with ClickBox.
             </h2>
             <p className="mt-4 text-muted-foreground leading-relaxed">
-              Applications are reviewed competitively and spaces are limited. Only 10 fellows will be
+              Applications are reviewed competitively and spaces are limited. Only 10 interns will be
               selected for each cohort.
             </p>
           </motion.div>
@@ -699,7 +699,7 @@ const Internship = () => {
 
           <p className="mt-6 text-center text-xs text-muted-foreground">
             Need support? Reach us directly at{" "}
-            <a href="mailto:info@useclickbox.com" className="text-primary hover:underline">
+            <a href="mailto:info@useclickbox.com" className="text-[#53B5E0] hover:underline">
               info@useclickbox.com
             </a>
           </p>
