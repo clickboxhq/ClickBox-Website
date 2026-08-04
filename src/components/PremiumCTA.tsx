@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, ShieldCheck, Radar, Lock, Activity } from "lucide-react";
-
-// Served from /public so it ships with the Vercel build (Lovable CDN
-// /__l5e/ paths are not available on custom-domain deployments).
-const icebergAsset = { url: "/cta/iceberg.png" };
+import SecurityCoreVisual from "@/components/cta/SecurityCoreVisual";
 
 const trustMarkers = [
   { icon: Radar, label: "24/7 Threat Monitoring" },
@@ -22,43 +19,42 @@ const PremiumCTA = ({ asHero = false }: Props) => {
         asHero ? "min-h-screen" : "min-h-[85vh] border-t border-white/5"
       }`}
     >
-      {/* Iceberg background — full-bleed, cinematic */}
-      <div className="absolute inset-0">
-        <img
-          src={icebergAsset.url}
-          alt=""
-          role="presentation"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-          className="absolute inset-0 h-full w-full object-cover object-center animate-ken-burns will-change-transform"
-        />
-      </div>
-
-      {/* Subtle tech mesh — adds depth without competing with the photo */}
+      {/* Base brand gradient — Axiom Blue depth, no photography */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-60"
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(135deg, #153140 0%, #0D2028 55%, #0D2028 100%)",
+        }}
+      />
+
+      {/* Bespoke network-core visual — abstract enterprise security infrastructure */}
+      <SecurityCoreVisual />
+
+      {/* Ambient top-right glow for depth */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-70"
         aria-hidden
         style={{
           background:
-            "radial-gradient(ellipse 60% 45% at 85% 8%, rgba(83,181,224,0.14), transparent 65%)",
+            "radial-gradient(ellipse 60% 45% at 85% 8%, rgba(83,181,224,0.16), transparent 65%)",
         }}
       />
 
-      {/* Axiom Blue brand overlay — blends image into brand */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(21,49,64,0.55) 0%, rgba(21,49,64,0.35) 40%, rgba(13,32,40,0.78) 80%, rgba(13,32,40,0.97) 100%)",
-        }}
-      />
       {/* Left-side vignette for text legibility */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(90deg, rgba(13,32,40,0.78) 0%, rgba(13,32,40,0.38) 40%, rgba(13,32,40,0) 70%)",
+            "linear-gradient(90deg, rgba(13,32,40,0.9) 0%, rgba(13,32,40,0.55) 40%, rgba(13,32,40,0.1) 75%)",
+        }}
+      />
+      {/* Bottom fade for section transitions */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, transparent 0%, transparent 70%, rgba(13,32,40,0.9) 100%)",
         }}
       />
 

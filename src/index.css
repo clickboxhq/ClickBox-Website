@@ -305,56 +305,6 @@
     color: rgba(255, 255, 255, 0.88);
   }
 
-  /* ═══════════════════════════════════════════════════════
-     MOBILE CTA HERO — explicit CSS guarantee
-     Inline styles in PremiumCTA.tsx are the primary source,
-     but these rules act as a hard CSS fallback so production
-     always renders the full-height cover layout regardless
-     of JS hydration timing or CDN delivery order.
-     ═══════════════════════════════════════════════════════ */
-  @media (max-width: 767px) {
-    /* Hero section — exactly one viewport; section 2 stays below the fold */
-    .mobile-cta-section-root {
-      height: 100svh;
-      height: 100dvh;
-      min-height: 100svh;
-      min-height: 100dvh;
-      overflow: hidden;
-      margin: 0;
-      padding: 0;
-      flex-shrink: 0;
-    }
-
-    .mobile-cta-screen {
-      height: 100%;
-      min-height: 100%;
-      overflow: hidden;
-      position: relative;
-      width: 100%;
-    }
-
-    .mobile-cta-wrapper {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      min-height: 100%;
-      overflow: hidden;
-    }
-
-    .mobile-cta-bg {
-      position: absolute;
-      inset: 0;
-      background-size: cover !important;
-      background-position: 48% center !important;
-      background-repeat: no-repeat !important;
-    }
-  }
-
-  /* CTA building image — desktop only (mobile uses dedicated layout in PremiumCTA) */
-  .building-img {
-    object-position: top center;
-  }
-
   /* Admin portal — allow selection inside editable fields only */
   .admin-portal-shell input,
   .admin-portal-shell textarea,
@@ -461,19 +411,6 @@
     background: rgba(21, 49, 64, 0.35);
     color: #FFFFFF;
   }
-}
-
-@keyframes ken-burns {
-  0% { transform: scale(1.04) translate3d(0, 0, 0); }
-  100% { transform: scale(1.12) translate3d(-1.2%, -0.8%, 0); }
-}
-
-.animate-ken-burns {
-  animation: ken-burns 8s ease-out forwards;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-ken-burns { animation: none; transform: none; }
 }
 
 @keyframes scroll-cue {
