@@ -5,7 +5,7 @@ import { ArrowRight, ShieldCheck, Radar, Lock, Activity } from "lucide-react";
 // natural light, modern office — swap this URL for an exact in-house photo
 // whenever one is available.
 const ctaPhoto = {
-  url: "https://images.unsplash.com/photo-1610387853988-7a1623efb207?auto=format&fit=crop&w=1800&q=80",
+  url: "/cta/cta-meeting.jpg",
   alt: "",
 };
 
