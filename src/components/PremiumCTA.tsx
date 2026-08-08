@@ -33,7 +33,8 @@ const PremiumCTA = ({ asHero = false }: Props) => {
           alt={ctaPhoto.alt}
           role="presentation"
           loading="eager"
-          fetchPriority="high"
+          // @ts-expect-error -- fetchpriority isn't in this React version's JSX typings yet
+          fetchpriority="high"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
