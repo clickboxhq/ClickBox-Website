@@ -49,7 +49,7 @@ const CookieConsent = () => {
       >
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md icon-accent-wrap">
-            <Cookie className="h-5 w-5 text-[#53B5E0]" />
+            <Cookie className="h-5 w-5 text-[#FFFFFF]" />
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-heading text-base font-semibold text-foreground">
@@ -96,7 +96,7 @@ const CookieConsent = () => {
             <div className="mt-4 flex flex-wrap items-center gap-2">
               <button
                 onClick={() => save({ analytics: true, performance: true })}
-                className="rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition duration-300 hover:bg-[#1D4358] hover:border-[rgba(189,196,198,0.55)]"
+                className="rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition duration-300 hover:bg-[#E5E5E5] hover:border-[rgba(189,196,198,0.55)]"
               >
                 Accept Cookies
               </button>

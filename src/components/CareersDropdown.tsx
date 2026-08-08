@@ -98,7 +98,7 @@ const CareersDropdown = ({ items, mobile = false, onNavigate }: Props) => {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`${triggerBtn} ${active ? "border-[#53B5E0]/40 text-[#53B5E0]" : ""}`}
+        className={`${triggerBtn} ${active ? "border-[#FFFFFF]/40 text-[#FFFFFF]" : ""}`}
         aria-expanded={open}
         aria-haspopup="true"
       >
@@ -113,7 +113,7 @@ const CareersDropdown = ({ items, mobile = false, onNavigate }: Props) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 4 }}
             transition={{ duration: 0.18 }}
-            className="absolute right-0 top-[calc(100%+0.75rem)] z-50 min-w-[13rem] overflow-hidden rounded-md border border-[rgba(189,196,198,0.18)] bg-[#0D2028] py-2 shadow-[0_12px_40px_rgba(0,0,0,0.45)]"
+            className="absolute right-0 top-[calc(100%+0.75rem)] z-50 min-w-[13rem] overflow-hidden rounded-md border border-[rgba(189,196,198,0.18)] bg-[#000000] py-2 shadow-[0_12px_40px_rgba(0,0,0,0.45)]"
           >
             <ul>
               {items.map((item) => {

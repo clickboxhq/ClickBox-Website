@@ -136,7 +136,7 @@ const Index = () => {
             <div className="mt-10 flex flex-wrap gap-4">
               <a
                 href="#services"
-                className="rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-[#1D4358] hover:border-[rgba(189,196,198,0.55)]"
+                className="rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-[#E5E5E5] hover:border-[rgba(189,196,198,0.55)]"
               >
                 Our Services
               </a>
@@ -181,7 +181,7 @@ const Index = () => {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {audiences.map((a, i) => (
               <ScrollReveal key={a.title} delay={i * 0.06} className="glass-card-dark rounded-xl p-8 transition-all duration-300">
-                <a.icon className="mb-4 h-8 w-8 text-[#53B5E0]" strokeWidth={1.5} />
+                <a.icon className="mb-4 h-8 w-8 text-[#FFFFFF]" strokeWidth={1.5} />
                 <h3 className="font-heading text-lg font-semibold text-foreground">{a.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{a.desc}</p>
               </ScrollReveal>
@@ -259,7 +259,7 @@ const Index = () => {
             {whyPartner.map((w, i) => (
               <ScrollReveal key={w.title} delay={i * 0.06} className="glass-card p-8">
                 <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md icon-accent-wrap">
-                  <w.icon className="h-5 w-5 text-[#53B5E0]" strokeWidth={1.5} />
+                  <w.icon className="h-5 w-5 text-[#FFFFFF]" strokeWidth={1.5} />
                 </div>
                 <h3 className="font-heading text-lg font-semibold text-foreground">{w.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{w.desc}</p>

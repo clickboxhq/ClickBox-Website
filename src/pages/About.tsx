@@ -81,7 +81,7 @@ const About = () => (
           <div className="grid grid-cols-2 gap-4">
             {stats.map((s) => (
               <div key={s.value} className="glass-card p-6 text-center">
-                <p className="font-heading text-xl font-bold text-[#53B5E0]">{s.value}</p>
+                <p className="font-heading text-xl font-bold text-[#FFFFFF]">{s.value}</p>
                 <p className="mt-1 text-xs text-muted-foreground">{s.label}</p>
               </div>
             ))}
@@ -114,7 +114,7 @@ const About = () => (
               className="glass-card-dark group rounded-xl p-6 transition-all duration-300 hover:border-primary/40 hover:-translate-y-1"
             >
               <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-md icon-accent-wrap transition group-hover:bg-primary/15">
-                <v.icon className="h-5 w-5 text-[#53B5E0]" strokeWidth={1.5} />
+                <v.icon className="h-5 w-5 text-[#FFFFFF]" strokeWidth={1.5} />
               </div>
               <h3 className="font-heading text-base font-semibold text-foreground">{v.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{v.desc}</p>

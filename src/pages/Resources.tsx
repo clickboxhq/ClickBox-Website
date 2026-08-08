@@ -49,7 +49,7 @@ const PostCard = ({
       )}
       <div className="p-6 md:p-8">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="badge-accent-frame rounded-full bg-[#0D2028] px-2.5 py-0.5">
+          <span className="badge-accent-frame rounded-full bg-[#000000] px-2.5 py-0.5">
             {post.category}
           </span>
           <span>·</span>
@@ -121,8 +121,8 @@ const Resources = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="max-w-3xl"
           >
-            <div className="badge-accent-frame mb-6 rounded-full bg-[#0D2028] px-4 py-1.5 backdrop-blur">
-              <BookOpen className="h-3.5 w-3.5 text-[#53B5E0]" />
+            <div className="badge-accent-frame mb-6 rounded-full bg-[#000000] px-4 py-1.5 backdrop-blur">
+              <BookOpen className="h-3.5 w-3.5 text-[#FFFFFF]" />
               ClickBox Resource Center
             </div>
             <h1 className="font-heading text-4xl font-bold leading-tight text-foreground md:text-6xl">
@@ -153,7 +153,7 @@ const Resources = () => {
                   onClick={() => setGroup(c)}
                   className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition ${
                     group === c
-                      ? "border-[#53B5E0]/50 bg-[#53B5E0]/15 text-[#53B5E0]"
+                      ? "border-[#FFFFFF]/50 bg-[#FFFFFF]/15 text-[#FFFFFF]"
                       : "border-white/10 bg-secondary/60 text-muted-foreground hover:text-foreground"
                   }`}
                 >

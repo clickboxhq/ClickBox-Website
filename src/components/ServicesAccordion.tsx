@@ -133,7 +133,7 @@ const ServicesAccordion = ({ variant = "dark" }: { variant?: "dark" | "light" })
               aria-expanded={isOpen}
             >
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md icon-accent-wrap">
-                <s.icon className="h-5 w-5 text-[#53B5E0]" strokeWidth={1.5} />
+                <s.icon className="h-5 w-5 text-[#FFFFFF]" strokeWidth={1.5} />
               </div>
               <div className="flex-1 min-w-0">
                 <h3

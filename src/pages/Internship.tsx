@@ -198,14 +198,14 @@ const WeekCard = ({
       className="glass-card overflow-hidden"
     >
       <button onClick={onToggle} className="w-full text-left px-6 py-5 flex items-center gap-5" aria-expanded={open}>
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md icon-accent-wrap font-heading text-xs font-bold text-[#53B5E0]">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md icon-accent-wrap font-heading text-xs font-bold text-[#FFFFFF]">
           {String(i + 1).padStart(2, "0")}
         </span>
         <div className="flex-1 min-w-0">
           <p className="micro-label">{w.n}</p>
           <h4 className="mt-1 font-heading text-base font-semibold text-foreground">{w.title}</h4>
         </div>
-        <ChevronDown className={`h-5 w-5 shrink-0 text-[#53B5E0] transition-transform ${open ? "rotate-180" : ""}`} />
+        <ChevronDown className={`h-5 w-5 shrink-0 text-[#FFFFFF] transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       <AnimatePresence initial={false}>
         {open && (
@@ -222,7 +222,7 @@ const WeekCard = ({
                 <ul className="space-y-1.5 text-sm text-muted-foreground">
                   {w.activities.map((a) => (
                     <li key={a} className="flex items-start gap-2">
-                      <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#53B5E0]" />
+                      <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#FFFFFF]" />
                       <span>{a}</span>
                     </li>
                   ))}
@@ -277,7 +277,7 @@ const FaqItem = ({
   >
     <button onClick={onToggle} className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left" aria-expanded={open}>
       <span className="font-heading text-base font-semibold text-foreground">{q}</span>
-      <ChevronDown className={`h-4 w-4 shrink-0 text-[#53B5E0] transition-transform ${open ? "rotate-180" : ""}`} />
+      <ChevronDown className={`h-4 w-4 shrink-0 text-[#FFFFFF] transition-transform ${open ? "rotate-180" : ""}`} />
     </button>
     <AnimatePresence initial={false}>
       {open && (
@@ -308,8 +308,8 @@ const Internship = () => {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.12),transparent_60%)]" />
         <div className="mx-auto max-w-7xl relative">
           <motion.div {...fadeUp} className="max-w-4xl">
-            <div className="badge-accent-frame mb-6 rounded-full bg-[#0D2028] px-4 py-1.5 backdrop-blur">
-              <Shield className="h-3.5 w-3.5 text-[#53B5E0]" />
+            <div className="badge-accent-frame mb-6 rounded-full bg-[#000000] px-4 py-1.5 backdrop-blur">
+              <Shield className="h-3.5 w-3.5 text-[#FFFFFF]" />
               ClickBox Cybersecurity Internship · Cohort 2026
             </div>
             <h1 className="font-heading text-4xl font-bold leading-tight text-foreground md:text-6xl lg:text-7xl">
@@ -322,7 +322,7 @@ const Internship = () => {
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
-              <a href="#apply" className="inline-flex items-center gap-2 rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-[#1D4358] hover:border-[rgba(189,196,198,0.55)]">
+              <a href="#apply" className="inline-flex items-center gap-2 rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-[#E5E5E5] hover:border-[rgba(189,196,198,0.55)]">
                 Apply Now <ArrowRight className="h-4 w-4" />
               </a>
               <a href="#overview" className="rounded-md border border-white/10 bg-secondary/80 px-6 py-3 text-sm font-semibold text-secondary-foreground backdrop-blur transition-all hover:bg-muted">
@@ -339,7 +339,7 @@ const Internship = () => {
                 { value: "Competitive", label: "Selection process" },
               ].map((s) => (
                 <div key={s.label} className="glass-card p-5 text-center">
-                  <p className="font-heading text-lg font-bold text-[#53B5E0]">{s.value}</p>
+                  <p className="font-heading text-lg font-bold text-[#FFFFFF]">{s.value}</p>
                   <p className="mt-1 text-xs text-muted-foreground">{s.label}</p>
                 </div>
               ))}
@@ -399,7 +399,7 @@ const Internship = () => {
               <div key={p.label} className="glass-card p-6">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-md icon-accent-wrap">
-                    <p.icon className="h-5 w-5 text-[#53B5E0]" />
+                    <p.icon className="h-5 w-5 text-[#FFFFFF]" />
                   </div>
                   <div>
                     <p className="micro-label">{p.label}</p>
@@ -447,7 +447,7 @@ const Internship = () => {
                 transition={{ duration: 0.5, delay: i * 0.07 }}
                 className="glass-card flex flex-col p-8"
               >
-                <p.icon className="mb-4 h-8 w-8 text-[#53B5E0]" strokeWidth={1.5} />
+                <p.icon className="mb-4 h-8 w-8 text-[#FFFFFF]" strokeWidth={1.5} />
                 <h4 className="font-heading text-lg font-semibold text-foreground">{p.title}</h4>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.overview}</p>
                 <div className="mt-5 space-y-4 text-sm">
@@ -456,7 +456,7 @@ const Internship = () => {
                     <ul className="mt-2 space-y-1 text-muted-foreground">
                       {p.skills.map((s) => (
                         <li key={s} className="flex items-start gap-2">
-                          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#53B5E0]" />
+                          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#FFFFFF]" />
                           <span>{s}</span>
                         </li>
                       ))}
@@ -467,7 +467,7 @@ const Internship = () => {
                     <ul className="mt-2 space-y-1 text-muted-foreground">
                       {p.outcomes.map((o) => (
                         <li key={o} className="flex items-start gap-2">
-                          <ArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#53B5E0]" />
+                          <ArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#FFFFFF]" />
                           <span>{o}</span>
                         </li>
                       ))}
@@ -493,7 +493,7 @@ const Internship = () => {
               <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
                 {["Security Projects", "Team Collaboration", "Security Exercises", "Technical Presentations", "Career Development Sessions"].map((a) => (
                   <li key={a} className="flex items-start gap-2">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#53B5E0]" />
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#FFFFFF]" />
                     <span>{a}</span>
                   </li>
                 ))}
@@ -534,7 +534,7 @@ const Internship = () => {
                 transition={{ duration: 0.5, delay: i * 0.07 }}
                 className="glass-card-dark rounded-xl p-8 transition-all duration-300"
               >
-                <p.icon className="mb-4 h-8 w-8 text-[#53B5E0]" strokeWidth={1.5} />
+                <p.icon className="mb-4 h-8 w-8 text-[#FFFFFF]" strokeWidth={1.5} />
                 <h3 className="font-heading text-lg font-semibold text-foreground">{p.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.overview}</p>
               </motion.div>
@@ -563,7 +563,7 @@ const Internship = () => {
                 className="glass-card flex items-center gap-4 p-5"
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md icon-accent-wrap">
-                  <b.icon className="h-5 w-5 text-[#53B5E0]" strokeWidth={1.5} />
+                  <b.icon className="h-5 w-5 text-[#FFFFFF]" strokeWidth={1.5} />
                 </div>
                 <p className="text-sm font-medium text-foreground">{b.label}</p>
               </motion.div>
@@ -585,7 +585,7 @@ const Internship = () => {
               <ul className="mt-4 space-y-2">
                 {requiredEligibility.map((r) => (
                   <li key={r} className="flex items-start gap-3 text-sm text-muted-foreground">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#53B5E0]" />
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#FFFFFF]" />
                     <span>{r}</span>
                   </li>
                 ))}
@@ -596,7 +596,7 @@ const Internship = () => {
               <ul className="mt-4 space-y-2">
                 {preferredEligibility.map((r) => (
                   <li key={r} className="flex items-start gap-3 text-sm text-muted-foreground">
-                    <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-[#53B5E0]" />
+                    <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-[#FFFFFF]" />
                     <span>{r}</span>
                   </li>
                 ))}
@@ -623,7 +623,7 @@ const Internship = () => {
                 transition={{ duration: 0.4, delay: i * 0.08 }}
                 className="glass-card-dark rounded-xl p-6 transition-all duration-300"
               >
-                <div className="flex items-center gap-2 text-[#53B5E0]">
+                <div className="flex items-center gap-2 text-[#FFFFFF]">
                   <Calendar className="h-4 w-4" />
                   <p className="font-heading text-sm font-semibold">{t.month}</p>
                 </div>
@@ -662,7 +662,7 @@ const Internship = () => {
                 className="glass-card-dark rounded-xl p-6 transition-all duration-300"
               >
                 <div className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/40 bg-primary/10 font-heading text-sm font-bold text-[#53B5E0]">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/40 bg-primary/10 font-heading text-sm font-bold text-[#FFFFFF]">
                     {i + 1}
                   </span>
                   <p className="micro-label">{s.month}</p>
@@ -699,7 +699,7 @@ const Internship = () => {
 
           <p className="mt-6 text-center text-xs text-muted-foreground">
             Need support? Reach us directly at{" "}
-            <a href="mailto:info@useclickbox.com" className="text-[#53B5E0] hover:underline">
+            <a href="mailto:info@useclickbox.com" className="text-[#FFFFFF] hover:underline">
               info@useclickbox.com
             </a>
           </p>

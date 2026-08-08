@@ -76,7 +76,7 @@ const BlogPostPage = () => {
             transition={{ duration: 0.5 }}
             className="mt-8"
           >
-            <span className="badge-accent-frame inline-block rounded-full bg-[#0D2028] px-3 py-1">
+            <span className="badge-accent-frame inline-block rounded-full bg-[#000000] px-3 py-1">
               {post.category}
             </span>
             <h1 className="mt-4 font-heading text-3xl font-bold leading-tight text-foreground md:text-5xl">
@@ -195,11 +195,11 @@ const BlogPostPage = () => {
                     <p className="micro-label">
                       {r.category}
                     </p>
-                    <h3 className="mt-3 font-heading text-lg font-semibold text-foreground transition-colors group-hover:text-[#53B5E0]">
+                    <h3 className="mt-3 font-heading text-lg font-semibold text-foreground transition-colors group-hover:text-[#FFFFFF]">
                       {r.title}
                     </h3>
                     <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{r.excerpt}</p>
-                    <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[#53B5E0]">
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[#FFFFFF]">
                       Read article <ArrowRight className="h-4 w-4" />
                     </span>
                   </Link>
