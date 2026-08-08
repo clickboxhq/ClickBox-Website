@@ -35,7 +35,7 @@ const PremiumCTA = ({ asHero = false }: Props) => {
           loading="eager"
           fetchPriority="high"
           decoding="async"
-          className="absolute inset-0 h-full w-full object-cover object-center grayscale"
+          className="absolute inset-0 h-full w-full object-cover object-center"
         />
       </div>
 
