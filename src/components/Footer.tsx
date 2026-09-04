@@ -21,7 +21,7 @@ const Footer = () => (
             <Link to="/#services" className="text-sm text-muted-foreground hover:text-primary transition-colors">Services</Link>
             <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">About</Link>
             <Link to="/resources" className="text-sm text-muted-foreground hover:text-primary transition-colors">Resources</Link>
-            <Link to="/product" className="text-sm text-muted-foreground hover:text-primary transition-colors">Product</Link>
+            <Link to="/solutions/threatlens" className="text-sm text-muted-foreground hover:text-primary transition-colors">ThreatLens</Link>
             <Link to="/internship" className="text-sm text-muted-foreground hover:text-primary transition-colors">Internship</Link>
             <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">Privacy</Link>
           </div>

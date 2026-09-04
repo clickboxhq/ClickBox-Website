@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import ScrollToTop from "./components/ScrollToTop";
 import CookieConsent from "./components/CookieConsent";
@@ -14,7 +14,7 @@ const Resources = lazy(() => import("./pages/Resources"));
 const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 const Internship = lazy(() => import("./pages/Internship"));
 const Jobs = lazy(() => import("./pages/Jobs"));
-const Product = lazy(() => import("./pages/Product"));
+const ThreatLens = lazy(() => import("./pages/solutions/ThreatLens"));
 const Assessment = lazy(() => import("./pages/Assessment"));
 const About = lazy(() => import("./pages/About"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -56,7 +56,10 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/internship" element={<Internship />} />
             <Route path="/careers/jobs" element={<Jobs />} />
-            <Route path="/product" element={<Product />} />
+            <Route path="/solutions/threatlens" element={<ThreatLens />} />
+            {/* Legacy path — kept so existing inbound links keep working */}
+            <Route path="/product" element={<Navigate to="/solutions/threatlens" replace />} />
+            <Route path="/solutions" element={<Navigate to="/solutions/threatlens" replace />} />
             <Route path="/assessment" element={<Assessment />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy" element={<Privacy />} />

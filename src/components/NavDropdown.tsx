@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 export type NavDropdownItem = {
   label: string;
   path: string;
+  /** Optional supporting line rendered under the label (e.g. for product menus). */
+  description?: string;
 };
 
 type Props = {
@@ -49,8 +51,23 @@ const NavDropdown = ({ label, items, onNavigate, mobile = false, isActive = fals
         setOpen(false);
       }
     };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const onFocusOut = (e: FocusEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.relatedTarget as Node)) {
+        setOpen(false);
+      }
+    };
+    const root = rootRef.current;
     document.addEventListener("mousedown", onPointerDown);
-    return () => document.removeEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    root?.addEventListener("focusout", onFocusOut);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+      root?.removeEventListener("focusout", onFocusOut);
+    };
   }, [mobile]);
 
   const close = () => {
@@ -91,13 +108,19 @@ const NavDropdown = ({ label, items, onNavigate, mobile = false, isActive = fals
                       <Link
                         to={item.path}
                         onClick={close}
-                        className={`block px-5 py-3 text-sm transition-colors ${
+                        aria-current={itemActive ? "page" : undefined}
+                        className={`block px-5 py-3 transition-colors ${
                           itemActive
                             ? "text-foreground"
                             : "text-muted-foreground hover:bg-white/[0.04] hover:text-foreground"
                         }`}
                       >
-                        {item.label}
+                        <span className="block text-sm font-medium">{item.label}</span>
+                        {item.description && (
+                          <span className="mt-0.5 block text-xs leading-snug text-muted-foreground/70">
+                            {item.description}
+                          </span>
+                        )}
                       </Link>
                     </li>
                   );
@@ -146,21 +169,33 @@ const NavDropdown = ({ label, items, onNavigate, mobile = false, isActive = fals
             transition={{ duration: 0.18 }}
             className="absolute left-0 top-[calc(100%+0.75rem)] z-50 min-w-[15rem] overflow-hidden rounded-md border border-[rgba(189,196,198,0.18)] bg-[#000000] py-2 shadow-[0_12px_40px_rgba(0,0,0,0.45)]"
           >
-            <ul>
+            <ul role="menu" aria-label={label}>
               {items.map((item) => {
                 const itemActive = isItemActive(item.path, location.pathname, location.search);
                 return (
-                  <li key={item.label}>
+                  <li key={item.label} role="none">
                     <Link
                       to={item.path}
                       onClick={close}
-                      className={`block px-5 py-3 text-sm transition-colors ${
+                      role="menuitem"
+                      aria-current={itemActive ? "page" : undefined}
+                      className={`block px-5 py-3 transition-colors ${
                         itemActive
-                          ? "text-foreground"
+                          ? "bg-white/[0.03] text-foreground"
                           : "text-muted-foreground hover:bg-white/[0.04] hover:text-foreground"
                       }`}
                     >
-                      {item.label}
+                      <span className="flex items-center gap-2 text-sm font-medium">
+                        {item.label}
+                        {itemActive && (
+                          <span className="h-1 w-1 rounded-full bg-primary" aria-hidden />
+                        )}
+                      </span>
+                      {item.description && (
+                        <span className="mt-0.5 block max-w-[15rem] text-xs leading-snug text-muted-foreground/70">
+                          {item.description}
+                        </span>
+                      )}
                     </Link>
                   </li>
                 );

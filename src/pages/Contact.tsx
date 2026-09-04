@@ -19,8 +19,8 @@ const Contact = () => {
                 Contact Us
               </h1>
               <p className="mt-6 max-w-lg leading-relaxed text-muted-foreground">
-                Have a question about our services, need a security consultation, or want to learn
-                more about our upcoming phishing detection tool? We'd love to hear from you.
+                Have a question about our services, need a security consultation, or want to explore
+                ThreatLens for your team? We'd love to hear from you.
               </p>
 
               <div className="mt-12 space-y-6">

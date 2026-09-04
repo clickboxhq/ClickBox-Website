@@ -141,10 +141,10 @@ const Index = () => {
                 Our Services
               </a>
               <Link
-                to="/product"
+                to="/solutions/threatlens"
                 className="rounded-md border border-neutral-200 bg-neutral-50 px-6 py-3 text-sm font-semibold text-neutral-900 transition-all hover:bg-neutral-100"
               >
-                Explore Our Product
+                Explore ThreatLens
               </Link>
             </div>
           </ScrollReveal>
