@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -15,7 +14,6 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { TallyEmbed } from "@/components/forms/TallyEmbed";
 import ThreatLensConsole from "@/components/solutions/ThreatLensConsole";
 import ScrollReveal from "@/components/scroll/ScrollReveal";
 import { THREATLENS_URL, externalLinkProps } from "@/lib/links";
@@ -185,32 +183,32 @@ const ThreatLens = () => {
 
       {/* Teams & institutions inquiry */}
       <section id="threatlens-teams" className="section-padding scroll-mt-28">
-        <div className="mx-auto max-w-3xl">
-          <div className="mb-12 text-center">
-            <p className="section-label mb-3 inline-block">For Teams &amp; Institutions</p>
-            <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-              ThreatLens for your organization
-            </h2>
-            <p className="mt-4 leading-relaxed text-muted-foreground">
-              Using ThreatLens for cybersecurity training, workforce development, education, or a
-              partnership? Tell us about your team and we'll help you get set up with rosters,
-              assignments, and progress reporting.
-            </p>
-          </div>
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="section-label mb-3 inline-block">For Teams &amp; Institutions</p>
+          <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
+            ThreatLens for your organization
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl leading-relaxed text-muted-foreground">
+            Using ThreatLens for cybersecurity training, workforce development, education, or a
+            partnership? Talk to our team about rosters, assignments, and progress reporting.
+          </p>
 
-          <TallyEmbed formId="81r5Jr" height={200} title="ThreatLens for organizations" />
-
-          <p className="mt-8 text-center text-sm text-muted-foreground">
-            Just want to try it yourself?{" "}
+          <div className="mt-9 flex flex-wrap justify-center gap-3 md:gap-4">
             <a
               href={THREATLENS_URL}
               {...externalLinkProps}
-              className="font-semibold text-foreground underline-offset-4 hover:underline"
+              className="group inline-flex items-center gap-2 rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-[#E5E5E5] hover:border-[rgba(189,196,198,0.55)]"
             >
               Explore ThreatLens
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
-            .
-          </p>
+            <a
+              href="mailto:info@useclickbox.com?subject=ThreatLens%20for%20our%20organization"
+              className="inline-flex items-center justify-center rounded-md border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition-all hover:bg-white/10"
+            >
+              Talk to our team
+            </a>
+          </div>
         </div>
       </section>
 
