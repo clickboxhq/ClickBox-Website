@@ -3,6 +3,61 @@
 **Last audited:** 2026-06-08  
 **Target architecture:** Lovable → GitHub → Vercel → Cloudflare DNS → useclickbox.com
 
+> ⚠️ **Phases 1–7 below predate the 2026-09-04 migration.** They still describe the
+> repo as `iamprinceefe/clickbox-shield-guard` and Vercel as a personal project.
+> The **Current deployment** section immediately below is authoritative; treat the
+> phase docs as historical context for the setup rationale.
+
+---
+
+## Current deployment (updated 2026-09-04)
+
+| Item | Value |
+|---|---|
+| **Production URL** | https://www.useclickbox.com (apex `useclickbox.com` → 308 → `www`) |
+| **GitHub repository** | https://github.com/clickboxhq/ClickBox-Website (`main`) |
+| **Vercel team** | **ClickBox** (`click-box`) |
+| **Vercel project** | **`clickbox-website`** — Git-connected to `clickboxhq/ClickBox-Website`, auto-deploys `main` |
+| **Framework / build** | Vite · `npm run build` → `dist/` · SPA rewrites in `vercel.json` |
+| **DNS / CDN** | Cloudflare (registrar + DNS), proxied. Zone `useclickbox.com`. |
+| **TLS** | Cloudflare SSL/TLS mode must stay **Full (strict)** while proxied |
+
+### What changed on 2026-09-04
+
+- Repo moved `iamprinceefe/clickbox-shield-guard` → `clickboxhq/ClickBox-Website`
+  (GitHub keeps a redirect from the old path).
+- The old Vercel project (`clickbox-shield-guard`, personal `iamprinceefe` account)
+  did **not** follow the transfer, so `main` stopped auto-deploying there.
+- Created **`clickbox-website`** under the **ClickBox** Vercel team, connected it to
+  the new repo, and deployed `main`.
+- Moved `useclickbox.com` + `www.useclickbox.com` to `clickbox-website` via
+  `_vercel` TXT ownership verification in Cloudflare (no registrar transfer needed —
+  Cloudflare is the registrar).
+
+### DNS records (Cloudflare zone `useclickbox.com`)
+
+| Type | Name | Value | Notes |
+|---|---|---|---|
+| A | `@` | `64.29.17.65`, `216.198.79.65` | Vercel shared anycast |
+| CNAME | `www` | Vercel-provided target | check Vercel → Domains for the current value |
+| TXT | `_vercel` | `vc-domain-verify=useclickbox.com,…` + `…www.useclickbox.com,…` | ownership proof; stale `,dc`-suffixed entries from the old project can be deleted |
+| MX / TXT (SPF, DKIM, DMARC) | Zoho mail | — | **do not touch** — unrelated to web hosting |
+
+### Deploy / rollback
+
+- **Deploy:** merge to `main` → Vercel builds and promotes to production automatically.
+- **Manual:** `vercel deploy --prod --archive=tgz --scope click-box` from the repo root.
+- **Rollback:** Vercel → `clickbox-website` → Deployments → pick a previous one → **Promote to Production**.
+
+### Known follow-ups
+
+- Old Vercel project `clickbox-shield-guard` (`iamprinceefe`) still Git-connects the
+  same repo — disconnect its Git integration or delete the project so pushes don't
+  build twice.
+- Vercel shows a "Proxy Detected" warning; harmless while it worked before, but for
+  Vercel's DDoS/bot mitigation set the `@` / `www` records to **DNS only** (grey
+  cloud) — only after confirming Cloudflare SSL/TLS is **Full (strict)**.
+
 ---
 
 ## Phase 1 — Deployment Audit Report
@@ -215,7 +270,7 @@ Run after every production deploy. Compare against `npm run dev` locally.
 - [ ] Landing page (`/`)
 - [ ] About (`/about`)
 - [ ] Resources (`/resources`)
-- [ ] Product (`/product`)
+- [ ] ThreatLens solution (`/solutions/threatlens`; `/product` and `/solutions` client-redirect to it)
 - [ ] Fellowship / Internship (`/internship`)
 - [ ] Contact (`/contact`)
 - [ ] Blog posts (`/resources/:slug`)
