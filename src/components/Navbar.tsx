@@ -13,7 +13,13 @@ const navLinks = [
   { label: "Contact", path: "/contact" },
 ];
 
-const solutionsLink = { label: "Solutions", path: "/product" };
+const solutionsItems = [
+  {
+    label: "ThreatLens",
+    path: "/solutions/threatlens",
+    description: "Investigation-driven cybersecurity & SOC training",
+  },
+];
 
 const careersItems = [
   { label: "Internship", path: "/internship" },
@@ -298,10 +304,11 @@ const Navbar = () => {
                 onClick={handleNavClick}
               />
             ))}
-            <NavLink
-              link={solutionsLink}
-              pathname={location.pathname}
-              onClick={handleNavClick}
+            <NavDropdown
+              label="Solutions"
+              items={solutionsItems}
+              onNavigate={() => handleNavClick("/solutions/threatlens")}
+              isActive={location.pathname.startsWith("/solutions")}
             />
             <NavDropdown
               label="Resources"
@@ -394,11 +401,12 @@ const Navbar = () => {
                     mobile
                   />
                 ))}
-                <NavLink
-                  link={solutionsLink}
-                  pathname={location.pathname}
-                  onClick={handleNavClick}
+                <NavDropdown
+                  label="Solutions"
+                  items={solutionsItems}
+                  onNavigate={() => setMobileOpen(false)}
                   mobile
+                  isActive={location.pathname.startsWith("/solutions")}
                 />
                 <NavDropdown
                   label="Resources"
