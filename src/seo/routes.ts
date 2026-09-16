@@ -66,7 +66,7 @@ export const staticRoutes: RouteMeta[] = [
     path: "/internship",
     title: "Cybersecurity Internship | ClickBox",
     description:
-      "Join the ClickBox Cybersecurity Internship and gain hands-on experience, mentorship, and real-world SOC training.",
+      "The ClickBox Cybersecurity Internship offers hands-on experience, mentorship, and real-world SOC training. Applications are currently closed — the next cohort opens in 2027.",
     index: true,
     priority: 0.6,
   },

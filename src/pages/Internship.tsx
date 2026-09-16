@@ -26,7 +26,6 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { TallyEmbed } from "@/components/forms/TallyEmbed";
 import { useSeo } from "@/hooks/use-seo";
 import { staticRoutes } from "@/seo/routes";
 
@@ -173,6 +172,7 @@ const phase1Weeks = [
 
 
 const faqs = [
+  { q: "Are applications currently open?", a: "No. Applications are currently closed. Our next cohort opens in 2027 — check this page closer to that date, or email info@useclickbox.com to be kept in mind." },
   { q: "Is this internship paid?", a: "The internship is a career development program focused on practical experience, mentorship, and exposure." },
   { q: "Do I need certifications to apply?", a: "No. Certifications are not required, but credentials such as Security+, ISC2 CC, or the Google Cybersecurity Certificate are considered an advantage." },
   { q: "Can students apply?", a: "Yes. Students, recent graduates, career switchers, and self-taught learners are all encouraged to apply." },
@@ -315,30 +315,33 @@ const Internship = () => {
           <motion.div {...fadeUp} className="max-w-4xl">
             <div className="badge-accent-frame mb-6 rounded-full bg-[#000000] px-4 py-1.5 backdrop-blur">
               <Shield className="h-3.5 w-3.5 text-[#FFFFFF]" />
-              ClickBox Cybersecurity Internship · Cohort 2026
+              ClickBox Cybersecurity Internship
             </div>
             <h1 className="font-heading text-4xl font-bold leading-tight text-foreground md:text-6xl lg:text-7xl">
               Launch Your Cybersecurity Career With{" "}
               <span className="text-gradient">Real-World Experience.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-              Join the ClickBox Cybersecurity Internship and gain hands-on experience, mentorship, and
-              practical exposure across multiple cybersecurity career pathways.
+              Gain hands-on experience, mentorship, and practical exposure across multiple
+              cybersecurity career pathways through the ClickBox Cybersecurity Internship.
+            </p>
+            <p className="mt-3 max-w-2xl text-sm font-medium text-[#FFFFFF]">
+              Applications are currently closed. Our next cohort opens in 2027.
             </p>
 
-            <div className="mt-10 flex flex-wrap gap-4">
-              <a href="#apply" className="inline-flex items-center gap-2 rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-[#E5E5E5] hover:border-[rgba(189,196,198,0.55)]">
-                Apply Now <ArrowRight className="h-4 w-4" />
-              </a>
-              <a href="#overview" className="rounded-md border border-white/10 bg-secondary/80 px-6 py-3 text-sm font-semibold text-secondary-foreground backdrop-blur transition-all hover:bg-muted">
-                Learn More
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <span className="badge-accent-frame rounded-full bg-[#000000] px-4 py-1.5 text-sm font-semibold text-foreground">
+                Applications Open 2027
+              </span>
+              <a href="#overview" className="inline-flex items-center gap-2 rounded-md border border-[rgba(189,196,198,0.4)] bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-[#E5E5E5] hover:border-[rgba(189,196,198,0.55)]">
+                Learn More <ArrowRight className="h-4 w-4" />
               </a>
             </div>
 
             <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
               {[
                 { value: "10", label: "Interns per cohort" },
-                { value: "June", label: "Applications" },
+                { value: "2027", label: "Applications open" },
                 { value: "Jul – Sep", label: "Program duration" },
                 { value: "5", label: "Career pathways" },
                 { value: "Competitive", label: "Selection process" },
@@ -680,34 +683,26 @@ const Internship = () => {
         </div>
       </section>
 
-      {/* Apply — moved ABOVE FAQ */}
+      {/* Apply — currently closed */}
       <section id="apply" className="section-padding border-t border-white/5">
-        <div className="mx-auto max-w-4xl">
-          <motion.div {...fadeUp} className="text-center">
-            <p className="section-label mb-3">Apply Now</p>
+        <div className="mx-auto max-w-2xl">
+          <motion.div {...fadeUp} className="glass-card p-10 text-center">
+            <p className="section-label mb-3 inline-block">Applications Closed</p>
             <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
-              Begin your cybersecurity journey with ClickBox.
+              We're not accepting applications right now.
             </h2>
             <p className="mt-4 text-muted-foreground leading-relaxed">
-              Applications are reviewed competitively and spaces are limited. Only 10 interns will be
-              selected for each cohort.
+              The ClickBox Cybersecurity Internship is not currently open for applications. Our next
+              cohort opens in 2027 — check back here closer to that date, or reach out below and
+              we'll keep you in mind when applications open.
+            </p>
+            <p className="mt-6 text-sm text-muted-foreground">
+              Questions in the meantime? Reach us at{" "}
+              <a href="mailto:info@useclickbox.com" className="text-[#FFFFFF] hover:underline">
+                info@useclickbox.com
+              </a>
             </p>
           </motion.div>
-
-          <motion.div {...fadeUp} className="mt-12">
-            <TallyEmbed
-              formId="Ek6Y6r"
-              height={1912}
-              title="Begin your cybersecurity journey with ClickBox."
-            />
-          </motion.div>
-
-          <p className="mt-6 text-center text-xs text-muted-foreground">
-            Need support? Reach us directly at{" "}
-            <a href="mailto:info@useclickbox.com" className="text-[#FFFFFF] hover:underline">
-              info@useclickbox.com
-            </a>
-          </p>
         </div>
       </section>
 
