@@ -94,10 +94,18 @@ export const staticRoutes: RouteMeta[] = [
     index: true,
     priority: 0.3,
   },
-  // Intentionally not indexed / not in the sitemap:
-  //  - /assessment — lead-capture tool, already noindex via its own page
-  //  - /product, /solutions — redirect targets (HTTP 308 in vercel.json)
-  //  - /resources/:slug — dynamic, see src/seo/blogSeo.ts
+  {
+    // Real, working page — deliberately excluded from the sitemap (index:
+    // false below filters it out), but still a known route so middleware
+    // returns 200/noindex here rather than treating it as not-found.
+    path: "/assessment",
+    title: "Cybersecurity Assessment | ClickBox",
+    description: "A short assessment tool used during ClickBox engagements.",
+    index: false,
+  },
+  // /product, /solutions are redirect targets (HTTP 308 in vercel.json and
+  // middleware.ts), not separate pages, so they have no entry here.
+  // /resources/:slug is dynamic — see src/seo/blogSeo.ts.
 ];
 
 export function getStaticRouteMeta(pathname: string): RouteMeta | undefined {

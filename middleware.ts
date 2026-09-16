@@ -1,5 +1,5 @@
-import { getStaticRouteMeta, SITE_URL, absoluteOgImage, DEFAULT_OG_IMAGE_ALT, type RouteMeta } from "./src/seo/routes";
-import { getBlogRouteMeta } from "./src/seo/blogSeo";
+import { getStaticRouteMeta, SITE_URL, absoluteOgImage, DEFAULT_OG_IMAGE_ALT, type RouteMeta } from "./src/seo/routes.js";
+import { getBlogRouteMeta } from "./src/seo/blogSeo.js";
 
 /**
  * Edge-time <head> rewrite for the SPA's single index.html.
@@ -90,9 +90,13 @@ export default async function middleware(request: Request): Promise<Response> {
 
   const { meta, found } = resolveMeta(url.pathname);
 
-  const originResponse = await fetch(request);
-  const contentType = originResponse.headers.get("content-type") ?? "";
-  if (!contentType.includes("text/html")) return originResponse;
+  // Fetch the static index.html directly rather than re-fetching `request`:
+  // `request`'s pathname (e.g. /about) matches this same middleware's
+  // matcher, so re-fetching it would re-invoke the middleware and loop.
+  // /index.html has a file extension, so the matcher excludes it and this
+  // resolves straight to the static origin file.
+  const originResponse = await fetch(new URL("/index.html", url.origin));
+  if (!originResponse.ok) return originResponse;
 
   const html = await originResponse.text();
   const rewritten = rewriteHead(html, url.pathname, meta);
@@ -102,7 +106,7 @@ export default async function middleware(request: Request): Promise<Response> {
   if (!isProd) headers.set("X-Robots-Tag", "noindex, nofollow");
 
   return new Response(rewritten, {
-    status: found ? originResponse.status : 404,
+    status: found ? 200 : 404,
     headers,
   });
 }

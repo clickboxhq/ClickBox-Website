@@ -2,8 +2,8 @@
 // Vite (app) and independently by Vercel's edge middleware bundler, and a
 // plain relative path resolves correctly in both without relying on either
 // bundler picking up tsconfig path aliases.
-import { blogPosts } from "../data/blog";
-import { type RouteMeta } from "./routes";
+import { blogPosts } from "../data/blog.js";
+import { type RouteMeta } from "./routes.js";
 
 export type BlogRouteMeta = RouteMeta & { lastmod: string };
 
