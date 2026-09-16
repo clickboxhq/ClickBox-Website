@@ -22,6 +22,10 @@ import ScrollReveal from "@/components/scroll/ScrollReveal";
 import CountUpStat from "@/components/scroll/CountUpStat";
 import SecurityArchitectureScroll from "@/components/scroll/SecurityArchitectureScroll";
 import EngagementTimeline from "@/components/scroll/EngagementTimeline";
+import { useSeo } from "@/hooks/use-seo";
+import { staticRoutes } from "@/seo/routes";
+
+const seoMeta = staticRoutes.find((r) => r.path === "/")!;
 
 const audiences = [
   {
@@ -113,6 +117,8 @@ const engagementMilestones = [
 ];
 
 const Index = () => {
+  useSeo(seoMeta);
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

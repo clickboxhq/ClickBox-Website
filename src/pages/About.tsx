@@ -3,6 +3,10 @@ import { ShieldCheck, Lightbulb, Award, HeartHandshake } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CertificationsMarquee from "@/components/CertificationsMarquee";
+import { useSeo } from "@/hooks/use-seo";
+import { staticRoutes } from "@/seo/routes";
+
+const seoMeta = staticRoutes.find((r) => r.path === "/about")!;
 
 const values = [
   {
@@ -34,7 +38,10 @@ const stats = [
   { value: "AI-Powered", label: "Platform" },
 ];
 
-const About = () => (
+const About = () => {
+  useSeo(seoMeta);
+
+  return (
   <div className="min-h-screen bg-background">
     <Navbar />
 
@@ -151,6 +158,7 @@ const About = () => (
 
     <Footer />
   </div>
-);
+  );
+};
 
 export default About;

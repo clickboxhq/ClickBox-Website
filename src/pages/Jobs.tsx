@@ -3,6 +3,10 @@ import { Briefcase, Bell } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
+import { useSeo } from "@/hooks/use-seo";
+import { staticRoutes } from "@/seo/routes";
+
+const seoMeta = staticRoutes.find((r) => r.path === "/careers/jobs")!;
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -11,7 +15,10 @@ const fadeUp = {
   transition: { duration: 0.6, ease: "easeOut" as const },
 };
 
-const Jobs = () => (
+const Jobs = () => {
+  useSeo(seoMeta);
+
+  return (
   <div className="min-h-screen bg-background">
     <Navbar />
 
@@ -50,6 +57,7 @@ const Jobs = () => (
 
     <Footer />
   </div>
-);
+  );
+};
 
 export default Jobs;

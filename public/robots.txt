@@ -1,7 +1,5 @@
 User-agent: *
-Disallow: /admin/
-Disallow: /admin/login
-Disallow: /functions/
+Allow: /
 Disallow: /assessment
 
-Sitemap: https://useclickbox.com/sitemap.xml
+Sitemap: https://www.useclickbox.com/sitemap.xml
