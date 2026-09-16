@@ -5,6 +5,10 @@ import { Search, Clock, ArrowRight, BookOpen } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { blogPosts, resourceGroups, groupForCategory, type BlogPost } from "@/data/blog";
+import { useSeo } from "@/hooks/use-seo";
+import { staticRoutes } from "@/seo/routes";
+
+const seoMeta = staticRoutes.find((r) => r.path === "/resources")!;
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("en-US", {
@@ -83,6 +87,7 @@ const PostCard = ({
 };
 
 const Resources = () => {
+  useSeo(seoMeta);
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState("");
   const [group, setGroup] = useState<(typeof resourceGroups)[number]>("All");

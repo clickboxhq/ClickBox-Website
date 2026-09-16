@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Calendar, Clock, Share2, Linkedin, Link2 } from "lucide-react";
@@ -12,6 +12,8 @@ import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { blogPosts } from "@/data/blog";
+import { useSeo } from "@/hooks/use-seo";
+import { getBlogRouteMeta } from "@/seo/blogSeo";
 
 const fmtDate = (iso: string) =>
   new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
@@ -24,9 +26,14 @@ const BlogPostPage = () => {
     [slug, post],
   );
 
-  useEffect(() => {
-    if (post) document.title = `${post.title} — ClickBox`;
-  }, [post]);
+  const seoMeta = slug ? getBlogRouteMeta(slug) : undefined;
+  useSeo(
+    seoMeta ?? {
+      title: "Article Not Found | ClickBox",
+      description: "The article you're looking for doesn't exist.",
+      index: false,
+    },
+  );
 
   if (!post) {
     return (

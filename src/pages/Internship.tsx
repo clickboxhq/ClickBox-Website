@@ -27,6 +27,10 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { TallyEmbed } from "@/components/forms/TallyEmbed";
+import { useSeo } from "@/hooks/use-seo";
+import { staticRoutes } from "@/seo/routes";
+
+const seoMeta = staticRoutes.find((r) => r.path === "/internship")!;
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },
@@ -297,6 +301,7 @@ const FaqItem = ({
 };
 
 const Internship = () => {
+  useSeo(seoMeta);
   const [openWeek, setOpenWeek] = useState<number | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   return (

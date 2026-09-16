@@ -17,6 +17,10 @@ import Footer from "@/components/Footer";
 import ThreatLensConsole from "@/components/solutions/ThreatLensConsole";
 import ScrollReveal from "@/components/scroll/ScrollReveal";
 import { THREATLENS_URL, externalLinkProps } from "@/lib/links";
+import { useSeo } from "@/hooks/use-seo";
+import { staticRoutes, SITE_URL } from "@/seo/routes";
+
+const seoMeta = staticRoutes.find((r) => r.path === "/solutions/threatlens")!;
 
 const valuePoints = [
   {
@@ -50,9 +54,31 @@ const workflow = [
   { icon: BadgeCheck, label: "Automated scoring" },
 ];
 
+const threatLensSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "ThreatLens",
+  applicationCategory: "SecurityApplication",
+  operatingSystem: "Web",
+  url: THREATLENS_URL,
+  description:
+    "ThreatLens is an interactive investigation platform for people building a career in security operations. Analyze evidence, explore telemetry, make response decisions, and submit findings inside a workspace modelled on a real SOC.",
+  publisher: {
+    "@type": "Organization",
+    name: "ClickBox",
+    url: SITE_URL,
+  },
+};
+
 const ThreatLens = () => {
+  useSeo(seoMeta);
+
   return (
     <div className="min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(threatLensSchema) }}
+      />
       <Navbar />
 
       {/* Hero */}

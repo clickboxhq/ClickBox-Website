@@ -2,8 +2,14 @@ import { Mail, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { TallyEmbed } from "@/components/forms/TallyEmbed";
+import { useSeo } from "@/hooks/use-seo";
+import { staticRoutes } from "@/seo/routes";
+
+const seoMeta = staticRoutes.find((r) => r.path === "/contact")!;
 
 const Contact = () => {
+  useSeo(seoMeta);
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

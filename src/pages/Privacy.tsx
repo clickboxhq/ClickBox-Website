@@ -1,7 +1,14 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useSeo } from "@/hooks/use-seo";
+import { staticRoutes } from "@/seo/routes";
 
-const Privacy = () => (
+const seoMeta = staticRoutes.find((r) => r.path === "/privacy")!;
+
+const Privacy = () => {
+  useSeo(seoMeta);
+
+  return (
   <div className="min-h-screen bg-background">
     <Navbar />
 
@@ -81,6 +88,7 @@ const Privacy = () => (
 
     <Footer />
   </div>
-);
+  );
+};
 
 export default Privacy;
