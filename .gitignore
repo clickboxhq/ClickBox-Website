@@ -33,3 +33,6 @@ data/clickbox-store.json
 *.njsproj
 *.sln
 *.sw?
+
+# Vercel CLI project link
+.vercel
