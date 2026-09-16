@@ -8,7 +8,7 @@
     { "source": "/solutions", "destination": "/solutions/threatlens", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/((?!assets/).*)", "destination": "/index.html" }
+    { "source": "/((?!assets/|.*\\.html$).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
